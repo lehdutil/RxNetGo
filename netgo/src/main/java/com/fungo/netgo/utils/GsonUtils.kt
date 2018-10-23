@@ -14,11 +14,10 @@ import java.util.*
 
 
 /**
- * Author  ZYH
- * Date    2018/1/24
- * Des     GsonUtils
+ * Json解析的工具类，这里放置在网络框架中，可以全局使用
  */
 object GsonUtils {
+
     private val TAG = GsonUtils::class.java.name
     private val GSON_NO_NULLS = createGson(false) // 序列化，字段内容为空时，是否还需要这个Key
 
@@ -52,6 +51,14 @@ object GsonUtils {
 
     fun <V> fromJson(json: String, type: Type): V {
         return getGson().fromJson(json, type)
+    }
+
+    fun <V> fromJson(jsonElement: JsonElement, type: Type): V {
+        return getGson().fromJson(jsonElement, type)
+    }
+
+    fun <V> fromJson(jsonElement: JsonElement, type: Class<V>): V {
+        return getGson().fromJson(jsonElement, type)
     }
 
     fun <V> fromJson(params: Map<String, Any>, type: Class<V>): V {
@@ -111,7 +118,7 @@ object GsonUtils {
                                 return format.parse(value)
                             }
                         } catch (var12: ParseException) {
-                            android.util.Log.e(TAG, "日期转换错误， " + value, var12)
+                            android.util.Log.e(TAG, "日期转换错误， $value", var12)
                             ++var7
                         }
                     }
@@ -125,7 +132,7 @@ object GsonUtils {
 
         override fun serialize(date: Date, type: Type, context: JsonSerializationContext): JsonElement {
             val primary = this.formats[0]
-            var formatted: String = ""
+            var formatted = ""
             if (primary != null) {
                 synchronized(primary) {
                     formatted = primary.format(date)
