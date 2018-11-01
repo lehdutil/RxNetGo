@@ -1,20 +1,21 @@
 package com.fungo.netgo.subscribe;
 
-import com.fungo.netgo.error.ApiException;
-import com.fungo.netgo.error.NetError;
+import com.fungo.netgo.exception.ApiException;
+import com.fungo.netgo.exception.NetError;
+
+import okhttp3.ResponseBody;
 
 /**
  * @author Pinger
  * @since 18-10-19 上午11:08
  * <p>
- * 订阅者基类，让子类去实现各种订阅者，可以是Json，String或者不需要返回
+ * 订阅者基类，抽离出来，应对其他的变化
  */
 public abstract class BaseSubscriber<T> extends ResourceSubscriber<T> {
 
 
     /**
      * 分发一下异常
-     * TODO 判断缓存策略
      */
     @Override
     final public void onError(Throwable e) {
@@ -25,9 +26,7 @@ public abstract class BaseSubscriber<T> extends ResourceSubscriber<T> {
         }
     }
 
-    /**
-     * 请求异常，给子类去实现
-     */
+
     protected void onError(ApiException e) {
     }
 

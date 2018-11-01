@@ -63,7 +63,7 @@ public class HttpHeaders implements Serializable {
     public static final String HEAD_KEY_SET_COOKIE = "Set-Cookie";
     public static final String HEAD_KEY_SET_COOKIE2 = "Set-Cookie2";
 
-    public LinkedHashMap<String, String> headersMap;
+    public LinkedHashMap<String, Object> headersMap;
     private static String acceptLanguage;
     private static String userAgent;
 
@@ -93,11 +93,11 @@ public class HttpHeaders implements Serializable {
         }
     }
 
-    public String get(String key) {
+    public Object get(String key) {
         return headersMap.get(key);
     }
 
-    public String remove(String key) {
+    public Object remove(String key) {
         return headersMap.remove(key);
     }
 
@@ -112,7 +112,7 @@ public class HttpHeaders implements Serializable {
     public final String toJSONString() {
         JSONObject jsonObject = new JSONObject();
         try {
-            for (Map.Entry<String, String> entry : headersMap.entrySet()) {
+            for (Map.Entry<String, Object> entry : headersMap.entrySet()) {
                 jsonObject.put(entry.getKey(), entry.getValue());
             }
         } catch (JSONException e) {
@@ -254,6 +254,10 @@ public class HttpHeaders implements Serializable {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(FORMAT_HTTP_DATA, Locale.US);
         simpleDateFormat.setTimeZone(GMT_TIME_ZONE);
         return simpleDateFormat.format(date);
+    }
+
+    public Map<String, Object> getHeaderParams() {
+        return headersMap;
     }
 
     @Override

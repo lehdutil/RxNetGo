@@ -6,7 +6,8 @@ import android.os.SystemClock;
 
 import com.fungo.netgo.NetGo;
 import com.fungo.netgo.model.Priority;
-import com.fungo.netgo.utils.HttpUtils;
+import com.fungo.netgo.request.base.Request;
+import com.fungo.netgo.utils.IOUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -17,9 +18,7 @@ import java.util.List;
  * @since 18-10-17 下午2:33
  * 网络的进度实体,包括下载上传的进度
  */
-public class Progress implements Serializable {
-
-    private static final long serialVersionUID = 6353658567594109891L;
+public class Progress {
 
     public static final int NONE = 0;         //无状态
     public static final int WAITING = 1;      //等待
@@ -56,6 +55,7 @@ public class Progress implements Serializable {
     public int status;                              //当前状态
     public int priority;                            //任务优先级
     public long date;                               //创建时间
+    public Request<?, ? extends Request> request;   //网络请求
     public Serializable extra1;                     //额外的数据
     public Serializable extra2;                     //额外的数据
     public Serializable extra3;                     //额外的数据
@@ -142,9 +142,10 @@ public class Progress implements Serializable {
         values.put(STATUS, progress.status);
         values.put(PRIORITY, progress.priority);
         values.put(DATE, progress.date);
-        values.put(EXTRA1, HttpUtils.toByteArray(progress.extra1));
-        values.put(EXTRA2, HttpUtils.toByteArray(progress.extra2));
-        values.put(EXTRA3, HttpUtils.toByteArray(progress.extra3));
+        values.put(REQUEST, IOUtils.toByteArray(progress.request));
+        values.put(EXTRA1, IOUtils.toByteArray(progress.extra1));
+        values.put(EXTRA2, IOUtils.toByteArray(progress.extra2));
+        values.put(EXTRA3, IOUtils.toByteArray(progress.extra3));
         return values;
     }
 
@@ -172,9 +173,10 @@ public class Progress implements Serializable {
         progress.status = cursor.getInt(cursor.getColumnIndex(Progress.STATUS));
         progress.priority = cursor.getInt(cursor.getColumnIndex(Progress.PRIORITY));
         progress.date = cursor.getLong(cursor.getColumnIndex(Progress.DATE));
-        progress.extra1 = (Serializable) HttpUtils.toObject(cursor.getBlob(cursor.getColumnIndex(Progress.EXTRA1)));
-        progress.extra2 = (Serializable) HttpUtils.toObject(cursor.getBlob(cursor.getColumnIndex(Progress.EXTRA2)));
-        progress.extra3 = (Serializable) HttpUtils.toObject(cursor.getBlob(cursor.getColumnIndex(Progress.EXTRA3)));
+        progress.request = (Request<?, ? extends Request>) IOUtils.toObject(cursor.getBlob(cursor.getColumnIndex(Progress.REQUEST)));
+        progress.extra1 = (Serializable) IOUtils.toObject(cursor.getBlob(cursor.getColumnIndex(Progress.EXTRA1)));
+        progress.extra2 = (Serializable) IOUtils.toObject(cursor.getBlob(cursor.getColumnIndex(Progress.EXTRA2)));
+        progress.extra3 = (Serializable) IOUtils.toObject(cursor.getBlob(cursor.getColumnIndex(Progress.EXTRA3)));
         return progress;
     }
 

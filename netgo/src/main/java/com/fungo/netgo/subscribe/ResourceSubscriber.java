@@ -21,7 +21,7 @@ import io.reactivex.internal.util.EndConsumerHelper;
  * <p>To release the associated resources, one has to call {@link #dispose()}
  * in {@code onError()} and {@code onComplete()} explicitly.
  *
- * <p>Use {@link #add(Disposable)} to associate resources (as {@link io.reactivex.disposables.Disposable Disposable}s)
+ * <p>Use {@link #add(Disposable)} to associate resources (as {@link Disposable Disposable}s)
  * with this {@code ResourceSubscriber} that will be cleaned up when {@link #dispose()} is called.
  * Removing previously associated resources is not possible but one can create a
  * {@link io.reactivex.disposables.CompositeDisposable CompositeDisposable}, associate it with this

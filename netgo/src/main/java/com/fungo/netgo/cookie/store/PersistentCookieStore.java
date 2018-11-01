@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.fungo.netgo.cookie.SerializableHttpCookie;
+import com.fungo.netgo.cookie.SerializableCookie;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -85,7 +85,7 @@ public class PersistentCookieStore implements CookieStore {
         // Save cookie into persistent store
         SharedPreferences.Editor prefsWriter = cookiePrefs.edit();
         prefsWriter.putString(uri.host(), TextUtils.join(",", cookies.get(uri.host()).keySet()));
-        prefsWriter.putString(COOKIE_NAME_PREFIX + name, encodeCookie(new SerializableHttpCookie(cookie)));
+        prefsWriter.putString(COOKIE_NAME_PREFIX + name, encodeCookie(new SerializableCookie(uri.host(), cookie)));
         prefsWriter.apply();
     }
 
@@ -161,7 +161,7 @@ public class PersistentCookieStore implements CookieStore {
     }
 
 
-    protected String encodeCookie(SerializableHttpCookie cookie) {
+    protected String encodeCookie(SerializableCookie cookie) {
         if (cookie == null)
             return null;
         ByteArrayOutputStream os = new ByteArrayOutputStream();
@@ -182,7 +182,7 @@ public class PersistentCookieStore implements CookieStore {
         Cookie cookie = null;
         try {
             ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
-            cookie = ((SerializableHttpCookie) objectInputStream.readObject()).getCookie();
+            cookie = ((SerializableCookie) objectInputStream.readObject()).getCookie();
         } catch (IOException e) {
             Log.d(LOG_TAG, "IOException in decodeCookie", e);
         } catch (ClassNotFoundException e) {

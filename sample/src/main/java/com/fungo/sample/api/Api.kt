@@ -1,7 +1,7 @@
 package com.fungo.sample.api
 
 import com.fungo.netgo.NetGo
-import io.reactivex.Flowable
+import com.fungo.netgo.callback.StringCallBack
 
 /**
  * @author Pinger
@@ -16,9 +16,10 @@ object Api {
     }
 
 
-    fun getGankString(): Flowable<String> {
+    fun getGankString(callBack: StringCallBack) {
         val url = API_BASE_URL + "data/Android/30/1"
-        return getApi().getRequest(url, String::class.java)
+        getApi().get<String>(url).execute(callBack)
     }
+
 
 }
