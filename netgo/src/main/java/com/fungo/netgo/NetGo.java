@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
+import io.reactivex.Observable;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -308,6 +309,14 @@ public class NetGo {
     public <T> GetRequest<T> get(String url) {
         return new GetRequest<>(url, mService);
     }
+
+
+//    /**
+//     * get请求，由外部传入Retrofit组织好的Observable进来
+//     */
+//    public <T> GetRequest<T> get(Observable<T> observable) {
+//        return new GetRequest<>(observable);
+//    }
 
 
     /**
