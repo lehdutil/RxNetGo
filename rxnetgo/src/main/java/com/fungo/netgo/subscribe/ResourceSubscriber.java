@@ -82,7 +82,7 @@ import io.reactivex.internal.util.EndConsumerHelper;
  *
  * @param <T> the value type
  */
-abstract  class ResourceSubscriber<T> implements FlowableSubscriber<T>, Disposable {
+public abstract  class ResourceSubscriber<T> implements FlowableSubscriber<T>, Disposable {
     /**
      * The active subscription.
      */

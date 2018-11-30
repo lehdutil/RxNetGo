@@ -3,7 +3,7 @@ package com.fungo.sample
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.fungo.netgo.NetGo
-import com.fungo.netgo.callback.StringCallBack
+import com.fungo.netgo.subscribe.StringSubscriber
 import com.fungo.sample.api.Api
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -21,10 +21,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun initData() {
 
-        Api.getGankString(object : StringCallBack() {
-            override fun onSuccess(t: String?) {
-                textView.text = t
+        Api.getGankString(object : StringSubscriber() {
+            override fun onNext(json: String) {
+                textView.text = json
             }
+
         })
 
     }

@@ -1,8 +1,5 @@
 package com.fungo.netgo.utils;
 
-import com.fungo.netgo.cache.CacheFlowable;
-import com.fungo.netgo.cache.CacheManager;
-import com.fungo.netgo.callback.CallBack;
 import com.fungo.netgo.exception.NetError;
 
 import org.reactivestreams.Publisher;
@@ -12,15 +9,12 @@ import io.reactivex.FlowableTransformer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.Response;
 
 /**
  * @author Pinger
  * @since 18-10-23 下午4:42
  */
 public class RxUtils {
-
-
 
 
     /**

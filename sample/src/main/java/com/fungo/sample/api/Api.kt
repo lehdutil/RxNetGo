@@ -1,7 +1,7 @@
 package com.fungo.sample.api
 
 import com.fungo.netgo.NetGo
-import com.fungo.netgo.callback.StringCallBack
+import com.fungo.netgo.subscribe.StringSubscriber
 
 /**
  * @author Pinger
@@ -16,8 +16,8 @@ object Api {
     }
 
 
-    fun getGankString(callBack: StringCallBack) {
+    fun getGankString(subscriber: StringSubscriber) {
         val url = API_BASE_URL + "data/Android/30/1"
-        getApi().get<String>(url).subscribe(callBack)
+        getApi().get<String>(url).subscribe(subscriber)
     }
 }

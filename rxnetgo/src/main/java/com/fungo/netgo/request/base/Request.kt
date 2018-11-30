@@ -4,11 +4,10 @@ import android.text.TextUtils
 import com.fungo.netgo.NetGo
 import com.fungo.netgo.cache.CacheApiProvider
 import com.fungo.netgo.cache.CacheMode
-import com.fungo.netgo.callback.CallBack
 import com.fungo.netgo.model.HttpHeaders
 import com.fungo.netgo.model.HttpParams
 import com.fungo.netgo.request.RequestType
-import com.fungo.netgo.subscribe.RxSubscriber
+import com.fungo.netgo.subscribe.base.BaseSubscriber
 import com.fungo.netgo.utils.RxUtils
 import io.reactivex.Flowable
 import okhttp3.RequestBody
@@ -39,9 +38,8 @@ abstract class Request<T>(
     private val params = HttpParams() //添加的param
     private val headers = HttpHeaders()  //添加的header
 
-    var callBack: CallBack<T>? = null
+    var subscriber: BaseSubscriber<T>? = null
         private set
-
 
     init {
 
@@ -112,15 +110,15 @@ abstract class Request<T>(
             RequestType.POST -> postSync()
         }
 
-        return callBack?.convertResponse(response?.body())
+        return subscriber?.convertResponse(response?.body())
     }
 
     /**
      * 订阅请求
      * 异步请求
      */
-    fun subscribe(callBack: CallBack<T>) {
-        this.callBack = callBack
+    fun subscribe(subscriber: BaseSubscriber<T>) {
+        this.subscriber = subscriber
 
         val requestFlowable: Flowable<Response<ResponseBody>> = when (getMethod()) {
             RequestType.GET -> getAsync()
@@ -129,11 +127,11 @@ abstract class Request<T>(
 
         requestFlowable
                 .flatMap { response ->
-                    Flowable.just(callBack.convertResponse(response.body()))
+                    Flowable.just(subscriber.convertResponse(response.body()))
                 }
                 .compose(RxUtils.getScheduler())
                 .onErrorResumeNext(RxUtils.getErrorFunction())
-                .subscribe(RxSubscriber(callBack))
+                .subscribe(subscriber)
     }
 
 
