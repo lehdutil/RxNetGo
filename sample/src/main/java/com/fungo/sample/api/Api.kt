@@ -12,14 +12,12 @@ object Api {
     private const val API_BASE_URL = "http://gank.io/api/"
 
     private fun getApi(): NetGo {
-        return NetGo.getInstance().getApi(API_BASE_URL)
+        return NetGo.getInstance().getRetrofitApi(API_BASE_URL)
     }
 
 
     fun getGankString(callBack: StringCallBack) {
         val url = API_BASE_URL + "data/Android/30/1"
-        getApi().get<String>(url).execute(callBack)
+        getApi().get<String>(url).subscribe(callBack)
     }
-
-
 }

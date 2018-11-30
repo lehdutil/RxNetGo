@@ -1,1 +1,1 @@
-include ':sample', ':netgo'
+include ':sample', ':rxnetgo', ':rxnetdownload', ':rxnetupload'

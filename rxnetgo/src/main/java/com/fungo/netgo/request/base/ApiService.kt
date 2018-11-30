@@ -1,0 +1,78 @@
+package com.fungo.netgo.request.base
+
+import io.reactivex.Flowable
+import okhttp3.RequestBody
+import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.Response
+import retrofit2.http.*
+
+/**
+ * @author Pinger
+ * @since 18-10-18 下午3:20
+ *
+ * 默认的Retrofit的请求Service，可以直接调用GET和POST方法，节省代码成本
+ * Retrofit的Service的方法上不能带有泛型，就是不能有未知类型，这里将原来的泛型改成了ResponseBody,自己主动去处理数据
+ * 如果想使用Retrofit结合Gson自动解析数据，可以自定义好Flowable,然后使用NetGo请求。
+ */
+interface ApiService {
+
+
+    /**
+     * post异步请求
+     *
+     * @param url     服务器接口
+     * @param headers 请求头
+     * @param params  请求参数
+     * @param body    请求体，为RequestBody对象
+     */
+    @POST
+    fun postAsync(
+            @Url url: String,
+            @HeaderMap headers: Map<String, Any>,
+            @QueryMap params: Map<String, Any>,
+            @Body body: RequestBody?): Flowable<Response<ResponseBody>>
+
+
+    /**
+     * post同步请求
+     *
+     * @param url     服务器接口
+     * @param headers 请求头
+     * @param params  请求参数
+     * @param body    请求体，为RequestBody对象
+     */
+    @POST
+    fun postSync(
+            @Url url: String,
+            @HeaderMap headers: Map<String, Any>,
+            @QueryMap params: Map<String, Any>,
+            @Body body: RequestBody?): Call<Response<ResponseBody>>
+
+
+    /**
+     * get异步请求
+     *
+     * @param url     服务器接口
+     * @param headers 请求头
+     * @param params  参数
+     */
+    @GET
+    fun getAsync(
+            @Url url: String,
+            @HeaderMap headers: Map<String, Any>,
+            @QueryMap params: Map<String, Any>): Flowable<Response<ResponseBody>>
+
+
+    /**
+     * get同步请求
+     *
+     * @param url    服务器接口
+     * @param params 参数
+     */
+    @GET
+    fun getSync(
+            @Url url: String,
+            @HeaderMap headers: Map<String, Any>,
+            @QueryMap params: Map<String, Any>): Call<Response<ResponseBody>>
+}
