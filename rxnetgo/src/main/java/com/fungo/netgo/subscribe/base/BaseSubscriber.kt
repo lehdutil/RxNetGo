@@ -2,7 +2,6 @@ package com.fungo.netgo.subscribe.base
 
 import com.fungo.netgo.exception.ApiException
 import com.fungo.netgo.exception.NetError
-import com.fungo.netgo.subscribe.ResourceSubscriber
 
 /**
  * @author Pinger
