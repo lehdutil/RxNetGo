@@ -1,5 +1,6 @@
 package com.fungo.netgo;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
 import android.os.Handler;
@@ -17,6 +18,8 @@ import com.fungo.netgo.request.PostRequest;
 import com.fungo.netgo.request.base.ApiService;
 import com.fungo.netgo.utils.HttpUtils;
 import com.fungo.netgo.utils.NetLogger;
+import com.zchu.rxcache.RxCache;
+import com.zchu.rxcache.diskconverter.GsonDiskConverter;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -52,6 +55,7 @@ public class NetGo {
     private int mRetryCount;                //全局超时重试次数
     private CacheMode mCacheMode;           //全局缓存模式
     private long mCacheTime;                //全局缓存过期时间,默认永不过期
+    private int mCacheVersion;             //全局缓存版本，如果版本升级，则会清空之前的所有缓存
 
     // 当有多个baseurl时，需要build多个Retrofit实例，这里缓存 起来
     private Map<String, Retrofit> mRetrofitMap = new HashMap<>();
@@ -68,7 +72,10 @@ public class NetGo {
 
         mRetryCount = 3;
         mCacheTime = CACHE_NEVER_EXPIRE;
-        mCacheMode = CacheMode.REQUEST_FAILED_READ_CACHE;
+        // 默认不使用缓存
+        mCacheMode = CacheMode.ONLY_REQUEST;
+        // 缓存版本如果不修改，则缓存永远进行覆盖
+        mCacheVersion = 1;
 
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
 
@@ -98,6 +105,7 @@ public class NetGo {
         return NetGoHolder.holder;
     }
 
+    @SuppressLint("StaticFieldLeak")
     private static class NetGoHolder {
         private static final NetGo holder = new NetGo();
     }
@@ -107,7 +115,25 @@ public class NetGo {
      */
     public NetGo init(Application app) {
         mContext = app.getApplicationContext();
+        initRxCache();
         return this;
+    }
+
+
+    /**
+     * RxCache需要使用Context指定缓存目录，所以在[inits]方法后调用
+     */
+    private void initRxCache() {
+        // RxCache
+        RxCache rxCache = new RxCache.Builder()
+                .setDebug(NetLogger.isDebug())
+                .appVersion(mCacheVersion)  //当版本号改变,缓存路径下存储的所有数据都会被清除掉
+                .diskDir(HttpUtils.getCacheFile(getContext()))
+                .diskConverter(new GsonDiskConverter())  //支持Serializable、Json(GsonDiskConverter)
+                .memoryMax(2 * 1024 * 1024)       // 2M内存缓存
+                .diskMax(100 * 1024 * 1024)       // 100M硬盘缓存
+                .build();
+        RxCache.initializeDefault(rxCache);
     }
 
     /**
@@ -250,6 +276,12 @@ public class NetGo {
         mCacheTime = cacheTime;
         return this;
     }
+
+    public NetGo setCacheVersion(int cacheVersion) {
+        this.mCacheVersion = cacheVersion;
+        return this;
+    }
+
 
     /**
      * 获取全局的缓存过期时间

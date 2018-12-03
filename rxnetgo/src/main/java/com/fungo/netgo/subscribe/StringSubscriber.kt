@@ -1,9 +1,8 @@
 package com.fungo.netgo.subscribe
 
-import android.text.TextUtils
+import com.fungo.netgo.convert.StringConvert
 import com.fungo.netgo.exception.ApiException
 import com.fungo.netgo.subscribe.base.BaseSubscriber
-
 import okhttp3.ResponseBody
 
 /**
@@ -14,6 +13,8 @@ import okhttp3.ResponseBody
  * 当请求返回的结果为String类型时，可以使用本订阅者，会handle请求过程中的异常。
  */
 open class StringSubscriber : BaseSubscriber<String>() {
+
+    private val mConverter: StringConvert = StringConvert()
 
     override fun onStart() {
 
@@ -34,12 +35,6 @@ open class StringSubscriber : BaseSubscriber<String>() {
 
     @Throws(Exception::class)
     final override fun convertResponse(response: ResponseBody?): String {
-        val result = response?.string()
-        response?.close()
-        return if (!TextUtils.isEmpty(result)) {
-            result!!
-        } else {
-            ""
-        }
+        return mConverter.convertResponse(response)
     }
 }

@@ -1,6 +1,7 @@
 package com.fungo.netgo.subscribe
 
 import android.text.TextUtils
+import com.fungo.netgo.convert.JsonConvert
 import com.fungo.netgo.exception.ApiException
 import com.fungo.netgo.subscribe.base.BaseSubscriber
 import com.fungo.netgo.utils.JsonUtils
@@ -16,6 +17,8 @@ import java.lang.reflect.ParameterizedType
  */
 abstract class JsonSubscriber<T> : BaseSubscriber<T>() {
 
+    private val mConverter: JsonConvert<T> = JsonConvert()
+
     override fun onStart() {
 
     }
@@ -28,8 +31,7 @@ abstract class JsonSubscriber<T> : BaseSubscriber<T>() {
     }
 
 
-    @Suppress("UNCHECKED_CAST")
-    override fun convertResponse(response: ResponseBody?): T {
+    final override fun convertResponse(response: ResponseBody?): T {
         val genType = javaClass.genericSuperclass
         val type = (genType as ParameterizedType).actualTypeArguments[0]
 

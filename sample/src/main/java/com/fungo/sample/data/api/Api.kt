@@ -29,8 +29,8 @@ object Api {
 
 
     fun getGankString(subscriber: JsonSubscriber<GankBean>) {
-        getApi().get<GankBean>(getService().getGankData()).subscribe(subscriber)
-//        getApiService().get<GankBean>("data/Android/30/1").subscribe(subscriber)
+//        getApi().get<GankBean>(getService().getGankData()).subscribe(subscriber)
+        getApiService().get<GankBean>("data/Android/30/1").subscribe(subscriber)
 
     }
 }
