@@ -25,8 +25,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
 import io.reactivex.Flowable;
-import io.rx_cache2.internal.RxCache;
-import io.victoralbertos.jolyglot.GsonSpeaker;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -171,9 +169,9 @@ public class NetGo {
 
 
         if (mCacheProvider == null) {
-            mCacheProvider = new RxCache.Builder()
-                    .persistence(mContext.getCacheDir(), new GsonSpeaker())
-                    .using(CacheApiProvider.class);
+//            mCacheProvider = new RxCache.Builder()
+//                    .persistence(mContext.getCacheDir(), new GsonSpeaker())
+//                    .using(CacheApiProvider.class);
         }
 
         return this;
