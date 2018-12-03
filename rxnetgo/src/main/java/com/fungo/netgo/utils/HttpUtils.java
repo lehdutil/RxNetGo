@@ -180,11 +180,10 @@ public class HttpUtils {
         return MediaType.parse(contentType);
     }
 
-    public static <T> T checkNotNull(T object, String message) {
+    public static <T> void checkNotNull(T object, String message) {
         if (object == null) {
             throw new NullPointerException(message);
         }
-        return object;
     }
 
     public static void runOnUiThread(Runnable runnable) {

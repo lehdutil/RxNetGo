@@ -1,16 +1,13 @@
 package com.fungo.netgo.subscribe.base
 
-import org.reactivestreams.Subscription
-
-import java.util.concurrent.atomic.AtomicLong
-import java.util.concurrent.atomic.AtomicReference
-
-import io.reactivex.FlowableSubscriber
 import io.reactivex.disposables.Disposable
 import io.reactivex.internal.disposables.ListCompositeDisposable
 import io.reactivex.internal.functions.ObjectHelper
 import io.reactivex.internal.subscriptions.SubscriptionHelper
 import io.reactivex.internal.util.EndConsumerHelper
+import org.reactivestreams.Subscription
+import java.util.concurrent.atomic.AtomicLong
+import java.util.concurrent.atomic.AtomicReference
 
 /**
  * An abstract Subscriber that allows asynchronous cancellation of its
@@ -91,7 +88,7 @@ import io.reactivex.internal.util.EndConsumerHelper
  *
  * @param <T> the value type
 </T> */
-abstract class ResourceSubscriber<T> : FlowableSubscriber<T>, Disposable {
+abstract class ResourceSubscriber<T> : io.reactivex.FlowableSubscriber<T>, io.reactivex.disposables.Disposable {
     /**
      * The active subscription.
      */
@@ -118,7 +115,7 @@ abstract class ResourceSubscriber<T> : FlowableSubscriber<T>, Disposable {
         resources.add(resource)
     }
 
-    override fun onSubscribe(s: Subscription) {
+    final override fun onSubscribe(s: Subscription) {
         if (EndConsumerHelper.setOnce(this.s, s, javaClass)) {
             onStart()
             val r = missedRequested.getAndSet(0L)
@@ -159,7 +156,7 @@ abstract class ResourceSubscriber<T> : FlowableSubscriber<T>, Disposable {
      * This method can be called before the upstream calls onSubscribe at which
      * case the Subscription will be immediately cancelled.
      */
-    override fun dispose() {
+    final override fun dispose() {
         if (SubscriptionHelper.cancel(s)) {
             resources.dispose()
         }
@@ -170,7 +167,7 @@ abstract class ResourceSubscriber<T> : FlowableSubscriber<T>, Disposable {
      *
      * @return true if this AsyncObserver has been disposed/cancelled
      */
-    override fun isDisposed(): Boolean {
-        return SubscriptionHelper.isCancelled(s.get())
+    final override fun isDisposed(): Boolean {
+        return resources.isDisposed
     }
 }

@@ -1,9 +1,8 @@
 package com.fungo.netgo.request.base
 
-import com.fungo.netgo.cache.CacheApiProvider
 import com.fungo.netgo.model.HttpParams
-import com.fungo.netgo.utils.GsonUtils
 import com.fungo.netgo.utils.HttpUtils
+import com.fungo.netgo.utils.JsonUtils
 import io.reactivex.Flowable
 import okhttp3.MediaType
 import okhttp3.RequestBody
@@ -18,7 +17,7 @@ import java.io.File
  *
  * 封装有请求体的请求，一般为post
  */
-abstract class BodyRequest<T>(url: String, service: ApiService, cacheProvider: CacheApiProvider?, flowable: Flowable<T>?) : Request<T>(url, service, cacheProvider, flowable), IBody<Request<T>> {
+abstract class BodyRequest<T>(url: String, service: ApiService?, flowable: Flowable<T>?) : Request<T>(url, service, flowable), IBody<Request<T>> {
 
     private var mediaType: MediaType? = null        //上传的MIME类型
     private var content: String? = null             //上传的文本内容
@@ -127,7 +126,7 @@ abstract class BodyRequest<T>(url: String, service: ApiService, cacheProvider: C
     }
 
     override fun upJson(any: Any): Request<T> {
-        this.content = GsonUtils.toJson(any)
+        this.content = JsonUtils.toJson(any)
         this.mediaType = HttpParams.MEDIA_TYPE_JSON
         return this
     }

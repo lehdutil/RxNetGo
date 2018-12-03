@@ -1,6 +1,5 @@
 package com.fungo.netgo.request
 
-import com.fungo.netgo.cache.CacheApiProvider
 import com.fungo.netgo.request.base.ApiService
 import com.fungo.netgo.request.base.Request
 
@@ -14,7 +13,7 @@ import okhttp3.RequestBody
  *
  * get请求构造器
  */
-class GetRequest<T>(url: String, service: ApiService, cacheProvider: CacheApiProvider?, flowable: Flowable<T>?) : Request<T>(url, service, cacheProvider, flowable) {
+class GetRequest<T>(url: String, service: ApiService?, flowable: Flowable<T>?) : Request<T>(url, service, flowable) {
 
     override fun generateRequestBody(): RequestBody? {
         return null

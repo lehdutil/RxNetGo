@@ -2,8 +2,8 @@ package com.fungo.netgo.request.base
 
 import android.text.TextUtils
 import com.fungo.netgo.NetGo
-import com.fungo.netgo.cache.CacheApiProvider
 import com.fungo.netgo.cache.CacheMode
+import com.fungo.netgo.exception.ApiException
 import com.fungo.netgo.model.HttpHeaders
 import com.fungo.netgo.model.HttpParams
 import com.fungo.netgo.request.RequestType
@@ -11,8 +11,6 @@ import com.fungo.netgo.subscribe.base.BaseSubscriber
 import com.fungo.netgo.utils.RxUtils
 import io.reactivex.Flowable
 import okhttp3.RequestBody
-import okhttp3.ResponseBody
-import retrofit2.Response
 
 /**
  * @author Pinger
@@ -22,9 +20,8 @@ import retrofit2.Response
  * 请求基类，封装请求
  */
 abstract class Request<T>(
-        private val url: String,                       // retrofit请求执行者
-        private val apiService: ApiService,            // 缓存提供者
-        private val mCacheProvider: CacheApiProvider?, // 主动包装的请求
+        private val url: String,
+        private val apiService: ApiService?,             // retrofit请求执行者
         private val mFlowable: Flowable<T>?) {
 
     var cacheMode: CacheMode? = null
@@ -105,12 +102,12 @@ abstract class Request<T>(
      */
     @Throws(Exception::class)
     fun subscribe(): T? {
-        val response: Response<ResponseBody>? = when (getMethod()) {
+        val data: T? = when (getMethod()) {
             RequestType.GET -> getSync()
             RequestType.POST -> postSync()
         }
 
-        return subscriber?.convertResponse(response?.body())
+        return data
     }
 
     /**
@@ -120,15 +117,12 @@ abstract class Request<T>(
     fun subscribe(subscriber: BaseSubscriber<T>) {
         this.subscriber = subscriber
 
-        val requestFlowable: Flowable<Response<ResponseBody>> = when (getMethod()) {
+        val requestFlowable: Flowable<T> = when (getMethod()) {
             RequestType.GET -> getAsync()
             RequestType.POST -> postAsync()
         }
 
         requestFlowable
-                .flatMap { response ->
-                    Flowable.just(subscriber.convertResponse(response.body()))
-                }
                 .compose(RxUtils.getScheduler())
                 .onErrorResumeNext(RxUtils.getErrorFunction())
                 .subscribe(subscriber)
@@ -138,8 +132,15 @@ abstract class Request<T>(
     /**
      * 封装底层的Get异步请求
      */
-    private fun getAsync(): Flowable<Response<ResponseBody>> {
-        return apiService.getAsync(url, headers.getHeaderParams(), params.getUrlParams())
+    private fun getAsync(): Flowable<T> {
+        return if (apiService != null) {
+            apiService.getAsync(url, headers.getHeaderParams(), params.getUrlParams()).flatMap { response ->
+                Flowable.just(subscriber?.convertResponse(response.body()))
+            }
+        } else {
+            mFlowable
+                    ?: Flowable.error<T>(ApiException("Rxnetgo async request engine not be null. Please retry!"))
+        }
     }
 
 
@@ -147,16 +148,31 @@ abstract class Request<T>(
      * 封装底层的Get同步请求
      */
     @Throws(Exception::class)
-    private fun getSync(): Response<ResponseBody>? {
-        return apiService.getSync(url, headers.getHeaderParams(), params.getUrlParams()).execute().body()
+    private fun getSync(): T? {
+        return if (apiService != null) {
+            val response = apiService.getSync(url, headers.getHeaderParams(), params.getUrlParams()).execute().body()
+            subscriber?.convertResponse(response?.body())
+        } else {
+            if (mFlowable != null) {
+                throw ApiException("Rxnetgo sync request do not support external customization. ")
+            }
+            null
+        }
     }
 
 
     /**
      * 封装底层的Post异步请求
      */
-    private fun postAsync(): Flowable<Response<ResponseBody>> {
-        return apiService.postAsync(url, headers.getHeaderParams(), params.getUrlParams(), generateRequestBody())
+    private fun postAsync(): Flowable<T> {
+        return if (apiService != null) {
+            apiService.postAsync(url, headers.getHeaderParams(), params.getUrlParams(), generateRequestBody()).flatMap { response ->
+                Flowable.just(subscriber?.convertResponse(response.body()))
+            }
+        } else {
+            mFlowable
+                    ?: Flowable.error<T>(ApiException("Rxnetgo async request engine not be null. Please retry!"))
+        }
     }
 
 
@@ -164,8 +180,17 @@ abstract class Request<T>(
      * 封装底层的Post同步请求
      */
     @Throws(Exception::class)
-    private fun postSync(): Response<ResponseBody>? {
-        return apiService.postSync(url, headers.getHeaderParams(), params.getUrlParams(), generateRequestBody()).execute().body()
+    private fun postSync(): T? {
+        return if (apiService != null) {
+            val response = apiService.postSync(url, headers.getHeaderParams(), params.getUrlParams(), generateRequestBody()).execute().body()
+            subscriber?.convertResponse(response?.body())
+        } else {
+            if (mFlowable != null) {
+                throw ApiException("Rxnetgo sync request do not support external customization. ")
+            }
+            null
+        }
+
     }
 
     //---------------------------------------------------------------------

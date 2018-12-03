@@ -3,7 +3,7 @@ package com.fungo.netgo.subscribe
 import android.text.TextUtils
 import com.fungo.netgo.exception.ApiException
 import com.fungo.netgo.subscribe.base.BaseSubscriber
-import com.fungo.netgo.utils.GsonUtils
+import com.fungo.netgo.utils.JsonUtils
 import okhttp3.ResponseBody
 import java.lang.reflect.ParameterizedType
 
@@ -37,7 +37,7 @@ abstract class JsonSubscriber<T> : BaseSubscriber<T>() {
         response?.close()
 
         return if (!TextUtils.isEmpty(json)) {
-            GsonUtils.fromJson(response!!.string(), type)
+            JsonUtils.fromJson(json!!, type)
         } else Any() as T
     }
 }

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 
-import com.fungo.netgo.cache.CacheApiProvider;
 import com.fungo.netgo.cache.CacheMode;
 import com.fungo.netgo.cookie.CookieJarImpl;
 import com.fungo.netgo.cookie.store.MemoryCookieStore;
@@ -59,7 +58,6 @@ public class NetGo {
     private Map<String, ApiService> mServiceMap = new HashMap<>();
 
     private ApiService mService;
-    private CacheApiProvider mCacheProvider;
 
     /**
      * 生成默认的配置，如果想更新配置，可以使用内部的Builder更新
@@ -86,9 +84,9 @@ public class NetGo {
         builder.connectTimeout(DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS);
 
         // https
-        HttpsUtils.SSLParams sslParams = HttpsUtils.getSslSocketFactory();
-        builder.sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager);
-        builder.hostnameVerifier(HttpsUtils.UnSafeHostnameVerifier);
+        HttpsUtils.SSLParams sslParams = HttpsUtils.INSTANCE.getSslSocketFactory();
+        builder.sslSocketFactory(sslParams.getSSLSocketFactory(), sslParams.getTrustManager());
+        builder.hostnameVerifier(HttpsUtils.INSTANCE.getUnSafeHostnameVerifier());
 
         // cookie
         builder.cookieJar(new CookieJarImpl(new MemoryCookieStore()));
@@ -165,13 +163,6 @@ public class NetGo {
             mServiceMap.put(baseUrl, mService);
         } else {
             mService = mServiceMap.get(baseUrl);
-        }
-
-
-        if (mCacheProvider == null) {
-//            mCacheProvider = new RxCache.Builder()
-//                    .persistence(mContext.getCacheDir(), new GsonSpeaker())
-//                    .using(CacheApiProvider.class);
         }
 
         return this;
@@ -318,7 +309,7 @@ public class NetGo {
      * 当传入全路径url时会使用整个url访问
      */
     public <T> GetRequest<T> get(String url) {
-        return new GetRequest<>(url, mService, mCacheProvider, null);
+        return new GetRequest<>(url, mService, null);
     }
 
 
@@ -326,7 +317,7 @@ public class NetGo {
      * get请求，由外部传入Retrofit组织好的Flowable进来
      */
     public <T> GetRequest<T> get(Flowable<T> flowable) {
-        return new GetRequest<>("", mService, mCacheProvider, flowable);
+        return new GetRequest<>("", mService, flowable);
     }
 
 
@@ -334,6 +325,6 @@ public class NetGo {
      * post请求
      */
     public <T> PostRequest<T> post(String url) {
-        return new PostRequest<>(url, mService, mCacheProvider, null);
+        return new PostRequest<>(url, mService, null);
     }
 }
