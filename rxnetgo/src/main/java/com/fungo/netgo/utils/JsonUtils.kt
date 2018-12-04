@@ -4,6 +4,7 @@ package com.fungo.netgo.utils
 import android.annotation.SuppressLint
 import android.text.TextUtils
 import com.google.gson.*
+import com.google.gson.stream.JsonReader
 import org.json.JSONObject
 import java.io.Reader
 import java.lang.reflect.Type
@@ -74,6 +75,14 @@ object JsonUtils {
     }
 
     fun <V> fromJson(reader: Reader, type: Type): V {
+        return getGson().fromJson(reader, type)
+    }
+
+    fun <V> fromJson(reader: JsonReader, type: Class<V>): V {
+        return getGson().fromJson(reader, type)
+    }
+
+    fun <V> fromJson(reader: JsonReader, type: Type): V {
         return getGson().fromJson(reader, type)
     }
 
