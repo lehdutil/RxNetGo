@@ -26,11 +26,13 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation rootProject.ext.dependencies.appcompat
+    implementation rootProject.ext.dependencies.recyclerview
     implementation rootProject.ext.dependencies.constraintlayout
     implementation rootProject.ext.dependencies.kotlin
 
     implementation project(':rxnetgo')
 
-    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+    compileOnly 'com.squareup.retrofit2:retrofit:2.5.0'
+    compileOnly 'com.squareup.retrofit2:converter-gson:2.4.0'
+    compileOnly 'io.reactivex.rxjava2:rxjava:2.2.4'
 }

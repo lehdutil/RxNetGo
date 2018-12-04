@@ -70,18 +70,18 @@ abstract class Request<T>(
     /**
      * 子类提供请求方式
      */
-    abstract fun getMethod(): RequestType
+    protected abstract fun getMethod(): RequestType
 
     /**
      * 根据不同的请求方式和参数，生成不同的RequestBody
      */
-    abstract fun generateRequestBody(): RequestBody?
+    protected abstract fun generateRequestBody(): RequestBody?
 
 
     /**
      * 获取请求路径URL
      */
-    fun getUrl(): String {
+    protected fun getUrl(): String {
         return url
     }
 
@@ -89,7 +89,7 @@ abstract class Request<T>(
     /**
      * 获取请求参数对象
      */
-    fun getParams(): HttpParams {
+    protected fun getParams(): HttpParams {
         return mParams
     }
 
@@ -97,32 +97,10 @@ abstract class Request<T>(
     /**
      * 获取请求头对象
      */
-    fun getHeaders(): HttpHeaders {
+    protected fun getHeaders(): HttpHeaders {
         return mHeaders
     }
 
-
-    /**
-     * 同步请求
-     */
-    @Throws(Exception::class)
-    fun subscribe(): T? {
-        return requestSync(getConverter())
-    }
-
-    /**
-     * 订阅请求
-     * 异步请求
-     */
-    fun subscribe(subscriber: BaseSubscriber<T>) {
-        this.mSubscriber = subscriber
-        requestAsync(subscriber)
-                .compose(RxUtils.getScheduler())
-                .onErrorResumeNext(RxUtils.getErrorFunction())
-//                .rxCache(getCacheKey(), getCacheStrategy())
-//                .map(CacheResult.MapFunc<T>())
-                .subscribe(subscriber)
-    }
 
     /**
      * 缓存策略
@@ -130,9 +108,9 @@ abstract class Request<T>(
     private fun getCacheStrategy(): IFlowableStrategy {
         return when (mCacheMode) {
             CacheMode.FIRST_CACHE_THEN_REQUEST -> CacheStrategy.firstCache()
-            CacheMode.FIRST_REQUEST_THEN_CACHE -> CacheStrategy.firstCache()
-            CacheMode.ONLY_CACHE -> CacheStrategy.firstCache()
-            else -> CacheStrategy.firstCache()
+            CacheMode.FIRST_REQUEST_THEN_CACHE -> CacheStrategy.firstRemote()
+            CacheMode.ONLY_CACHE -> CacheStrategy.onlyCache()
+            else -> CacheStrategy.onlyRemote()
         }
     }
 
@@ -218,6 +196,28 @@ abstract class Request<T>(
         }
     }
 
+
+    /**
+     * 同步请求
+     */
+    @Throws(Exception::class)
+    fun subscribe(): T? {
+        return requestSync(getConverter())
+    }
+
+    /**
+     * 订阅请求
+     * 异步请求
+     */
+    fun subscribe(subscriber: BaseSubscriber<T>) {
+        this.mSubscriber = subscriber
+        requestAsync(subscriber)
+                .compose(RxUtils.getScheduler())
+                .onErrorResumeNext(RxUtils.getErrorFunction())
+                .rxCache(getCacheKey(), getCacheStrategy())
+                .map(CacheResult.MapFunc<T>())
+                .subscribe(subscriber)
+    }
 
     //---------------------------------------------------------------------
     //------------------------ 链式调用的API --------------------------------

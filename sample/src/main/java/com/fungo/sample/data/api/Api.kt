@@ -1,8 +1,8 @@
 package com.fungo.sample.data.api
 
 import com.fungo.netgo.NetGo
+import com.fungo.netgo.cache.CacheMode
 import com.fungo.netgo.subscribe.JsonSubscriber
-import com.fungo.netgo.subscribe.StringSubscriber
 import com.fungo.sample.data.bean.GankBean
 
 /**
@@ -13,24 +13,28 @@ object Api {
 
     private const val API_BASE_URL = "http://gank.io/api/"
 
-    private fun getApi(): NetGo {
+    fun getNetGo(): NetGo {
         return NetGo.getInstance()
     }
 
 
-    private fun getApiService():NetGo{
-        return NetGo.getInstance().getRetrofitApi(API_BASE_URL)
+    fun getApiService(): NetGo {
+        return getNetGo().getRetrofitApi(API_BASE_URL)
     }
 
 
-    private fun getService(): GankSevice {
-        return NetGo.getInstance().getRetrofitService(API_BASE_URL, GankSevice::class.java)
+    fun getGankService(): GankSevice {
+        return getNetGo().getRetrofitService(API_BASE_URL, GankSevice::class.java)
     }
 
 
-    fun getGankString(subscriber: JsonSubscriber<GankBean>) {
-//        getApi().get<GankBean>(getService().getGankData()).subscribe(subscriber)
-        getApiService().get<GankBean>("data/Android/30/1").subscribe(subscriber)
+    fun getGankData(subscriber: JsonSubscriber<GankBean>) {
+//        getNetGo().get<GankBean>(getGankService().getGankData()).subscribe(subscriber)
+        getApiService()
+                .get<GankBean>("data/Android/30/1")
+                .cacheKey("gank_data")
+                .cacheMode(CacheMode.FIRST_CACHE_THEN_REQUEST)
+                .subscribe(subscriber)
 
     }
 }

@@ -16,9 +16,12 @@ import com.fungo.netgo.model.HttpParams;
 import com.fungo.netgo.request.GetRequest;
 import com.fungo.netgo.request.PostRequest;
 import com.fungo.netgo.request.base.ApiService;
+import com.fungo.netgo.subscribe.base.BaseSubscriber;
 import com.fungo.netgo.utils.HttpUtils;
 import com.fungo.netgo.utils.NetLogger;
+import com.fungo.netgo.utils.RxUtils;
 import com.zchu.rxcache.RxCache;
+import com.zchu.rxcache.data.CacheResult;
 import com.zchu.rxcache.diskconverter.GsonDiskConverter;
 
 import java.util.HashMap;
@@ -55,7 +58,7 @@ public class NetGo {
     private int mRetryCount;                //全局超时重试次数
     private CacheMode mCacheMode;           //全局缓存模式
     private long mCacheTime;                //全局缓存过期时间,默认永不过期
-    private int mCacheVersion;             //全局缓存版本，如果版本升级，则会清空之前的所有缓存
+    private int mCacheVersion;              //全局缓存版本，如果版本升级，则会清空之前的所有缓存
 
     // 当有多个baseurl时，需要build多个Retrofit实例，这里缓存 起来
     private Map<String, Retrofit> mRetrofitMap = new HashMap<>();
@@ -66,7 +69,7 @@ public class NetGo {
     /**
      * 生成默认的配置，如果想更新配置，可以使用内部的Builder更新
      */
-    private NetGo() {
+    private void initNetGo() {
 
         mDelivery = new Handler(Looper.getMainLooper());
 
@@ -99,6 +102,18 @@ public class NetGo {
         builder.cookieJar(new CookieJarImpl(new MemoryCookieStore()));
 
         mClient = builder.build();
+
+        // RxCache
+        RxCache rxCache = new RxCache.Builder()
+                .setDebug(NetLogger.isDebug())
+                .appVersion(mCacheVersion)  //当版本号改变,缓存路径下存储的所有数据都会被清除掉
+                .diskDir(HttpUtils.getCacheFile(getContext()))
+                .diskConverter(new GsonDiskConverter())  //支持Serializable、Json(GsonDiskConverter)
+                .memoryMax(2 * 1024 * 1024)       // 2M内存缓存
+                .diskMax(100 * 1024 * 1024)       // 100M硬盘缓存
+                .build();
+        RxCache.initializeDefault(rxCache);
+
     }
 
     public static NetGo getInstance() {
@@ -115,26 +130,10 @@ public class NetGo {
      */
     public NetGo init(Application app) {
         mContext = app.getApplicationContext();
-        initRxCache();
+        initNetGo();
         return this;
     }
 
-
-    /**
-     * RxCache需要使用Context指定缓存目录，所以在[inits]方法后调用
-     */
-    private void initRxCache() {
-        // RxCache
-        RxCache rxCache = new RxCache.Builder()
-                .setDebug(NetLogger.isDebug())
-                .appVersion(mCacheVersion)  //当版本号改变,缓存路径下存储的所有数据都会被清除掉
-                .diskDir(HttpUtils.getCacheFile(getContext()))
-                .diskConverter(new GsonDiskConverter())  //支持Serializable、Json(GsonDiskConverter)
-                .memoryMax(2 * 1024 * 1024)       // 2M内存缓存
-                .diskMax(100 * 1024 * 1024)       // 100M硬盘缓存
-                .build();
-        RxCache.initializeDefault(rxCache);
-    }
 
     /**
      * 是否开发模式
@@ -174,7 +173,6 @@ public class NetGo {
         HttpUtils.checkNotNull(mClient, "please call NetGo.getInstance().init() first in application!");
         return mClient;
     }
-
 
     /**
      * 如果使用Retrofit，首先就要生成Service
@@ -323,18 +321,16 @@ public class NetGo {
     }
 
     /**
-     * 清除retrofit缓存
+     * 清除网络数据缓存
      */
     public void clearCache() {
-        mRetrofitMap.clear();
-        mServiceMap.clear();
+        RxCache.getDefault().clear().subscribe();
     }
 
 
-    //=======================请求方式=======================
-    //=======================请求方式=======================
-    //=======================请求方式=======================
-
+    //=======================Request API=======================
+    //=======================Request API=======================
+    //=======================Request API=======================
 
     /**
      * get请求,传入的可以是全路径url，也可以是其中的path
@@ -359,4 +355,33 @@ public class NetGo {
     public <T> PostRequest<T> post(String url) {
         return new PostRequest<>(url, mService, null);
     }
+
+    public <T> PostRequest<T> post(Flowable<T> flowable) {
+        return new PostRequest<>("", mService, flowable);
+    }
+
+
+    //=======================Cache API=======================
+    //=======================Cache API=======================
+    //=======================Cache API=======================
+
+    /**
+     * 手动读取缓存
+     */
+    public <T> void loadCache(String key, Class<T> clazz, BaseSubscriber<T> subscriber) {
+        RxCache.getDefault()
+                .<T>load2Flowable(key, clazz)
+                .map(new CacheResult.MapFunc<T>())
+                .onErrorResumeNext(RxUtils.<T>getErrorFunction())
+                .subscribe(subscriber);
+    }
+
+
+    /**
+     * 手动保存缓存到内存和磁盘
+     */
+    public <T> void saveCache(String key, T data) {
+        RxCache.getDefault().save(key, data).subscribe();
+    }
+
 }
