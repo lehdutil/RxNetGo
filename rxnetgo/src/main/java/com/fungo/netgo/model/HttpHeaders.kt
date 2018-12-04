@@ -3,7 +3,7 @@ package com.fungo.netgo.model
 import android.annotation.SuppressLint
 import android.os.Build
 import android.text.TextUtils
-import com.fungo.netgo.NetGo
+import com.fungo.netgo.RxNetGo
 import com.fungo.netgo.utils.NetLogger
 import org.json.JSONException
 import org.json.JSONObject
@@ -153,7 +153,7 @@ class HttpHeaders : Serializable {
                         val sysResCls = Class.forName("com.android.internal.R\$string")
                         val webUserAgentField = sysResCls.getDeclaredField("web_user_agent")
                         val resId = webUserAgentField.get(null) as Int
-                        webUserAgent = NetGo.instance.getContext().getString(resId)
+                        webUserAgent = RxNetGo.instance.getContext().getString(resId)
                     } catch (e: Exception) {
                     }
 

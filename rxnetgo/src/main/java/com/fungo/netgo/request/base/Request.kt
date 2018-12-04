@@ -1,7 +1,7 @@
 package com.fungo.netgo.request.base
 
 import android.text.TextUtils
-import com.fungo.netgo.NetGo
+import com.fungo.netgo.RxNetGo
 import com.fungo.netgo.cache.CacheMode
 import com.fungo.netgo.cache.rxCache
 import com.fungo.netgo.exception.ApiException
@@ -48,7 +48,7 @@ abstract class Request<T>(
 
 
     init {
-        val netGo = NetGo.instance
+        val netGo = RxNetGo.instance
 
         //默认添加 Accept-Language
         val acceptLanguage = HttpHeaders.acceptLanguage

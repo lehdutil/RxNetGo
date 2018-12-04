@@ -1,6 +1,6 @@
 package com.fungo.sample.data.api
 
-import com.fungo.netgo.NetGo
+import com.fungo.netgo.RxNetGo
 import com.fungo.netgo.cache.CacheMode
 import com.fungo.netgo.subscribe.JsonSubscriber
 import com.fungo.sample.data.bean.GankBean
@@ -13,12 +13,12 @@ object Api {
 
     private const val API_BASE_URL = "http://gank.io/api/"
 
-    fun getNetGo(): NetGo {
-        return NetGo.instance
+    fun getNetGo(): RxNetGo {
+        return RxNetGo.instance
     }
 
 
-    fun getApiService(): NetGo {
+    fun getApiService(): RxNetGo {
         return getNetGo().getRetrofitService(API_BASE_URL)
     }
 

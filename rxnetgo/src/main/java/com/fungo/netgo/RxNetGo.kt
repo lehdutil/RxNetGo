@@ -46,7 +46,7 @@ import java.util.logging.Level
  *
  *
  */
-class NetGo {
+class RxNetGo {
 
     private var mContext: Context? = null               // 全局上下文
     private var mClient: OkHttpClient? = null           // okhttp请求的客户端
@@ -68,18 +68,18 @@ class NetGo {
 
     companion object {
 
-        private val TAG = NetGo::class.java.simpleName
+        private val TAG = RxNetGo::class.java.simpleName
 
         const val DEFAULT_MILLISECONDS: Long = 10000      // 默认的超时时间,10秒
         const val CACHE_NEVER_EXPIRE: Long = -1           // 缓存永不过期
 
-        val instance: NetGo
+        val instance: RxNetGo
             get() = NetGoHolder.holder
     }
 
     @SuppressLint("StaticFieldLeak")
     private object NetGoHolder {
-        val holder = NetGo()
+        val holder = RxNetGo()
     }
 
 
@@ -133,7 +133,7 @@ class NetGo {
     /**
      * 必须在全局Application先调用，获取context上下文，否则缓存无法使用
      */
-    fun init(app: Application): NetGo {
+    fun init(app: Application): RxNetGo {
         mContext = app.applicationContext
         initNetGo()
         return this
@@ -143,7 +143,7 @@ class NetGo {
     /**
      * 是否开发模式
      */
-    fun debug(debug: Boolean): NetGo {
+    fun debug(debug: Boolean): RxNetGo {
         NetLogger.debug(TAG, debug)
         return this
     }
@@ -167,7 +167,7 @@ class NetGo {
      * 获取全局上下文
      */
     fun getContext(): Context {
-        HttpUtils.checkNotNull(mContext, "please call NetGo.getInstance().init() first in application!")
+        HttpUtils.checkNotNull(mContext, "please call RxNetGo.getInstance().init() first in application!")
         return mContext!!
     }
 
@@ -176,7 +176,7 @@ class NetGo {
      * 获取OkHttpClient
      */
     fun getOkHttpClient(): OkHttpClient {
-        HttpUtils.checkNotNull<Any>(mClient, "please call NetGo.getInstance().init() first in application!")
+        HttpUtils.checkNotNull<Any>(mClient, "please call RxNetGo.getInstance().init() first in application!")
         return mClient!!
     }
 
@@ -198,7 +198,7 @@ class NetGo {
     /**
      * 手动设置OkHttpClient
      */
-    fun setOkHttpClient(client: OkHttpClient): NetGo {
+    fun setOkHttpClient(client: OkHttpClient): RxNetGo {
         HttpUtils.checkNotNull<Any>(client, "client can not be null")
         this.mClient = client
         return this
@@ -209,7 +209,7 @@ class NetGo {
      * 根据url生成对应的Service,Service可能会有多个，所有这里用Map集合存起来，避免重复创建
      * 这里使用默认的[ApiService]，可以直接调用get和post请求网络
      */
-    fun getRetrofitService(baseUrl: String): NetGo {
+    fun getRetrofitService(baseUrl: String): RxNetGo {
         HttpUtils.checkNotNull<Any>(baseUrl, "url can not be null")
 
         if (mServiceMap[baseUrl] == null) {
@@ -236,13 +236,13 @@ class NetGo {
     private fun getRetrofit(baseUrl: String): Retrofit {
         HttpUtils.checkNotNull<Any>(baseUrl, "baseUrl can not be null")
 
-        if (mRetrofitMap[baseUrl] != null) {
-            return mRetrofitMap[baseUrl]!!
+        if (getRetrofits()[baseUrl] != null) {
+            return getRetrofits()[baseUrl]!!
         }
 
         val builder = Retrofit.Builder()
                 .baseUrl(baseUrl)
-                .client(mClient!!)
+                .client(getOkHttpClient())
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
 
@@ -254,7 +254,7 @@ class NetGo {
     /**
      * 超时重试次数
      */
-    fun setRetryCount(retryCount: Int): NetGo {
+    fun setRetryCount(retryCount: Int): RxNetGo {
         if (retryCount < 0) throw IllegalArgumentException("retryCount must > 0")
         mRetryCount = retryCount
         return this
@@ -270,7 +270,7 @@ class NetGo {
     /**
      * 全局的缓存模式
      */
-    fun setCacheMode(cacheMode: CacheMode): NetGo {
+    fun setCacheMode(cacheMode: CacheMode): RxNetGo {
         mCacheMode = cacheMode
         return this
     }
@@ -285,13 +285,13 @@ class NetGo {
     /**
      * 全局的缓存过期时间
      */
-    fun setCacheTime(cacheTime: Long): NetGo {
+    fun setCacheTime(cacheTime: Long): RxNetGo {
         if (cacheTime <= -1) mCacheTime = CACHE_NEVER_EXPIRE
         mCacheTime = cacheTime
         return this
     }
 
-    fun setCacheVersion(cacheVersion: Int): NetGo {
+    fun setCacheVersion(cacheVersion: Int): RxNetGo {
         this.mCacheVersion = cacheVersion
         return this
     }
@@ -307,7 +307,7 @@ class NetGo {
     /**
      * 添加全局公共请求参数
      */
-    fun addCommonParams(commonParams: HttpParams): NetGo {
+    fun addCommonParams(commonParams: HttpParams): RxNetGo {
         this.commonParams.put(commonParams)
         return this
     }
@@ -315,7 +315,7 @@ class NetGo {
     /**
      * 添加全局公共请求参数
      */
-    fun addCommonHeaders(commonHeaders: HttpHeaders): NetGo {
+    fun addCommonHeaders(commonHeaders: HttpHeaders): RxNetGo {
         this.commonHeaders.put(commonHeaders)
         return this
     }

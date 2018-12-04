@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.fungo.netgo.NetGo
+import com.fungo.netgo.RxNetGo
 import com.fungo.netgo.subscribe.JsonSubscriber
 import com.fungo.sample.data.api.Api
 import com.fungo.sample.data.bean.GankBean
@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        NetGo.instance.init(application)
+        RxNetGo.instance.init(application)
 
 
         initView()

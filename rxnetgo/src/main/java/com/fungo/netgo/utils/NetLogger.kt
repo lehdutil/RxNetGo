@@ -12,7 +12,7 @@ object NetLogger {
     var isDebug = true
         private set
 
-    private var tag = "NetGo"
+    private var tag = "RxNetGo"
 
     fun debug(isEnable: Boolean) {
         debug(tag, isEnable)
