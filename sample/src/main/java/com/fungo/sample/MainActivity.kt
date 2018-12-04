@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        NetGo.getInstance().init(application)
+        NetGo.instance.init(application)
 
 
         initView()
@@ -44,19 +44,19 @@ class MainActivity : AppCompatActivity() {
 
     private fun initData() {
 
-        Api.getGankData(object : JsonSubscriber<GankBean>() {
+//        Api.getGankData(object : JsonSubscriber<GankBean>() {
+//
+//            override fun onNext(data: GankBean) {
+//                if (swipeRefreshLayout.isRefreshing) {
+//                    swipeRefreshLayout.isRefreshing = false
+//                }
+//                mAdapter.setData(data.results)
+//            }
+//
+//        })
 
-            override fun onNext(data: GankBean) {
-                if (swipeRefreshLayout.isRefreshing) {
-                    swipeRefreshLayout.isRefreshing = false
-                }
-                mAdapter.setData(data.results)
-            }
 
-        })
-
-
-//        Api.getNetGo().loadCache<GankBean>("haha",GankBean::class.java, object : JsonSubscriber<GankBean>() {
+//        Api.getNetGo().loadCache("gank_data", object : JsonSubscriber<GankBean>() {
 //            override fun onNext(data: GankBean?) {
 //                mAdapter.setData(data!!.results)
 //            }

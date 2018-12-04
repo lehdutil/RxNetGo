@@ -110,16 +110,12 @@ object HttpsUtils {
         try {
             val keyManagers = prepareKeyManager(bksFile, password)
             val trustManagers = prepareTrustManager(*certificates)
-            val manager: X509TrustManager?
-            if (trustManager != null) {
-                //优先使用用户自定义的TrustManager
-                manager = trustManager
-            } else if (trustManagers != null) {
+            val manager = trustManager ?: if (trustManagers != null) {
                 //然后使用默认的TrustManager
-                manager = chooseTrustManager(trustManagers)
+                chooseTrustManager(trustManagers)
             } else {
                 //否则使用不安全的TrustManager
-                manager = UnSafeTrustManager
+                UnSafeTrustManager
             }
             // 创建TLS类型的SSLContext对象， that uses our TrustManager
             val sslContext = SSLContext.getInstance("TLS")

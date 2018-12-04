@@ -5,6 +5,7 @@ import com.fungo.netgo.exception.ApiException
 import com.fungo.netgo.subscribe.base.BaseSubscriber
 import okhttp3.ResponseBody
 import java.io.File
+import java.lang.reflect.Type
 
 /**
  * @author Pinger
@@ -15,15 +16,17 @@ import java.io.File
  */
 abstract class FileSubscriber : BaseSubscriber<File>() {
 
-    private val mConverter: FileConvert = FileConvert()
-
     override fun onComplete() {
     }
 
     override fun onError(exception: ApiException) {
     }
 
-    override fun convertResponse(response: ResponseBody?): File {
-        return mConverter.convertResponse(response)
+    final  override fun convertResponse(response: ResponseBody?): File {
+        return FileConvert().convertResponse(response)
+    }
+
+    final override fun getType(): Type {
+        return File::class.java
     }
 }

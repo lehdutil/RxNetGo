@@ -5,15 +5,27 @@ ext {
             minSdkVersion    : 16,
             targetSdkVersion : 28,
             versionCode      : 1000,
-            versionName      : "1.0.4",
+            versionName      : "1.0.5",
     ]
 
     dependencies = [
-            appcompat       : 'androidx.appcompat:appcompat:1.0.0',
-            material        : 'com.google.android.material:material:1.0.0-rc01',
-            cardview        : 'androidx.cardview:cardview:1.0.0',
-            recyclerview    : 'androidx.recyclerview:recyclerview:1.0.0',
-            constraintlayout: 'androidx.constraintlayout:constraintlayout:1.1.2',
-            kotlin          : 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.70',
+            appcompat          : 'androidx.appcompat:appcompat:1.0.0',
+            material           : 'com.google.android.material:material:1.0.0-rc01',
+            cardview           : 'androidx.cardview:cardview:1.0.0',
+            recyclerview       : 'androidx.recyclerview:recyclerview:1.0.0',
+            constraintlayout   : 'androidx.constraintlayout:constraintlayout:1.1.2',
+            kotlin             : 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.70',
+
+            rxjava2            : 'io.reactivex.rxjava2:rxjava:2.2.4',
+            rxandroid2         : 'io.reactivex.rxjava2:rxandroid:2.1.0',
+
+            retrofit2          : 'com.squareup.retrofit2:retrofit:2.5.0',
+            retrofit2_converter: 'com.squareup.retrofit2:converter-gson:2.4.0',
+            retrofit2_adapter  : 'com.squareup.retrofit2:adapter-rxjava2:2.2.0',
+
+            okhttp3            : 'com.squareup.okhttp3:okhttp:3.12.0',
+            gson               : 'com.google.code.gson:gson:2.8.5',
+
+            rxcache            : 'com.zchu:rxcache:2.3.3',
     ]
 }

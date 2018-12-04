@@ -6,6 +6,7 @@ import com.zchu.rxcache.data.CacheResult
 import com.zchu.rxcache.stategy.IFlowableStrategy
 import com.zchu.rxcache.stategy.IObservableStrategy
 import io.reactivex.*
+import java.lang.reflect.Type
 
 /**
  * @author Pinger
@@ -42,10 +43,15 @@ fun <T> Observable<T>.rxCache(rxCache: RxCache, key: String, strategy: IObservab
     return this.compose<CacheResult<T>>(rxCache.transformObservable(key, object : TypeToken<T>() {}.type, strategy))
 }
 
-fun <T> Flowable<T>.rxCache(key: String, strategy: IFlowableStrategy): Flowable<CacheResult<T>> {
-    return this.rxCache(RxCache.getDefault(), key, strategy)
+fun <T> Flowable<T>.rxCache(key: String, type: Type, strategy: IFlowableStrategy): Flowable<CacheResult<T>> {
+    return this.rxCache(RxCache.getDefault(), key, type, strategy)
 }
 
 fun <T> Flowable<T>.rxCache(rxCache: RxCache, key: String, strategy: IFlowableStrategy): Flowable<CacheResult<T>> {
-    return this.compose<CacheResult<T>>(rxCache.transformFlowable(key, object : TypeToken<T>() {}.type, strategy))
+    return this.rxCache(rxCache, key, object : TypeToken<T>() {}.type, strategy)
 }
+
+fun <T> Flowable<T>.rxCache(rxCache: RxCache, key: String, type: Type, strategy: IFlowableStrategy): Flowable<CacheResult<T>> {
+    return this.compose<CacheResult<T>>(rxCache.transformFlowable(key, type, strategy))
+}
+

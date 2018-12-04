@@ -5,6 +5,7 @@ import com.fungo.netgo.convert.BitmapConvert
 import com.fungo.netgo.exception.ApiException
 import com.fungo.netgo.subscribe.base.BaseSubscriber
 import okhttp3.ResponseBody
+import java.lang.reflect.Type
 
 /**
  * @author Pinger
@@ -14,8 +15,6 @@ import okhttp3.ResponseBody
  */
 abstract class BitmapSubscriber : BaseSubscriber<Bitmap?>() {
 
-    private val mConvert: BitmapConvert = BitmapConvert()
-
     override fun onComplete() {
     }
 
@@ -23,6 +22,10 @@ abstract class BitmapSubscriber : BaseSubscriber<Bitmap?>() {
     }
 
     override fun convertResponse(response: ResponseBody?): Bitmap? {
-        return mConvert.convertResponse(response)
+        return BitmapConvert().convertResponse(response)
+    }
+
+    override fun getType(): Type {
+        return Bitmap::class.java
     }
 }

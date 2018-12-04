@@ -5,17 +5,20 @@ import com.fungo.netgo.NetGo
 import com.fungo.netgo.cache.CacheMode
 import com.fungo.netgo.cache.rxCache
 import com.fungo.netgo.exception.ApiException
+import com.fungo.netgo.exception.NetErrorEngine
 import com.fungo.netgo.model.HttpHeaders
 import com.fungo.netgo.model.HttpParams
 import com.fungo.netgo.request.RequestType
 import com.fungo.netgo.subscribe.base.BaseSubscriber
 import com.fungo.netgo.subscribe.base.IConverter
 import com.fungo.netgo.utils.HttpUtils
-import com.fungo.netgo.utils.RxUtils
 import com.zchu.rxcache.data.CacheResult
 import com.zchu.rxcache.stategy.CacheStrategy
 import com.zchu.rxcache.stategy.IFlowableStrategy
 import io.reactivex.Flowable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.functions.Function
+import io.reactivex.schedulers.Schedulers
 import okhttp3.RequestBody
 
 /**
@@ -45,8 +48,7 @@ abstract class Request<T>(
 
 
     init {
-
-        val netGo = NetGo.getInstance()
+        val netGo = NetGo.instance
 
         //默认添加 Accept-Language
         val acceptLanguage = HttpHeaders.acceptLanguage
@@ -58,12 +60,14 @@ abstract class Request<T>(
         if (!TextUtils.isEmpty(userAgent)) headers(HttpHeaders.HEAD_KEY_USER_AGENT, userAgent)
 
         //添加公共请求参数
-        if (netGo.commonParams != null) params(netGo.commonParams)
-        if (netGo.commonHeaders != null) headers(netGo.commonHeaders)
+        if (netGo.getCommonParams().getUrlParams().isNotEmpty())
+            params(netGo.getCommonParams())
+        if (netGo.getCommonHeaders().getHeaderParams().isNotEmpty())
+            headers(netGo.getCommonHeaders())
 
         //添加缓存模式
-        mCacheMode = netGo.cacheMode
-        mCacheTime = netGo.cacheTime
+        mCacheMode = netGo.getCacheMode()
+        mCacheTime = netGo.getCacheTime()
     }
 
 
@@ -147,7 +151,7 @@ abstract class Request<T>(
                     }
                 } else {
                     mFlowable
-                            ?: Flowable.error<T>(ApiException("Rxnetgo async request engine not be null. Please retry!"))
+                            ?: Flowable.error<T>(ApiException(msg = "Rxnetgo async request engine not be null. Please retry!"))
                 }
             }
             RequestType.POST -> {
@@ -157,7 +161,7 @@ abstract class Request<T>(
                     }
                 } else {
                     mFlowable
-                            ?: Flowable.error<T>(ApiException("Rxnetgo async request engine not be null. Please retry!"))
+                            ?: Flowable.error<T>(ApiException(msg = "Rxnetgo async request engine not be null. Please retry!"))
                 }
             }
         }
@@ -177,7 +181,7 @@ abstract class Request<T>(
                     null
                 } else {
                     if (mFlowable != null) {
-                        throw ApiException("Rxnetgo sync request do not support external customization. ")
+                        throw ApiException(msg = "Rxnetgo sync request do not support external customization. ")
                     }
                     null
                 }
@@ -188,7 +192,7 @@ abstract class Request<T>(
                     converter.convertResponse(response?.body())
                 } else {
                     if (mFlowable != null) {
-                        throw ApiException("Rxnetgo sync request do not support external customization. ")
+                        throw ApiException(msg = "Rxnetgo sync request do not support external customization. ")
                     }
                     null
                 }
@@ -212,9 +216,10 @@ abstract class Request<T>(
     fun subscribe(subscriber: BaseSubscriber<T>) {
         this.mSubscriber = subscriber
         requestAsync(subscriber)
-                .compose(RxUtils.getScheduler())
-                .onErrorResumeNext(RxUtils.getErrorFunction())
-                .rxCache(getCacheKey(), getCacheStrategy())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .onErrorResumeNext(Function { Flowable.error(NetErrorEngine.handleException(it)) })
+                .rxCache(getCacheKey(), subscriber.getType(), getCacheStrategy())
                 .map(CacheResult.MapFunc<T>())
                 .subscribe(subscriber)
     }

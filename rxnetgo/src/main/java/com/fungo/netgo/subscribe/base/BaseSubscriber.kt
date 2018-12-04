@@ -1,7 +1,8 @@
 package com.fungo.netgo.subscribe.base
 
 import com.fungo.netgo.exception.ApiException
-import com.fungo.netgo.exception.NetError
+import com.fungo.netgo.exception.NetErrorEngine
+import java.lang.reflect.Type
 
 /**
  * @author Pinger
@@ -23,7 +24,13 @@ abstract class BaseSubscriber<T> : ResourceSubscriber<T>(), ISubscriber<T> {
         if (e is ApiException) {
             onError(e)
         } else {
-            onError(ApiException(e, NetError.UNKNOWN))
+            onError(ApiException(error = e, code = NetErrorEngine.UNKNOWN_CODE, msg = NetErrorEngine.UNKNOW_MSG))
         }
     }
+
+
+    /**
+     * 返回泛型类型
+     */
+    abstract fun getType(): Type
 }

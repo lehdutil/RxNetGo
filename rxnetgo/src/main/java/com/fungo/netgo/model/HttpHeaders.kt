@@ -1,5 +1,6 @@
 package com.fungo.netgo.model
 
+import android.annotation.SuppressLint
 import android.os.Build
 import android.text.TextUtils
 import com.fungo.netgo.NetGo
@@ -79,6 +80,7 @@ class HttpHeaders : Serializable {
         return "HttpHeaders{" + "headersMap=" + headersMap + '}'.toString()
     }
 
+    @SuppressLint("PrivateApi")
     companion object {
 
         private const val serialVersionUID = 8458647755751403873L
@@ -151,7 +153,7 @@ class HttpHeaders : Serializable {
                         val sysResCls = Class.forName("com.android.internal.R\$string")
                         val webUserAgentField = sysResCls.getDeclaredField("web_user_agent")
                         val resId = webUserAgentField.get(null) as Int
-                        webUserAgent = NetGo.getInstance().context.getString(resId)
+                        webUserAgent = NetGo.instance.getContext().getString(resId)
                     } catch (e: Exception) {
                     }
 

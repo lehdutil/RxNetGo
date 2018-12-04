@@ -38,7 +38,7 @@ class LogInterceptor(tag: String) : Interceptor {
      * 打印日志，如果是debug模式打印
      */
     private fun log(message: String) {
-        if (NetLogger.isDebug()) {
+        if (NetLogger.isDebug) {
             logger.log(colorLevel, message)
         }
     }
