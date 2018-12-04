@@ -29,7 +29,7 @@ object Api {
 
 
     fun getGankData(subscriber: JsonSubscriber<GankBean>) {
-//        getNetGo().get<GankBean>(getGankService().getGankData()).subscribe(subscriber)
+//        getNetGo()[getGankService().getGankData()].subscribe(subscriber)
         getApiService()
                 .get<GankBean>("data/Android/30/1")
                 .cacheKey("gank_data")
