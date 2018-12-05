@@ -1,7 +1,7 @@
 package com.fungo.netgo.convert
 
 import android.text.TextUtils
-import com.fungo.netgo.subscribe.base.IConverter
+import com.fungo.netgo.convert.base.IConverter
 import okhttp3.ResponseBody
 
 /**

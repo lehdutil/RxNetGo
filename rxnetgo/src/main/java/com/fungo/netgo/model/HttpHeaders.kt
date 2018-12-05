@@ -153,7 +153,7 @@ class HttpHeaders : Serializable {
                         val sysResCls = Class.forName("com.android.internal.R\$string")
                         val webUserAgentField = sysResCls.getDeclaredField("web_user_agent")
                         val resId = webUserAgentField.get(null) as Int
-                        webUserAgent = RxNetGo.instance.getContext().getString(resId)
+                        webUserAgent = RxNetGo.getInstance().getContext().getString(resId)
                     } catch (e: Exception) {
                     }
 

@@ -2,6 +2,7 @@ package com.fungo.netgo.subscribe.base
 
 import com.fungo.netgo.exception.ApiException
 import com.fungo.netgo.exception.NetErrorEngine
+import io.reactivex.subscribers.ResourceSubscriber
 import java.lang.reflect.Type
 
 /**
@@ -17,6 +18,21 @@ import java.lang.reflect.Type
 abstract class BaseSubscriber<T> : ResourceSubscriber<T>(), ISubscriber<T> {
 
 
+    override fun onStart() {
+        super.onStart()
+    }
+
+
+    override fun onError(exception: ApiException) {
+        this.dispose()
+    }
+
+
+    override fun onComplete() {
+        this.dispose()
+    }
+
+
     /**
      * 分发一下异常
      */
@@ -27,7 +43,6 @@ abstract class BaseSubscriber<T> : ResourceSubscriber<T>(), ISubscriber<T> {
             onError(ApiException(error = e, code = NetErrorEngine.UNKNOWN_CODE, msg = NetErrorEngine.UNKNOW_MSG))
         }
     }
-
 
     /**
      * 返回泛型类型

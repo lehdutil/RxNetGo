@@ -8,4 +8,9 @@ package com.fungo.netgo.subscribe
  * 当不需要关注请求结果时，使用本订阅者去处理请求过程中发生的异常。
  *
  */
-class DefalutSubscriber : StringSubscriber()
+class DefalutSubscriber : StringSubscriber() {
+
+    override fun onNext(t: String?) {
+
+    }
+}

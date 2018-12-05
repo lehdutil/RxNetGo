@@ -16,12 +16,6 @@ import java.lang.reflect.Type
  */
 abstract class FileSubscriber : BaseSubscriber<File>() {
 
-    override fun onComplete() {
-    }
-
-    override fun onError(exception: ApiException) {
-    }
-
     final  override fun convertResponse(response: ResponseBody?): File {
         return FileConvert().convertResponse(response)
     }

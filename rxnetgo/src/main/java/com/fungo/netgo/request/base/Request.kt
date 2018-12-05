@@ -4,19 +4,20 @@ import android.text.TextUtils
 import com.fungo.netgo.RxNetGo
 import com.fungo.netgo.cache.CacheMode
 import com.fungo.netgo.cache.rxCache
+import com.fungo.netgo.convert.base.IConverter
 import com.fungo.netgo.exception.ApiException
 import com.fungo.netgo.exception.NetErrorEngine
 import com.fungo.netgo.model.HttpHeaders
 import com.fungo.netgo.model.HttpParams
 import com.fungo.netgo.request.RequestType
 import com.fungo.netgo.subscribe.base.BaseSubscriber
-import com.fungo.netgo.subscribe.base.IConverter
 import com.fungo.netgo.utils.HttpUtils
 import com.zchu.rxcache.data.CacheResult
 import com.zchu.rxcache.stategy.CacheStrategy
 import com.zchu.rxcache.stategy.IFlowableStrategy
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Function
 import io.reactivex.schedulers.Schedulers
 import okhttp3.RequestBody
@@ -41,15 +42,14 @@ abstract class Request<T>(
 
     private var mSubscriber: BaseSubscriber<T>? = null
 
-    private var mCacheMode: CacheMode? = null
     private var mCacheKey: String? = null
+    private var mCacheMode: CacheMode? = null
     private var mCacheTime: Long = 0
     private var mConverter: IConverter<T>? = null
 
+    private val mRxNetGo = RxNetGo.getInstance()
 
     init {
-        val netGo = RxNetGo.instance
-
         //默认添加 Accept-Language
         val acceptLanguage = HttpHeaders.acceptLanguage
         if (!TextUtils.isEmpty(acceptLanguage))
@@ -60,14 +60,14 @@ abstract class Request<T>(
         if (!TextUtils.isEmpty(userAgent)) headers(HttpHeaders.HEAD_KEY_USER_AGENT, userAgent)
 
         //添加公共请求参数
-        if (netGo.getCommonParams().getUrlParams().isNotEmpty())
-            params(netGo.getCommonParams())
-        if (netGo.getCommonHeaders().getHeaderParams().isNotEmpty())
-            headers(netGo.getCommonHeaders())
+        if (mRxNetGo.getCommonParams().getUrlParams().isNotEmpty())
+            params(mRxNetGo.getCommonParams())
+        if (mRxNetGo.getCommonHeaders().getHeaderParams().isNotEmpty())
+            headers(mRxNetGo.getCommonHeaders())
 
         //添加缓存模式
-        mCacheMode = netGo.getCacheMode()
-        mCacheTime = netGo.getCacheTime()
+        mCacheMode = mRxNetGo.getCacheMode()
+        mCacheTime = mRxNetGo.getCacheTime()
     }
 
 
@@ -120,9 +120,9 @@ abstract class Request<T>(
 
 
     /**
-     * 缓存的key
+     * 请求唯一的key
      */
-    private fun getCacheKey(): String {
+    private fun getTag(): String {
         return if (TextUtils.isEmpty(mCacheKey)) {
             return HttpUtils.appendUrlParams(url, mParams.getUrlParams())
         } else mCacheKey!!
@@ -215,13 +215,26 @@ abstract class Request<T>(
      */
     fun subscribe(subscriber: BaseSubscriber<T>) {
         this.mSubscriber = subscriber
-        requestAsync(subscriber)
+        val disposable = requestAsync(subscriber)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(Schedulers.io())
                 .onErrorResumeNext(Function { Flowable.error(NetErrorEngine.handleException(it)) })
-                .rxCache(getCacheKey(), subscriber.getType(), getCacheStrategy())
+                .rxCache(getTag(), subscriber.getType(), getCacheStrategy())
                 .map(CacheResult.MapFunc<T>())
-                .subscribe(subscriber)
+                .subscribeWith(subscriber)
+
+        // 将请求添加到管理器中
+        mRxNetGo.addSubscription(disposable)
+    }
+
+
+    /**
+     * 订阅请求，返回[Disposable]对象，需要自己手动处理请求
+     */
+    fun subscribeWith(subscriber: BaseSubscriber<T>): Disposable {
+        subscribe(subscriber)
+        return subscriber
     }
 
     //---------------------------------------------------------------------

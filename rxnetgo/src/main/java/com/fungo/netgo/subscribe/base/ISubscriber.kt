@@ -1,5 +1,6 @@
 package com.fungo.netgo.subscribe.base
 
+import com.fungo.netgo.convert.base.IConverter
 import com.fungo.netgo.exception.ApiException
 
 /**

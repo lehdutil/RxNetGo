@@ -1,6 +1,6 @@
 package com.fungo.netgo.convert
 
-import com.fungo.netgo.subscribe.base.IConverter
+import com.fungo.netgo.convert.base.IConverter
 import okhttp3.ResponseBody
 import java.io.File
 

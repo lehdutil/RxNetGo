@@ -1,7 +1,6 @@
 package com.fungo.netgo.subscribe
 
 import com.fungo.netgo.convert.JsonConvert
-import com.fungo.netgo.exception.ApiException
 import com.fungo.netgo.subscribe.base.BaseSubscriber
 import okhttp3.ResponseBody
 import java.lang.reflect.ParameterizedType
@@ -28,19 +27,6 @@ abstract class JsonSubscriber<T> : BaseSubscriber<T> {
     constructor(clazz: Class<T>) {
         this.mClazz = clazz
     }
-
-
-    override fun onStart() {
-
-    }
-
-    override fun onError(exception: ApiException) {
-
-    }
-
-    override fun onComplete() {
-    }
-
 
     final override fun convertResponse(response: ResponseBody?): T {
         return JsonConvert<T>(getType()).convertResponse(response)

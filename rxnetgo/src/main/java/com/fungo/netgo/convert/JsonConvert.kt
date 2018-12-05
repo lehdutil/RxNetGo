@@ -1,6 +1,6 @@
 package com.fungo.netgo.convert
 
-import com.fungo.netgo.subscribe.base.IConverter
+import com.fungo.netgo.convert.base.IConverter
 import com.fungo.netgo.utils.JsonUtils
 import okhttp3.ResponseBody
 import org.json.JSONArray

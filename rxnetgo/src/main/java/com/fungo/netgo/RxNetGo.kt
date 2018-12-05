@@ -21,6 +21,8 @@ import com.zchu.rxcache.RxCache
 import com.zchu.rxcache.data.CacheResult
 import com.zchu.rxcache.diskconverter.GsonDiskConverter
 import io.reactivex.Flowable
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Function
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -42,8 +44,18 @@ import java.util.logging.Level
  *  ３．默认支持Https
  *  ４．Cookie默认长久保存在SP中
  *
+ * 发起网络请求：
+ * [get]
+ * [post]
+ *
+ * 手动缓存数据：
+ * [loadCache]
+ * [saveCache]
  *
  *
+ * 生命周期管理
+ * [cancelRequest]
+ * [cancelAllRequest]
  *
  */
 class RxNetGo {
@@ -65,6 +77,9 @@ class RxNetGo {
 
     private var mService: ApiService? = null
 
+    // 发起的请求使用集合存储，方便取消
+    private val mDisposables: CompositeDisposable = CompositeDisposable()
+
 
     companion object {
 
@@ -73,8 +88,7 @@ class RxNetGo {
         const val DEFAULT_MILLISECONDS: Long = 10000      // 默认的超时时间,10秒
         const val CACHE_NEVER_EXPIRE: Long = -1           // 缓存永不过期
 
-        val instance: RxNetGo
-            get() = NetGoHolder.holder
+        fun getInstance(): RxNetGo = NetGoHolder.holder
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -386,4 +400,30 @@ class RxNetGo {
         RxCache.getDefault().save(key, data).subscribe()
     }
 
+
+    //=======================LifeCycle API=======================
+    //=======================LifeCycle API=======================
+    //=======================LifeCycle API=======================
+    /**
+     * 添加一个请求
+     */
+    fun addSubscription(disposable: Disposable) {
+        mDisposables.add(disposable)
+    }
+
+
+    /**
+     * 取消指定请求
+     */
+    fun dispose(disposable: Disposable) {
+        mDisposables.delete(disposable)
+    }
+
+
+    /**
+     * 取消所有的请求
+     */
+    fun dispose() {
+        mDisposables.clear()
+    }
 }

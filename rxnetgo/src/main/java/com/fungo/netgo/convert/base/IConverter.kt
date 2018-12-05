@@ -1,4 +1,4 @@
-package com.fungo.netgo.subscribe.base
+package com.fungo.netgo.convert.base
 
 import okhttp3.ResponseBody
 

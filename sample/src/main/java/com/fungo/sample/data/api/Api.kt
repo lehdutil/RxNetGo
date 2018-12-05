@@ -14,7 +14,7 @@ object Api {
     private const val API_BASE_URL = "http://gank.io/api/"
 
     fun getNetGo(): RxNetGo {
-        return RxNetGo.instance
+        return RxNetGo.getInstance()
     }
 
 
@@ -33,7 +33,18 @@ object Api {
         getApiService()
                 .get<GankBean>("data/Android/30/1")
                 .cacheKey("gank_data")
-                .cacheMode(CacheMode.FIRST_CACHE_THEN_REQUEST)
+                .cacheMode(CacheMode.ONLY_REQUEST)
+                .subscribe(subscriber)
+
+    }
+
+
+    fun test(key:String,subscriber: JsonSubscriber<GankBean>) {
+//        getNetGo()[getGankService().getGankData()].subscribe(subscriber)
+        getApiService()
+                .get<GankBean>("data/Android/30/1")
+                .cacheKey(key)
+                .cacheMode(CacheMode.ONLY_REQUEST)
                 .subscribe(subscriber)
 
     }
