@@ -14,7 +14,10 @@ interface IConverter<T> {
 
     /**
      * 将服务器返回的Response，抓换成想要的数据实体
+     * 解析回来的数据有可能会是空的，因为如果类型没匹配上，或者发生了被捕获的异常
+     *
+     * 如果返回的T是null的话，则会作为异常返回
      */
     @Throws(Exception::class)
-    fun convertResponse(response: ResponseBody?): T
+    fun convertResponse(response: ResponseBody?): T?
 }

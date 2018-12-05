@@ -3,7 +3,12 @@ package com.fungo.netgo.cache
 /**
  * @author Pinger
  * @since 18-10-17 上午11:32
- * 网络的缓存模式
+ *
+ * 网络请求的缓存模式
+ *
+ * 缓存使用的是第三方框架RxCache，地址[https://github.com/z-chu/RxCache]
+ * 这里暂时只提供四种常见的缓存策略，更多的策略请查看[com.zchu.rxcache.stategy.CacheStrategy]
+ *
  */
 enum class CacheMode {
 
@@ -26,6 +31,13 @@ enum class CacheMode {
     /**
      * 正常请求网络数据，并且进行缓存。如果网络请求失败，则使用缓存，缓存不存在就error。
      */
-    FIRST_REQUEST_THEN_CACHE
+    FIRST_REQUEST_THEN_CACHE,
+
+
+    /**
+     * TODO
+     * 先读取缓存，然后请求网络覆盖缓存
+     */
+    FIRST_CACHE_AND_REQUEST
 
 }

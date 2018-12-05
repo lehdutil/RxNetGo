@@ -15,7 +15,7 @@ import java.lang.reflect.Type
 abstract class StringSubscriber : BaseSubscriber<String>() {
 
     @Throws(Exception::class)
-    final override fun convertResponse(response: ResponseBody?): String {
+    final override fun convertResponse(response: ResponseBody?): String? {
         return StringConvert().convertResponse(response)
     }
 

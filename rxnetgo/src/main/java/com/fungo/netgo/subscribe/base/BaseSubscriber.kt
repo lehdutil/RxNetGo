@@ -17,17 +17,29 @@ import java.lang.reflect.Type
  */
 abstract class BaseSubscriber<T> : ResourceSubscriber<T>(), ISubscriber<T> {
 
-
+    /**
+     * 请求开始
+     */
     override fun onStart() {
         super.onStart()
     }
 
+    /**
+     * 请求成功
+     */
+    abstract override fun onNext(data: T)
 
+    /**
+     * 请求发生异常
+     */
     override fun onError(exception: ApiException) {
         this.dispose()
     }
 
 
+    /**
+     * 请求完成
+     */
     override fun onComplete() {
         this.dispose()
     }

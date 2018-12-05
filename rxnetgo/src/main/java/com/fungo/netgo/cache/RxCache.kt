@@ -11,8 +11,11 @@ import java.lang.reflect.Type
 /**
  * @author Pinger
  * @since 18-12-3 上午11:40
+ *
+ * RxCache的Kotlin调用，这里不需要内联处理
+ * 使用到的Type最好由外部传入，不要使用使用TypeToken
+ *
  */
-
 
 fun <T> RxCache.load(key: String): Observable<CacheResult<T>> {
     return load<T>(key, object : TypeToken<T>() {}.type)

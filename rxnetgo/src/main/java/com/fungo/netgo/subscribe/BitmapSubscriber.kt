@@ -1,6 +1,7 @@
 package com.fungo.netgo.subscribe
 
 import android.graphics.Bitmap
+import android.widget.ImageView
 import com.fungo.netgo.convert.BitmapConvert
 import com.fungo.netgo.subscribe.base.BaseSubscriber
 import okhttp3.ResponseBody
@@ -12,10 +13,14 @@ import java.lang.reflect.Type
  *
  * 图片订阅者，生成bitmap对象
  */
-abstract class BitmapSubscriber : BaseSubscriber<Bitmap?>() {
+abstract class BitmapSubscriber(
+        val maxWidth: Int = 0,
+        val maxHeight: Int = 0,
+        private val decodeConfig: Bitmap.Config = Bitmap.Config.ARGB_8888,
+        private val scaleType: ImageView.ScaleType = ImageView.ScaleType.CENTER_INSIDE) : BaseSubscriber<Bitmap>() {
 
     override fun convertResponse(response: ResponseBody?): Bitmap? {
-        return BitmapConvert().convertResponse(response)
+        return BitmapConvert(maxWidth, maxHeight, decodeConfig, scaleType).convertResponse(response)
     }
 
     override fun getType(): Type {

@@ -36,7 +36,7 @@ import java.util.logging.Level
  * @author Pinger
  * @since 18-08-16 上午10:52
  *
- * 网络类库封装：RxJava2 + Retrofit2封装
+ * 网络类库封装：RxJava2 + Retrofit2封装，支持多种不同的baseurl,支持缓存，支持生命周期管理
  *
  * 网络默认配置：
  *  １．各类超时时间统一默认：10秒
@@ -45,17 +45,16 @@ import java.util.logging.Level
  *  ４．Cookie默认长久保存在SP中
  *
  * 发起网络请求：
- * [get]
- * [post]
+ * [get] get请求
+ * [post] post请求
  *
  * 手动缓存数据：
- * [loadCache]
- * [saveCache]
- *
+ * [loadCache] 读取缓存
+ * [saveCache] 保存缓存
  *
  * 生命周期管理
- * [cancelRequest]
- * [cancelAllRequest]
+ * [addSubscription]添加请求订阅
+ * [dispose] 取消请求订阅
  *
  */
 class RxNetGo {
@@ -145,7 +144,7 @@ class RxNetGo {
 
 
     /**
-     * 必须在全局Application先调用，获取context上下文，否则缓存无法使用
+     * 必须在全局Application先调用，获取context上下文
      */
     fun init(app: Application): RxNetGo {
         mContext = app.applicationContext
@@ -195,7 +194,7 @@ class RxNetGo {
     }
 
     /**
-     * 获取Retrofit的集合
+     * 获取已经生成的Retrofit的集合
      */
     fun getRetrofits(): Map<String, Retrofit> {
         return mRetrofitMap
@@ -349,7 +348,7 @@ class RxNetGo {
      * get请求,传入的可以是全路径url，也可以是其中的path
      * 当传入全路径url时会使用整个url访问
      */
-    operator fun <T> get(url: String): GetRequest<T> {
+    fun <T> get(url: String): GetRequest<T> {
         return GetRequest(url, mService, null)
     }
 
@@ -357,7 +356,7 @@ class RxNetGo {
     /**
      * get请求，由外部传入Retrofit组织好的Flowable进来
      */
-    operator fun <T> get(flowable: Flowable<T>): GetRequest<T> {
+    fun <T> get(flowable: Flowable<T>): GetRequest<T> {
         return GetRequest("", mService, flowable)
     }
 

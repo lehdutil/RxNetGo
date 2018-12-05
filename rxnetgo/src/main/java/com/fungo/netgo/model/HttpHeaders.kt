@@ -16,7 +16,6 @@ import java.util.*
  * @author Pinger
  * @since 18-10-17 上午10:25
  *
- *
  * 请求头,配置请求的请求头
  */
 class HttpHeaders : Serializable {
@@ -27,7 +26,6 @@ class HttpHeaders : Serializable {
      * 获取请求头参数集合
      */
     fun getHeaderParams(): Map<String, Any> = headersMap
-
 
     constructor() {
         clear()

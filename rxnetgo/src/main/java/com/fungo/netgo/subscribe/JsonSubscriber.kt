@@ -28,12 +28,11 @@ abstract class JsonSubscriber<T> : BaseSubscriber<T> {
         this.mClazz = clazz
     }
 
-    final override fun convertResponse(response: ResponseBody?): T {
+    override fun convertResponse(response: ResponseBody?): T? {
         return JsonConvert<T>(getType()).convertResponse(response)
     }
 
-
-    final override fun getType(): Type {
+    override fun getType(): Type {
         return if (mType == null) {
             if (mClazz == null) {
                 val genType = javaClass.genericSuperclass

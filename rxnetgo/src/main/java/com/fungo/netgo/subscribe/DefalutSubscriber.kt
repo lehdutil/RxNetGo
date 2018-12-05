@@ -10,7 +10,9 @@ package com.fungo.netgo.subscribe
  */
 class DefalutSubscriber : StringSubscriber() {
 
-    override fun onNext(t: String?) {
+    override fun onNext(data: String) {
 
     }
+
+
 }

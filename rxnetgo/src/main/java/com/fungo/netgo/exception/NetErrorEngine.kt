@@ -66,6 +66,9 @@ object NetErrorEngine {
         } else if (e is ConnectException) {
             // 网络错误
             ApiException(e, NETWORD_ERROR_CODE, NETWORD_ERROR_MSG)
+        } else if (e is ApiException) {
+            // 如果是自己就直接返回
+            return e
         } else {
             // 未知错误
             ApiException(e, UNKNOWN_CODE, UNKNOW_MSG)
