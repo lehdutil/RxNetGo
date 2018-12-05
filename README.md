@@ -1,4 +1,6 @@
 # RxJava2 + Retrofit2网络框架
+[![](https://jitpack.io/v/PingerOne/RxNetGo.svg)](https://jitpack.io/#PingerOne/RxNetGo)
+
 支持常用的GET和POST请求，支持同步和异步，使用简单方便快捷。
 
 提供默认的Service，可以快速构建请求，支持手动构建Service，支持多个BaseUrl。
