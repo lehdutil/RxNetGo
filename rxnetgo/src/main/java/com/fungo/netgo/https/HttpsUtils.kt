@@ -11,14 +11,9 @@ import java.security.cert.X509Certificate
 import javax.net.ssl.*
 
 /**
- *
- *
  * 配置OkHttp的Https证书 [https://github.com/square/okhttp/wiki/HTTPS]
  *
- *
  * 使用方法：
- *
- *
  * 方法一：信任所有证书,不安全有风险
  * HttpsUtils.SSLParams sslParams1 = HttpsUtils.getSslSocketFactory();
  *

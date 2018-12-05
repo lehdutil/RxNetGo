@@ -27,15 +27,12 @@ abstract class BaseSubscriber<T> : ResourceSubscriber<T>(), ISubscriber<T> {
     /**
      * 请求成功
      */
-    abstract override fun onNext(data: T)
+    abstract override fun onSuccess(data: T)
 
     /**
-     * 请求发生异常
+     * 请求异常
      */
-    override fun onError(exception: ApiException) {
-        this.dispose()
-    }
-
+    override fun onError(exception: ApiException) {}
 
     /**
      * 请求完成
@@ -44,20 +41,28 @@ abstract class BaseSubscriber<T> : ResourceSubscriber<T>(), ISubscriber<T> {
         this.dispose()
     }
 
+    /**
+     * 返回泛型类型
+     */
+    abstract fun getType(): Type
 
     /**
-     * 分发一下异常
+     * 转发请求成功结果
+     */
+    final override fun onNext(data: T) {
+        this.dispose()
+        onSuccess(data)
+    }
+
+    /**
+     * 转发请求失败发生的异常
      */
     final override fun onError(e: Throwable) {
+        this.dispose()
         if (e is ApiException) {
             onError(e)
         } else {
             onError(ApiException(error = e, code = NetErrorEngine.UNKNOWN_CODE, msg = NetErrorEngine.UNKNOW_MSG))
         }
     }
-
-    /**
-     * 返回泛型类型
-     */
-    abstract fun getType(): Type
 }

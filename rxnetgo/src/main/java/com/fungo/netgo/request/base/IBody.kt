@@ -11,7 +11,6 @@ import java.io.File
  * @author Pinger
  * @since 18-10-23 下午6:37
  *
- *
  * 请求体的相关行为定义，给实现类实现
  */
 interface IBody<R> {

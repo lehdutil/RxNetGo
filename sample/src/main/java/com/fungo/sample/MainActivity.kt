@@ -66,14 +66,13 @@ class MainActivity : AppCompatActivity() {
 
 
         Api.getNovelDetailData(object : NovelSubscriber<NovelDetailBean>() {
-            override fun onNext(data: NovelDetailBean) {
+            override fun onSuccess(data: NovelDetailBean) {
                 if (swipeRefreshLayout.isRefreshing) {
                     swipeRefreshLayout.isRefreshing = false
                 }
                 mAdapter.setData(data.bookList)
 
                 println("---------> onNext ")
-
             }
 
             override fun onError(exception: ApiException) {

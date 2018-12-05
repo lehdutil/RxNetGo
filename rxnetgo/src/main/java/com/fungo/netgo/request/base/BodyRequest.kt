@@ -14,7 +14,6 @@ import java.io.File
  * @author Pinger
  * @since 18-10-23 下午3:16
  *
- *
  * 封装有请求体的请求，一般为post
  */
 abstract class BodyRequest<T>(url: String, service: ApiService?, flowable: Flowable<T>?) : Request<T>(url, service, flowable), IBody<Request<T>> {

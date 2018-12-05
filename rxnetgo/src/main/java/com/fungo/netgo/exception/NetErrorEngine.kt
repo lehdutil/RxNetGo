@@ -12,8 +12,7 @@ import java.text.ParseException
  * @author Pinger
  * @since 18-08-25 下午18:43
  *
- *
- * 封装请求错误的提示信息和错误码
+ * 封装请求错误的提示信息和错误码，统一各种异常，将结果封装成[ApiException]，然后在onError方法中返回
  */
 object NetErrorEngine {
 

@@ -20,19 +20,19 @@ import okhttp3.RequestBody
  * @author Pinger
  * @since 18-10-23 上午11:03
  *
- * 请求基类，封装请求，包括配置请求参数，请求头，缓存，和订阅请求等等。
+ * 请求基类，封装请求，包括配置请求参数，请求头，缓存，和订阅请求等等
  *
- * 数据转换使用Converter的方式，如果是异步请求，回调继承[BaseSubscriber]实现converter方法即可。
+ * 数据转换使用Converter的方式，如果是异步请求，回调继承[BaseSubscriber]实现converter方法即可
  * 如果没有回调，则需要使用[Request.converter]方法，传入转换器
  *
  */
 abstract class Request<T>(
         // 请求的path或者全路径
-        private val url: String,
+        val url: String,
         // retrofit的service，用户自定义service时为null
-        private val apiService: ApiService?,
+        val apiService: ApiService?,
         // service中定义的观察者，如果使用默认的service则为null
-        private val mFlowable: Flowable<T>?) {
+        val flowable: Flowable<T>?) {
 
     // 请求参数
     private val mParams = HttpParams()
@@ -77,27 +77,18 @@ abstract class Request<T>(
     /**
      * 子类提供请求方式，调用[RxNetGo.get]或者[RxNetGo.post]
      */
-    protected abstract fun getMethod(): RequestType
+    abstract fun getMethod(): RequestType
 
     /**
      * 根据不同的请求方式和参数，生成不同的RequestBody
      * 如果发起的请求中要自定义请求体，可以继承[BodyRequest]实现
      */
-    protected abstract fun generateRequestBody(): RequestBody?
-
-
-    /**
-     * 获取请求路径URL，可以是path，也可以全路径
-     */
-    protected fun getUrl(): String {
-        return url
-    }
-
+    abstract fun generateRequestBody(): RequestBody?
 
     /**
      * 获取请求参数对象
      */
-    protected fun getParams(): HttpParams {
+    fun getParams(): HttpParams {
         return mParams
     }
 
@@ -107,7 +98,7 @@ abstract class Request<T>(
      * 获取的请求头包括了公共请求头
      * 添加公共请求头请使用[RxNetGo.addCommonHeaders]
      */
-    protected fun getHeaders(): HttpHeaders {
+    fun getHeaders(): HttpHeaders {
         return mHeaders
     }
 
@@ -115,7 +106,7 @@ abstract class Request<T>(
      * 缓存使用的是[com.zchu.rxcache.RxCache]，地址[https://github.com/z-chu/RxCache]
      * 暂时提供四种缓存策略[CacheMode]
      */
-    private fun getCacheStrategy(): IFlowableStrategy {
+    fun getCacheStrategy(): IFlowableStrategy {
         return when (mCacheMode) {
             CacheMode.FIRST_CACHE_THEN_REQUEST -> CacheStrategy.firstCache()
             CacheMode.FIRST_REQUEST_THEN_CACHE -> CacheStrategy.firstRemote()
@@ -128,7 +119,7 @@ abstract class Request<T>(
     /**
      * 请求唯一的key
      */
-    private fun getCacheKey(): String {
+    fun getCacheKey(): String {
         return if (TextUtils.isEmpty(mCacheKey)) {
             return HttpUtils.appendUrlParams(url, mParams.getUrlParams())
         } else mCacheKey!!
@@ -140,13 +131,20 @@ abstract class Request<T>(
      * 异步请求可以通过[BaseSubscriber.convertResponse]方法解析数据
      * 同步请求一定要调用[converter]传入解析器，否则解析不了数据
      */
-    private fun getConverter(): IConverter<T> {
-        // converter 优先级高于 callback
+    fun getConverter(): IConverter<T> {
+        // converter 优先级高于 subscriber
         if (mConverter == null) mConverter = mSubscriber
         HttpUtils.checkNotNull(mConverter, "converter == null, do you forget to call Request#converter(Converter<T>) ?")
         return mConverter!!
     }
 
+    /**
+     * 请求订阅者，只有异步请求才有
+     */
+    fun getSubscriber(): BaseSubscriber<T> {
+        HttpUtils.checkNotNull(mSubscriber, "converter == null, do you forget to call Request#converter(Converter<T>) ?")
+        return mSubscriber!!
+    }
 
     //---------------------------------------------------------------------
     //------------------------ 订阅请求的API --------------------------------
@@ -160,14 +158,7 @@ abstract class Request<T>(
      */
     @Throws(Exception::class)
     fun subscribe(): T? {
-        return when (getMethod()) {
-            RequestType.GET -> RxNetHelper.getSync(apiService, mFlowable, url,
-                    mParams.getUrlParams(), mHeaders.getHeaderParams(), getConverter())
-
-            RequestType.POST -> RxNetHelper.postSync(apiService, mFlowable, url,
-                    mParams.getUrlParams(), mHeaders.getHeaderParams(),
-                    generateRequestBody(), getConverter())
-        }
+        return RxNetHelper.rxSync(this)
     }
 
     /**
@@ -180,23 +171,10 @@ abstract class Request<T>(
      */
     fun subscribe(subscriber: BaseSubscriber<T>) {
         this.mSubscriber = subscriber
-
-        val flowable = when (getMethod()) {
-            RequestType.GET -> RxNetHelper.getAsync(apiService, mFlowable, url,
-                    mParams.getUrlParams(), mHeaders.getHeaderParams(), subscriber)
-
-            RequestType.POST ->
-                RxNetHelper.postAsync(apiService, mFlowable, url,
-                        mParams.getUrlParams(), mHeaders.getHeaderParams(),
-                        generateRequestBody(), subscriber)
-        }
-
-        val disposable = flowable.subscribeWith(subscriber)
-
+        val disposable = RxNetHelper.rxAysnc(this).subscribeWith(subscriber)
         // 将请求添加到管理器中
         mRxNetGo.addSubscription(disposable)
     }
-
 
     /**
      * 订阅异步请求，返回[Disposable]对象，需要自己手动处理请求生命周期
@@ -206,15 +184,7 @@ abstract class Request<T>(
      */
     fun subscribeWith(subscriber: BaseSubscriber<T>): Disposable {
         this.mSubscriber = subscriber
-        return when (getMethod()) {
-            RequestType.GET -> RxNetHelper.getAsync(apiService, mFlowable, url,
-                    mParams.getUrlParams(), mHeaders.getHeaderParams(), subscriber)
-
-            RequestType.POST ->
-                RxNetHelper.postAsync(apiService, mFlowable, url,
-                        mParams.getUrlParams(), mHeaders.getHeaderParams(),
-                        generateRequestBody(), subscriber)
-        }.subscribeWith(subscriber)
+        return RxNetHelper.rxAysnc(this).subscribeWith(subscriber)
     }
 
     //---------------------------------------------------------------------

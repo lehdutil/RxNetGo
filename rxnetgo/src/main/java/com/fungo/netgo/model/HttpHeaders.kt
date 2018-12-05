@@ -16,7 +16,7 @@ import java.util.*
  * @author Pinger
  * @since 18-10-17 上午10:25
  *
- * 请求头,配置请求的请求头
+ * 请求头对象，配置请求的请求头
  */
 class HttpHeaders : Serializable {
 

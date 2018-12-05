@@ -1,49 +1,73 @@
 package com.fungo.netgo.utils
 
 import com.fungo.netgo.cache.rxCache
-import com.fungo.netgo.convert.base.IConverter
 import com.fungo.netgo.exception.ApiException
 import com.fungo.netgo.exception.NetErrorEngine
-import com.fungo.netgo.request.base.ApiService
+import com.fungo.netgo.request.RequestType
+import com.fungo.netgo.request.base.Request
 import com.fungo.netgo.subscribe.base.BaseSubscriber
+import com.fungo.netgo.utils.RxNetHelper.cache
+import com.fungo.netgo.utils.RxNetHelper.error
+import com.fungo.netgo.utils.RxNetHelper.scheduler
 import com.zchu.rxcache.data.CacheResult
 import com.zchu.rxcache.stategy.IFlowableStrategy
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.Function
 import io.reactivex.schedulers.Schedulers
-import okhttp3.RequestBody
 
 /**
  * @author Pinger
  * @since 18-12-5 下午4:39
  *
- * 网络请求工具类
+ * 网络请求工具类，提供请求相关的Rx操作
+ * 线程切换：[scheduler]
+ * 异常处理：[error]
+ * 缓存：[cache]
  */
 object RxNetHelper {
+
+    /**
+     * 异步请求
+     */
+    fun <T> rxAysnc(request: Request<T>): Flowable<T> {
+        return when (request.getMethod()) {
+            RequestType.GET -> getAsync(request)
+            RequestType.POST -> postAsync(request)
+        }
+    }
+
+    /**
+     * 同步请求
+     */
+    @Throws(Exception::class)
+    fun <T> rxSync(request: Request<T>): T? {
+        return when (request.getMethod()) {
+            RequestType.GET -> getSync(request)
+            RequestType.POST -> postSync(request)
+        }
+    }
 
 
     /**
      * Rx异步的Get请求
      */
-    fun <T> getAsync(apiService: ApiService?,
-                     flowable: Flowable<T>?,
-                     url: String,
-                     params: Map<String, Any>,
-                     headers: Map<String, Any>,
-                     converter: IConverter<T>): Flowable<T> {
+    fun <T> getAsync(request: Request<T>): Flowable<T> {
+        return if (request.apiService != null) {
+            request.apiService
+                    .getAsync(request.url, request.getHeaders().getHeaderParams(), request.getParams().getUrlParams())
+                    .compose()
+                    .flatMap { response ->
+                        val data = request.getConverter().convertResponse(response.body())
+                        if (data != null) {
+                            Flowable.just(data)
+                        } else {
+                            error("Rxnetgo converter data is null!")
+                        }
+                    }.cache(request.getCacheKey(), request.getSubscriber(), request.getCacheStrategy())
 
-        return if (apiService != null) {
-            apiService.getAsync(url, headers, params).compose().flatMap { response ->
-                val data = converter.convertResponse(response.body())
-                if (data != null) {
-                    Flowable.just(data)
-                } else {
-                    error("Rxnetgo converter data is null!")
-                }
-            }
         } else {
-            flowable ?: error("Rxnetgo async request engine not be null. Please retry!")
+            request.flowable ?: error("Rxnetgo async request engine not be null. Please retry!")
         }
     }
 
@@ -51,49 +75,39 @@ object RxNetHelper {
     /**
      * Rx异步的Post请求
      */
-    fun <T> postAsync(apiService: ApiService?,
-                      flowable: Flowable<T>?,
-                      url: String,
-                      params: Map<String, Any>,
-                      headers: Map<String, Any>,
-                      requestBody: RequestBody?,
-                      converter: IConverter<T>): Flowable<T> {
-        return if (apiService != null) {
-            apiService
-                    .postAsync(url, headers, params, requestBody)
+    fun <T> postAsync(request: Request<T>): Flowable<T> {
+        return if (request.apiService != null) {
+            request.apiService
+                    .postAsync(request.url, request.getHeaders().getHeaderParams(), request.getParams().getUrlParams(), request.generateRequestBody())
                     .compose()
                     .flatMap { response ->
-                        val data = converter.convertResponse(response.body())
+                        val data = request.getConverter().convertResponse(response.body())
                         if (data != null) {
                             Flowable.just(data)
                         } else {
                             error("Rxnetgo converter data is null!")
                         }
-                    }
+                    }.cache(request.getCacheKey(), request.getSubscriber(), request.getCacheStrategy())
         } else {
-            flowable ?: error("Rxnetgo async request engine not be null. Please retry!")
+            request.flowable ?: error("Rxnetgo async request engine not be null. Please retry!")
         }
     }
 
 
     /**
      * get同步请求，不需要使用Rx
+     * TODO 同步请求的缓存手动处理
      */
     @Throws(Exception::class)
-    fun <T> getSync(apiService: ApiService?,
-                    flowable: Flowable<T>?,
-                    url: String,
-                    params: Map<String, Any>,
-                    headers: Map<String, Any>,
-                    converter: IConverter<T>): T? {
-        return if (apiService != null) {
-            val response = apiService
-                    .getSync(url, headers, params)
+    fun <T> getSync(request: Request<T>): T? {
+        return if (request.apiService != null) {
+            val response = request.apiService
+                    .getSync(request.url, request.getHeaders().getHeaderParams(), request.getParams().getUrlParams())
                     .execute()
                     .body()
-            converter.convertResponse(response?.body())
+            request.getConverter().convertResponse(response?.body())
         } else {
-            if (flowable != null) {
+            if (request.flowable != null) {
                 throw ApiException(msg = "Rxnetgo sync request do not support external customization. ")
             }
             null
@@ -105,21 +119,15 @@ object RxNetHelper {
      * post同步请求，不需要使用Rx
      */
     @Throws(Exception::class)
-    fun <T> postSync(apiService: ApiService?,
-                     flowable: Flowable<T>?,
-                     url: String,
-                     params: Map<String, Any>,
-                     headers: Map<String, Any>,
-                     requestBody: RequestBody?,
-                     converter: IConverter<T>): T? {
-        return if (apiService != null) {
-            val response = apiService
-                    .postSync(url, headers, params, requestBody)
+    fun <T> postSync(request: Request<T>): T? {
+        return if (request.apiService != null) {
+            val response = request.apiService
+                    .postSync(request.url, request.getHeaders().getHeaderParams(), request.getParams().getUrlParams(), request.generateRequestBody())
                     .execute()
                     .body()
-            converter.convertResponse(response?.body())
+            request.getConverter().convertResponse(response?.body())
         } else {
-            if (flowable != null) {
+            if (request.flowable != null) {
                 throw ApiException(msg = "Rxnetgo sync request do not support external customization. ")
             }
             null
@@ -128,10 +136,10 @@ object RxNetHelper {
 
 
     /**
-     * 生成组合线程切换，异常处理，缓存的Flowable
+     * 生成组合线程切换，异常处理的Flowable
      */
     private fun <T> Flowable<T>.compose(): Flowable<T> {
-        return scheduler().error().cache()
+        return scheduler().error()
     }
 
 

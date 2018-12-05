@@ -14,8 +14,8 @@ import java.lang.reflect.Type
  * 图片订阅者，生成bitmap对象
  */
 abstract class BitmapSubscriber(
-        val maxWidth: Int = 0,
-        val maxHeight: Int = 0,
+        val maxWidth: Int = 1000,
+        val maxHeight: Int = 1000,
         private val decodeConfig: Bitmap.Config = Bitmap.Config.ARGB_8888,
         private val scaleType: ImageView.ScaleType = ImageView.ScaleType.CENTER_INSIDE) : BaseSubscriber<Bitmap>() {
 

@@ -9,7 +9,7 @@ import io.reactivex.Flowable
  * @author Pinger
  * @since 18-10-23 下午3:16
  *
- * 构造Post请求，请求体封装请查看父类[com.fungo.netgo.request.base.BodyRequest]
+ * 构造Post请求，请求体封装请查看父类[BodyRequest]
  */
 class PostRequest<T>(url: String, service: ApiService?, flowable: Flowable<T>?) : BodyRequest<T>(url, service, flowable) {
 

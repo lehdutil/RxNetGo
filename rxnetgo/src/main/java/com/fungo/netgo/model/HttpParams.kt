@@ -10,7 +10,6 @@ import java.util.*
  * @author Pinger
  * @since 18-10-17 上午10:24
  *
- *
  * 请求参数，用于包装发起请求携带的参数
  */
 class HttpParams {

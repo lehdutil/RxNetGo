@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 
 android {
@@ -25,13 +24,13 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+    implementation project(':rxnetgo')
+
     implementation rootProject.ext.dependencies.appcompat
     implementation rootProject.ext.dependencies.material
     implementation rootProject.ext.dependencies.recyclerview
     implementation rootProject.ext.dependencies.constraintlayout
     implementation rootProject.ext.dependencies.kotlin
-
-    implementation project(':rxnetgo')
 
     compileOnly rootProject.ext.dependencies.retrofit2
     compileOnly rootProject.ext.dependencies.rxjava2

@@ -318,17 +318,20 @@ class RxNetGo {
     }
 
     /**
-     * 添加全局公共请求参数
+     * 添加全局公共请求参数，每次添加都会将之前的请求参数移除
+     * TODO 将公参和baseurl进行绑定，可以配置多套公共请求参数
      */
     fun addCommonParams(commonParams: HttpParams): RxNetGo {
+        this.commonParams.clear()
         this.commonParams.put(commonParams)
         return this
     }
 
     /**
-     * 添加全局公共请求参数
+     * 添加全局公共请求头，每次添加都会将之前的请求头移除
      */
     fun addCommonHeaders(commonHeaders: HttpHeaders): RxNetGo {
+        this.commonHeaders.clear()
         this.commonHeaders.put(commonHeaders)
         return this
     }
