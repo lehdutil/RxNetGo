@@ -16,23 +16,27 @@ abstract class NovelSubscriber<T> : JsonSubscriber<T>() {
 
     @Suppress("UNCHECKED_CAST")
     override fun convertResponse(response: ResponseBody?): T? {
-        var json = response?.string()
+        val json = response?.string()
         response?.close()
 
-        json = null
-
         return if (TextUtils.isEmpty(json)) {
+            this.dispose()
+            onError(ApiException(msg = "数据为空"))
+            onCompleted()
             null
         } else {
             val jobj = JSONObject(json!!)
             val status = jobj.optInt("status")
             val info = jobj.optString("info")
             val data = jobj.optString("data")
+
             if (status != 1 || info != "success") {
-                throw ApiException(msg = "服务器异常")
-            } else {
+                this.dispose()
+                onError(ApiException(msg = "服务器数据异常"))
+                onCompleted()
+                null
+            } else
                 JsonUtils.fromJson(data, getType())
-            }
         }
     }
 

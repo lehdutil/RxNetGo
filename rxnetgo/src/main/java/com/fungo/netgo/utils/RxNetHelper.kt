@@ -62,12 +62,15 @@ object RxNetHelper {
                         if (data != null) {
                             Flowable.just(data)
                         } else {
-                            error("Rxnetgo converter data is null!")
+                            Flowable.error(ApiException(msg = "Rxnetgo converter data is null!"))
                         }
-                    }.cache(request.getCacheKey(), request.getSubscriber(), request.getCacheStrategy())
+                    }
+                    .cache(request.getCacheKey(), request.getSubscriber(), request.getCacheStrategy())
+
 
         } else {
-            request.flowable ?: error("Rxnetgo async request engine not be null. Please retry!")
+            request.flowable
+                    ?: Flowable.error(ApiException(msg = "Rxnetgo async request engine not be null. Please retry!"))
         }
     }
 
@@ -85,11 +88,12 @@ object RxNetHelper {
                         if (data != null) {
                             Flowable.just(data)
                         } else {
-                            error("Rxnetgo converter data is null!")
+                            Flowable.error(ApiException(msg = "Rxnetgo converter data is null!"))
                         }
                     }.cache(request.getCacheKey(), request.getSubscriber(), request.getCacheStrategy())
         } else {
-            request.flowable ?: error("Rxnetgo async request engine not be null. Please retry!")
+            request.flowable
+                    ?: Flowable.error(ApiException(msg = "Rxnetgo async request engine not be null. Please retry!"))
         }
     }
 

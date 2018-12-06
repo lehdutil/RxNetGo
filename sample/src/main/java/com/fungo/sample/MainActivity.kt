@@ -66,18 +66,34 @@ class MainActivity : AppCompatActivity() {
 
 
         Api.getNovelDetailData(object : NovelSubscriber<NovelDetailBean>() {
+
+            override fun onStart() {
+                println("---------> onStart ")
+
+            }
+
+
             override fun onSuccess(data: NovelDetailBean) {
                 if (swipeRefreshLayout.isRefreshing) {
                     swipeRefreshLayout.isRefreshing = false
                 }
-                mAdapter.setData(data.bookList)
 
-                println("---------> onNext ")
+                if (data.bookList != null) {
+                    mAdapter.setData(data.bookList)
+                }
+
+
+                println("---------> onSuccess ")
             }
 
             override fun onError(exception: ApiException) {
                 super.onError(exception)
                 println("---------> onError = " + exception.getMsg())
+            }
+
+            override fun onCompleted() {
+                println("---------> onCompleted ")
+
             }
         })
 

@@ -2,7 +2,6 @@ package com.fungo.netgo.subscribe.base
 
 import com.fungo.netgo.exception.ApiException
 import com.fungo.netgo.exception.NetErrorEngine
-import io.reactivex.subscribers.ResourceSubscriber
 import java.lang.reflect.Type
 
 /**
@@ -21,7 +20,6 @@ abstract class BaseSubscriber<T> : ResourceSubscriber<T>(), ISubscriber<T> {
      * 请求开始
      */
     override fun onStart() {
-        super.onStart()
     }
 
     /**
@@ -34,12 +32,11 @@ abstract class BaseSubscriber<T> : ResourceSubscriber<T>(), ISubscriber<T> {
      */
     override fun onError(exception: ApiException) {}
 
+
     /**
      * 请求完成
      */
-    override fun onComplete() {
-        this.dispose()
-    }
+    open fun onCompleted() {}
 
     /**
      * 返回泛型类型
@@ -56,6 +53,7 @@ abstract class BaseSubscriber<T> : ResourceSubscriber<T>(), ISubscriber<T> {
 
     /**
      * 转发请求失败发生的异常
+     * 发生异常自动取消订阅，如果要做重连，需要在onErrorResumeNext时重新请求
      */
     final override fun onError(e: Throwable) {
         this.dispose()
@@ -65,4 +63,15 @@ abstract class BaseSubscriber<T> : ResourceSubscriber<T>(), ISubscriber<T> {
             onError(ApiException(error = e, code = NetErrorEngine.UNKNOWN_CODE, msg = NetErrorEngine.UNKNOW_MSG))
         }
     }
+
+
+    /**
+     * 请求完成
+     * 请求完成了自动取消订阅，所有的请求都处理
+     */
+    final override fun onComplete() {
+        this.dispose()
+        onCompleted()
+    }
+
 }
