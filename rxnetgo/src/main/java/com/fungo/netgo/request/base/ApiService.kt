@@ -35,7 +35,7 @@ interface ApiService {
             @Url url: String,
             @HeaderMap headers: Map<String, Any>,
             @QueryMap params: Map<String, Any>,
-            @Body body: RequestBody?): Flowable<Response<ResponseBody>>
+            @Body body: RequestBody?): Flowable<okhttp3.Response>
 
 
     /**

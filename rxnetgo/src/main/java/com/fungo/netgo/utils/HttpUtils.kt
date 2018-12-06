@@ -38,6 +38,9 @@ object HttpUtils {
     }
 
 
+
+
+
     /**
      * 根据响应头或者url获取文件名
      */
