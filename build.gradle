@@ -22,6 +22,7 @@ allprojects {
         jcenter()
         maven { url "https://jitpack.io" }
         maven { url 'https://dl.bintray.com/zchu/maven/' }
+        maven { url "https://dl.bintray.com/drummer-aidan/maven/" }
     }
 }
 

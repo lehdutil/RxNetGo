@@ -10,6 +10,7 @@ android {
         targetSdkVersion rootProject.ext.android.targetSdkVersion
         versionCode rootProject.ext.android.versionCode
         versionName rootProject.ext.android.versionName
+        multiDexEnabled true
     }
 
 
@@ -24,8 +25,6 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation project(':rxnetgo')
-
     implementation rootProject.ext.dependencies.appcompat
     implementation rootProject.ext.dependencies.material
     implementation rootProject.ext.dependencies.recyclerview
@@ -34,4 +33,10 @@ dependencies {
 
     compileOnly rootProject.ext.dependencies.retrofit2
     compileOnly rootProject.ext.dependencies.rxjava2
+
+    implementation rootProject.ext.dependencies.imagego_glide
+    implementation rootProject.ext.dependencies.image_preview
+    implementation rootProject.ext.dependencies.rxnetgo
+    implementation rootProject.ext.dependencies.baselib
+    implementation rootProject.ext.dependencies.baseuilib
 }
