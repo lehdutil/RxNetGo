@@ -33,10 +33,10 @@ class JsonConvert<T> : IConverter<T> {
     }
 
     @Suppress("UNCHECKED_CAST")
-    override fun convertResponse(response: ResponseBody?): T? {
+    override fun convertResponse(body: ResponseBody?): T? {
 
-        val json = response?.string()
-        response?.close()
+        val json = body?.string()
+        body?.close()
 
         if (TextUtils.isEmpty(json)) return null
 

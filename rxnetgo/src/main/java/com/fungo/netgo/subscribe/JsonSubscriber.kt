@@ -28,8 +28,8 @@ abstract class JsonSubscriber<T> : BaseSubscriber<T> {
         this.mClazz = clazz
     }
 
-    override fun convertResponse(response: ResponseBody?): T? {
-        return JsonConvert<T>(getType()).convertResponse(response)
+    override fun convertResponse(body: ResponseBody?): T? {
+        return JsonConvert<T>(getType()).convertResponse(body)
     }
 
     override fun getType(): Type {

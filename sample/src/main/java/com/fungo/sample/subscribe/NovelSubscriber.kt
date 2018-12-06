@@ -15,9 +15,9 @@ abstract class NovelSubscriber<T> : JsonSubscriber<T>() {
 
 
     @Suppress("UNCHECKED_CAST")
-    override fun convertResponse(response: ResponseBody?): T? {
-        val json = response?.string()
-        response?.close()
+    override fun convertResponse(body: ResponseBody?): T? {
+        val json = body?.string()
+        body?.close()
 
         return if (TextUtils.isEmpty(json)) {
             this.dispose()

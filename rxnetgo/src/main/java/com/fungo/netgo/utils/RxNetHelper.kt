@@ -58,7 +58,7 @@ object RxNetHelper {
                     .getAsync(request.url, request.getHeaders().getHeaderParams(), request.getParams().getUrlParams())
                     .compose()
                     .flatMap { response ->
-                        val data = request.getConverter().convertResponse(response.body())
+                        val data = request.getConverter().convertResponse(response)
                         if (data != null) {
                             Flowable.just(data)
                         } else {
@@ -84,7 +84,7 @@ object RxNetHelper {
                     .postAsync(request.url, request.getHeaders().getHeaderParams(), request.getParams().getUrlParams(), request.generateRequestBody())
                     .compose()
                     .flatMap { response ->
-                        val data = request.getConverter().convertResponse(response.body())
+                        val data = request.getConverter().convertResponse(response)
                         if (data != null) {
                             Flowable.just(data)
                         } else {
@@ -109,7 +109,7 @@ object RxNetHelper {
                     .getSync(request.url, request.getHeaders().getHeaderParams(), request.getParams().getUrlParams())
                     .execute()
                     .body()
-            request.getConverter().convertResponse(response?.body())
+            request.getConverter().convertResponse(response)
         } else {
             if (request.flowable != null) {
                 throw ApiException(msg = "Rxnetgo sync request do not support external customization. ")
@@ -129,7 +129,7 @@ object RxNetHelper {
                     .postSync(request.url, request.getHeaders().getHeaderParams(), request.getParams().getUrlParams(), request.generateRequestBody())
                     .execute()
                     .body()
-            request.getConverter().convertResponse(response?.body())
+            request.getConverter().convertResponse(response)
         } else {
             if (request.flowable != null) {
                 throw ApiException(msg = "Rxnetgo sync request do not support external customization. ")

@@ -19,5 +19,5 @@ interface IConverter<T> {
      * 如果返回的T是null的话，则会作为异常返回
      */
     @Throws(Exception::class)
-    fun convertResponse(response: ResponseBody?): T?
+    fun convertResponse(body: ResponseBody?): T?
 }

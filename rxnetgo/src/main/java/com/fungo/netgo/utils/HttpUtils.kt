@@ -3,7 +3,9 @@ package com.fungo.netgo.utils
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Uri
+import android.os.Environment
 import android.text.TextUtils
+import com.fungo.netgo.RxNetGo
 import com.fungo.netgo.model.HttpHeaders
 import com.fungo.netgo.model.HttpParams
 import okhttp3.*
@@ -16,6 +18,11 @@ import java.net.URLDecoder
  * @since 18-10-17 上午11:11
  */
 object HttpUtils {
+
+
+    private const val FILE_SUFFIX = ".tmpl"
+    private const val DEFAULT_FILENAME = "rxnetgo_downfile$FILE_SUFFIX"
+    private const val DEFAULT_FILEDIR = "Downloads"
 
 
     /**
@@ -38,8 +45,42 @@ object HttpUtils {
     }
 
 
+    fun createDownloadFile(path: String?, name: String?, isDelete: Boolean = true): File {
+        val fileName = if (TextUtils.isEmpty(name)) {
+            DEFAULT_FILENAME
+        } else name
 
+        val fileDir = if (TextUtils.isEmpty(path)) {
+            getDownloadPath()
+        } else path
 
+        val file = File(fileDir, fileName)
+        if (file.exists() && isDelete) {
+            file.delete()
+        }
+
+        return file
+    }
+
+    fun getDownloadPath(): String {
+        val context = RxNetGo.getInstance().getContext()
+        return if (Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED) {
+            val file = File(Environment.getExternalStorageDirectory().absolutePath
+                    + File.separator + context.packageName)
+            if (!file.exists()) {
+                file.mkdir()
+            }
+            file.absolutePath
+        } else {
+            val file = File(context.getExternalFilesDir(null)?.absolutePath
+                    ?: context.cacheDir.absolutePath
+                    +File.separator+DEFAULT_FILEDIR)
+            if (!file.exists()) {
+                file.mkdirs()
+            }
+            file.absolutePath
+        }
+    }
 
     /**
      * 根据响应头或者url获取文件名

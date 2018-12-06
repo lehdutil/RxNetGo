@@ -1,11 +1,12 @@
 package com.fungo.netgo.convert
 
+import com.fungo.netgo.RxNetGo
 import com.fungo.netgo.convert.base.IConverter
+import com.fungo.netgo.subscribe.FileSubscriber
 import com.fungo.netgo.utils.HttpUtils
 import okhttp3.ResponseBody
 import java.io.File
 import java.io.FileOutputStream
-import java.io.InputStream
 
 /**
  * @author Pinger
@@ -16,76 +17,68 @@ import java.io.InputStream
  *　TODO 做好缓存
  */
 class FileConvert(
-        val fileDir: String = "",
-        val fileName: String = ""
+        private val fileDir: String? = null,
+        private val fileName: String? = null,
+        private val isDelete: Boolean = true
 
 ) : IConverter<File> {
 
+    private var mSubscriber: FileSubscriber? = null
 
-    private var outStream: FileOutputStream? = null
-    private var inStream: InputStream? = null
+    override fun convertResponse(body: ResponseBody?): File {
 
-    private var total: Long = 0
-    private var updateCount = 0
-    private var interval = 1f
-    private var progress = 0f
+        val file = HttpUtils.createDownloadFile(fileDir, fileName, isDelete)
+        val byteStream = body?.byteStream()
+        val contentLength = body?.contentLength() ?: 0
 
-
-    override fun convertResponse(response: ResponseBody?): File {
-
-        val file = HttpUtils.createDownloadFile(fileDir, fileName)
-
-        if (response?.byteStream() == null) {
+        if (byteStream == null) {
             return file
         }
-        val byteStream = response.byteStream()
-        response.close()
+
+        val netGo = RxNetGo.getInstance()
 
         val buf = ByteArray(2048)
-        var len = 0
         var outStream: FileOutputStream? = null
-        var inStream: InputStream? = null
+
         try {
-            inStream = response.byteStream()
-            val total = response.contentLength()
-            interval = if (total < 2048) 0.2f else 1f
+            // 数据回调的速度
+            val interval = if (contentLength < 2048) 0.2f else 1f
+            var intervalCount = 0f
 
             outStream = FileOutputStream(file)
 
+            var downloaded = 0L
+            var len = byteStream.read(buf)
+            while (len != -1) {
+                downloaded += len
+                outStream.write(buf, 0, len)
+                len = byteStream.read(buf)
 
-
-
-
-            while ((len = inStream.read(buf)) != -1) {
-                total += len.toLong()
-                outStream!!.write(buf, 0, len)
-                val finalSum = total
-                if (total == -1 || total == 0L) {
-                    progress = 100
+                val progress = if (contentLength.toInt() == -1 || contentLength == 0L) {
+                    100
                 } else {
-                    progress = (finalSum * 100 / total).toInt()
+                    (downloaded * 100 / contentLength).toInt()
                 }
-                if (updateCount == 0 || progress >= updateCount) {
-                    updateCount += interval
-                    //handler = Handler(Looper.getMainLooper())
-                    // val finalProgress = progress
-                    // handler.post(Runnable { onProgress(tag, finalProgress, finalSum, total) })
+                if (intervalCount == 0f || progress >= intervalCount) {
+                    intervalCount += interval
+                    netGo.getHandler().post {
+
+                        mSubscriber?.onProgress(progress, downloaded, contentLength)
+                    }
                 }
             }
-            fos!!.flush()
-            return file
-
+            outStream.flush()
         } finally {
-            //onRelease()
+            outStream?.close()
+            byteStream.close()
+            body.close()
         }
 
-
-
-
-        return File("")
+        return file
     }
 
-
-    fun onProgress(tag: Any, progress: Float, downloaded: Long, total: Long) {}
+    fun setSubscribe(fileSubscriber: FileSubscriber) {
+        this.mSubscriber = fileSubscriber
+    }
 
 }

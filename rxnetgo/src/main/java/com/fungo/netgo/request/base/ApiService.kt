@@ -4,7 +4,6 @@ import io.reactivex.Flowable
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
-import retrofit2.Response
 import retrofit2.http.*
 
 /**
@@ -35,7 +34,7 @@ interface ApiService {
             @Url url: String,
             @HeaderMap headers: Map<String, Any>,
             @QueryMap params: Map<String, Any>,
-            @Body body: RequestBody?): Flowable<okhttp3.Response>
+            @Body body: RequestBody?): Flowable<ResponseBody>
 
 
     /**
@@ -52,7 +51,7 @@ interface ApiService {
             @Url url: String,
             @HeaderMap headers: Map<String, Any>,
             @QueryMap params: Map<String, Any>,
-            @Body body: RequestBody?): Call<Response<ResponseBody>>
+            @Body body: RequestBody?): Call<ResponseBody>
 
 
     /**
@@ -67,7 +66,7 @@ interface ApiService {
     fun getAsync(
             @Url url: String,
             @HeaderMap headers: Map<String, Any>,
-            @QueryMap params: Map<String, Any>): Flowable<Response<ResponseBody>>
+            @QueryMap params: Map<String, Any>): Flowable<ResponseBody>
 
 
     /**
@@ -81,5 +80,5 @@ interface ApiService {
     fun getSync(
             @Url url: String,
             @HeaderMap headers: Map<String, Any>,
-            @QueryMap params: Map<String, Any>): Call<Response<ResponseBody>>
+            @QueryMap params: Map<String, Any>): Call<ResponseBody>
 }

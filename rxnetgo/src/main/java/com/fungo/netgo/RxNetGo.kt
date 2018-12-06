@@ -3,6 +3,8 @@ package com.fungo.netgo
 import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import com.fungo.netgo.cache.CacheMode
 import com.fungo.netgo.cookie.CookieJarImpl
 import com.fungo.netgo.cookie.store.PersistentCookieStore
@@ -79,6 +81,7 @@ class RxNetGo {
     // 发起的请求使用集合存储，方便取消
     private val mDisposables: CompositeDisposable = CompositeDisposable()
 
+    private val mHandler: Handler = Handler(Looper.getMainLooper())
 
     companion object {
 
@@ -159,6 +162,13 @@ class RxNetGo {
     fun debug(debug: Boolean): RxNetGo {
         NetLogger.debug(TAG, debug)
         return this
+    }
+
+    /**
+     * 获取全局的Handler
+     */
+    fun getHandler(): Handler {
+        return mHandler
     }
 
     /**

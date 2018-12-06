@@ -19,8 +19,8 @@ abstract class BitmapSubscriber(
         private val decodeConfig: Bitmap.Config = Bitmap.Config.ARGB_8888,
         private val scaleType: ImageView.ScaleType = ImageView.ScaleType.CENTER_INSIDE) : BaseSubscriber<Bitmap>() {
 
-    override fun convertResponse(response: ResponseBody?): Bitmap? {
-        return BitmapConvert(maxWidth, maxHeight, decodeConfig, scaleType).convertResponse(response)
+    override fun convertResponse(body: ResponseBody?): Bitmap? {
+        return BitmapConvert(maxWidth, maxHeight, decodeConfig, scaleType).convertResponse(body)
     }
 
     override fun getType(): Type {

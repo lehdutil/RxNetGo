@@ -11,9 +11,9 @@ import okhttp3.ResponseBody
  */
 class StringConvert : IConverter<String> {
 
-    override fun convertResponse(response: ResponseBody?): String? {
-        val result = response?.string()
-        response?.close()
+    override fun convertResponse(body: ResponseBody?): String? {
+        val result = body?.string()
+        body?.close()
         return result
     }
 }

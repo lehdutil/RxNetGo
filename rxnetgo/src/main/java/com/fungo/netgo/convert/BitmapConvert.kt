@@ -20,9 +20,9 @@ class BitmapConvert(
         private val decodeConfig: Bitmap.Config = Bitmap.Config.ARGB_8888,
         private val scaleType: ImageView.ScaleType = ImageView.ScaleType.CENTER_INSIDE) : IConverter<Bitmap> {
 
-    override fun convertResponse(response: ResponseBody?): Bitmap? {
-        val bytes = response?.bytes()
-        response?.close()
+    override fun convertResponse(body: ResponseBody?): Bitmap? {
+        val bytes = body?.bytes()
+        body?.close()
         return if (bytes == null) {
             null
         } else {
