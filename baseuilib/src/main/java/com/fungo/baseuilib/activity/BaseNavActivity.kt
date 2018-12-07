@@ -150,5 +150,5 @@ open class BaseNavActivity(override val layoutResID: Int = R.layout.base_activit
      * 是否可以返回，如果可以则展示返回按钮，并且设置返回事件
      * 默认可以返回
      */
-    protected open fun isShowBackIcon(): Boolean = false
+    protected open fun isShowBackIcon(): Boolean = true
 }

@@ -46,8 +46,16 @@ abstract class BaseNavFragment : BaseFragment() {
             // 设置标题
             setPageTitle(getPageTitle())
 
+            // 设置Toolbar标题样式
+            val toolbarTitleStyle = if (isMainPage()) {
+                // 如果是主页的话，没有返回按钮，不可以滑动返回
+                isShowBackIcon()
+                R.style.ToolbarMainTextAppearance
+            } else R.style.ToolbarTextAppearance
+            baseNavToolbar.setTitleTextAppearance(context, toolbarTitleStyle)
+
             // 左侧返回按钮
-            if (isShowBackIcon()) {
+            if (isShowBackIcon() && !isMainPage()) {
                 baseNavToolbar.navigationIcon =
                         UiUtils.getIconFont(context!!, GoogleMaterial.Icon.gmd_arrow_back, color = R.attr.colorWhite)
                 baseNavToolbar.setNavigationOnClickListener {
@@ -155,7 +163,14 @@ abstract class BaseNavFragment : BaseFragment() {
      * 是否可以返回，如果可以则展示返回按钮，并且设置返回事件
      * 默认可以返回
      */
-    protected open fun isShowBackIcon(): Boolean = false
+    protected open fun isShowBackIcon(): Boolean = true
+
+
+    /**
+     * 是不是Main页面
+     * 如果是的话，ToolBar设置粗体的样式
+     */
+    protected open fun isMainPage(): Boolean = false
 
 
     // --------------------页面状态的相关处理--------------------
@@ -179,7 +194,7 @@ abstract class BaseNavFragment : BaseFragment() {
     }
 
     open fun showPageLoadingDialog() {
-        showPageLoadingDialog(getString(R.string.base_loading))
+        showPageLoadingDialog(getString(R.string.app_loading))
     }
 
     /**

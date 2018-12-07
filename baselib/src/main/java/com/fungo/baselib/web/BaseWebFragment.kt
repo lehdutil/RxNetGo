@@ -37,7 +37,6 @@ abstract class BaseWebFragment : BaseNavFragment() {
     protected var mWebTitle: String? = null
     private var mIntent: Intent? = null
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         init()
@@ -49,8 +48,8 @@ abstract class BaseWebFragment : BaseNavFragment() {
             WebView.setWebContentsDebuggingEnabled(true)
         }
         mIntent = getIntent(arguments)
-        mWebUrl = getWebUrl(mIntent)
-        mWebTitle = getWebTitle(mIntent)
+        mWebUrl = getWebUrl()
+        mWebTitle = getWebTitle()
 
         if (isCleanCache) {
             SonicEngine.getInstance().cleanCache()
@@ -290,22 +289,16 @@ abstract class BaseWebFragment : BaseNavFragment() {
 
     /**
      * get web title
-     *
-     * @param intent
-     * @return
      */
-    protected fun getWebTitle(intent: Intent?): String? {
-        return intent?.getStringExtra(WebConstant.KEY_WEB_TITLE)
+    protected fun getWebTitle(): String? {
+        return mIntent?.getStringExtra(WebConstant.KEY_WEB_TITLE)
     }
 
     /**
      * get web url
-     *
-     * @param intent
-     * @return
      */
-    protected fun getWebUrl(intent: Intent?): String? {
-        return intent?.getStringExtra(WebConstant.KEY_WEB_URL)
+    protected fun getWebUrl(): String? {
+        return mIntent?.getStringExtra(WebConstant.KEY_WEB_URL)
     }
 
 

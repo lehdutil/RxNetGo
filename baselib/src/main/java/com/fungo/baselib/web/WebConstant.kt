@@ -12,4 +12,6 @@ object WebConstant {
     const val KEY_WEB_URL = "KEY_WEB_URL"
     const val KEY_WEB_BACK = "KEY_WEB_BACK"
 
+    const val KEY_WEB_SWIPE_BACK = "KEY_WEB_SWIPE_BACK"
+
 }

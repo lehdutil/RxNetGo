@@ -10,6 +10,8 @@ import com.fungo.sample.data.api.GankApi
  * @since 18-12-7 上午11:16
  */
 class GankDataPresenter(private val gankView: BaseRecyclerContract.View, private val gankType: String) : BaseRecyclerContract.Presenter {
+
+
     override fun loadData(page: Int) {
 
         GankApi.getGankData(gankType, page, object : JsonSubscriber<GankResponse>() {

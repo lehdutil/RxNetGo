@@ -31,24 +31,13 @@ class WebActivity : BaseSwipeBackActivity() {
      * 跳转暂时使用传统方法
      */
     companion object {
-        fun start(context: Context, url: String, title: String, canBack: Boolean) {
+        fun start(context: Context?, url: String, title: String? = null, webBack: Boolean = true) {
             val intent = Intent(context, WebActivity::class.java)
             intent.putExtra(WebConstant.KEY_WEB_URL, url)
             intent.putExtra(WebConstant.KEY_WEB_TITLE, title)
-            intent.putExtra(WebConstant.KEY_WEB_BACK, canBack)
-            context.startActivity(intent)
-        }
-
-        fun start(context: Context, url: String, canBack: Boolean) {
-            start(context, url, "", canBack)
-        }
-
-        fun start(context: Context, url: String, title: String) {
-            start(context, url, title, true)
-        }
-
-        fun start(context: Context, url: String) {
-            start(context, url, "", true)
+            intent.putExtra(WebConstant.KEY_WEB_BACK, webBack)
+            intent.putExtra(WebConstant.KEY_WEB_SWIPE_BACK, false)
+            context?.startActivity(intent)
         }
     }
 

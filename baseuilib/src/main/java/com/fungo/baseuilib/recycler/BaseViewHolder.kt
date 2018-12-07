@@ -1,6 +1,7 @@
 package com.fungo.baseuilib.recycler
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.text.TextUtils
@@ -37,11 +38,11 @@ abstract class BaseViewHolder<T> : androidx.recyclerview.widget.RecyclerView.Vie
     }
 
     constructor(parent: ViewGroup, @LayoutRes res: Int) : super(
-        LayoutInflater.from(parent.context).inflate(
-            res,
-            parent,
-            false
-        )
+            LayoutInflater.from(parent.context).inflate(
+                    res,
+                    parent,
+                    false
+            )
     ) {
         initHolder()
     }
@@ -89,6 +90,15 @@ abstract class BaseViewHolder<T> : androidx.recyclerview.widget.RecyclerView.Vie
 
     }
 
+
+    protected fun startActivity(clazz: Class<*>) {
+        getContext()?.startActivity(Intent(getContext(), clazz))
+    }
+
+    protected fun startActivity(intent: Intent) {
+        getContext()?.startActivity(intent)
+    }
+
     /**
      * 专门用于在Holder中跳转Fragment
      */
@@ -101,9 +111,9 @@ abstract class BaseViewHolder<T> : androidx.recyclerview.widget.RecyclerView.Vie
     }
 
     protected fun startFragment(
-        fragment: BaseFragment,
-        targetFragmentClass: Class<*>,
-        includeTargetFragment: Boolean = true
+            fragment: BaseFragment,
+            targetFragmentClass: Class<*>,
+            includeTargetFragment: Boolean = true
     ) {
         if (getContext() is BaseActivity) {
             (getContext() as BaseActivity).startWithPopTo(fragment, targetFragmentClass, includeTargetFragment)
@@ -216,7 +226,7 @@ abstract class BaseViewHolder<T> : androidx.recyclerview.widget.RecyclerView.Vie
     private fun getOwnerRecyclerView(): androidx.recyclerview.widget.RecyclerView? {
         try {
             val field =
-                androidx.recyclerview.widget.RecyclerView.ViewHolder::class.java.getDeclaredField("mOwnerRecyclerView")
+                    androidx.recyclerview.widget.RecyclerView.ViewHolder::class.java.getDeclaredField("mOwnerRecyclerView")
             field.isAccessible = true
             return field.get(this) as androidx.recyclerview.widget.RecyclerView
         } catch (e: NoSuchFieldException) {

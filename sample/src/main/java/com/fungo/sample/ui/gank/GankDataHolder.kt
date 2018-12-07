@@ -1,7 +1,7 @@
 package com.fungo.sample.ui.gank
 
 import android.view.ViewGroup
-import com.fungo.baselib.web.WebActivity
+import com.fungo.baselib.utils.AppUtils
 import com.fungo.baseuilib.recycler.BaseViewHolder
 import com.fungo.baseuilib.recycler.multitype.MultiTypeViewHolder
 import com.fungo.sample.R
@@ -19,7 +19,8 @@ class GankDataHolder : MultiTypeViewHolder<GankDataBean, GankDataHolder.ViewHold
         }
 
         override fun onItemClick(data: GankDataBean) {
-            WebActivity.start(getContext()!!, data.url)
+            AppUtils.startWebActivity(getContext(), data.url)
+
         }
     }
 

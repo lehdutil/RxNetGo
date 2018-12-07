@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">NetGo</string>
+    <string name="app_name">RxNetGo网络框架</string>
 
     <string name="gank_title">干货</string>
     <string name="news_title">新闻</string>

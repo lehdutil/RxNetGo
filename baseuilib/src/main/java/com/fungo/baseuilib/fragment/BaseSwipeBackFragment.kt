@@ -12,14 +12,4 @@ abstract class BaseSwipeBackFragment : BaseNavFragment() {
      * 支持滑动返回
      */
     final override fun isSwipeBackEnable(): Boolean = true
-
-    /**
-     * 是否展示标题栏
-     */
-    override fun isShowToolBar(): Boolean = true
-
-    /**
-     * 是否展示返回按钮
-     */
-    override fun isShowBackIcon(): Boolean = true
 }

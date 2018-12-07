@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.drawable.Drawable
-import android.text.TextUtils
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -24,8 +23,6 @@ import java.util.*
 object UiUtils {
 
     private const val KEY_THEME = "KEY_THEME"
-    private const val KEY_RANDOM_THEME = "KEY_RANDOM_THEME"
-    private const val KEY_MANUAL_THEME = "KEY_MANUAL_THEME"
 
     private var sharedPreferences: SharedPreferences? = null
 
@@ -52,59 +49,39 @@ object UiUtils {
         return getSp(context).getBoolean(key, defValue)
     }
 
-    fun setRandomTheme(context: Context, isRandom: Boolean) {
-        putBoolean(context, KEY_RANDOM_THEME, isRandom)
-    }
-
-    fun isRandomTheme(context: Context): Boolean {
-        return getBoolean(context, KEY_RANDOM_THEME)
-    }
-
-    fun setManualTheme(context: Context, isManual: Boolean) {
-        putBoolean(context, KEY_MANUAL_THEME, isManual)
-    }
-
-    fun isManualTheme(context: Context): Boolean {
-        return getBoolean(context, KEY_MANUAL_THEME)
-    }
-
     /**
      * 设置App的主题
-     * 默认是来自随机的主题
+     * 默认是来上一次的主题
      */
-    fun setAppTheme(context: Context) {
-        setCurrentTheme(context, getCurrentTheme(context))
-        setManualTheme(context, false)
+    fun setAppTheme(context: Context, theme: AppTheme = getAppTheme(context)) {
+        setCurrentTheme(context, theme)
     }
 
     /**
-     * 获取当前的主题
+     * 获取当前的主题，返回的是上一次选择的主题
+     * 如果没有则返回[AppTheme.Blue]
      */
-    fun getCurrentTheme(context: Context): AppTheme {
-        return if (isManualTheme(context)) {
-            val theme = getString(context, KEY_THEME, AppTheme.Blue.name)
-            if (!TextUtils.isEmpty(theme)) {
-                AppTheme.valueOf(theme!!)
-            } else AppTheme.Blue
-        } else {
-            if (isRandomTheme(context)) {
-                val arrayOfAppThemes = AppTheme.values()
-                val random = Random()
-                arrayOfAppThemes[random.nextInt(arrayOfAppThemes.size)]
-            } else {
-                val theme = getString(context, KEY_THEME, AppTheme.Blue.name)
-                if (!TextUtils.isEmpty(theme)) {
-                    AppTheme.valueOf(theme!!)
-                } else AppTheme.Blue
-            }
-        }
+    fun getAppTheme(context: Context): AppTheme {
+        val theme = getString(context, KEY_THEME, AppTheme.Blue.name)
+        return if (theme != null) {
+            AppTheme.valueOf(theme)
+        } else AppTheme.Blue
+    }
+
+    /**
+     * 返回随机一个主题
+     */
+    fun getRandomTheme(): AppTheme {
+        val arrayOfAppThemes = AppTheme.values()
+        val random = Random()
+        return arrayOfAppThemes[random.nextInt(arrayOfAppThemes.size)]
     }
 
 
     /**
      * 根据提供的主题枚举设置当前的主题
      */
-    fun setCurrentTheme(context: Context, theme: AppTheme) {
+    private fun setCurrentTheme(context: Context, theme: AppTheme) {
         when (theme) {
             AppTheme.Blue -> context.setTheme(R.style.BlueTheme)
             AppTheme.Red -> context.setTheme(R.style.RedTheme)
@@ -175,11 +152,11 @@ object UiUtils {
     /**
      * 保存当前的主题到本地
      */
-    fun saveCurrentTheme(context: Context, currentTheme: AppTheme) {
+    private fun saveCurrentTheme(context: Context, currentTheme: AppTheme) {
         putString(context, KEY_THEME, currentTheme.name)
     }
 
-    fun saveCurrentTheme(context: Context, color: Int) {
+    private fun saveCurrentTheme(context: Context, color: Int) {
         putString(context, KEY_THEME, getThemeFromColor(context, color).name)
     }
 
@@ -191,16 +168,16 @@ object UiUtils {
      * 设置ImageView的图标
      */
     fun setIconFont(
-        imageView: ImageView,
-        icon: IIcon,
-        size: Int = 16,
-        color: Int = R.attr.colorPrimary
+            imageView: ImageView,
+            icon: IIcon,
+            size: Int = 16,
+            color: Int = R.attr.colorPrimary
     ) {
         imageView.setImageDrawable(
-            IconicsDrawable(imageView.context)
-                .icon(icon)
-                .color(getThemeColor(imageView.context, color))
-                .sizeDp(size)
+                IconicsDrawable(imageView.context)
+                        .icon(icon)
+                        .color(getThemeColor(imageView.context, color))
+                        .sizeDp(size)
         )
     }
 
@@ -209,18 +186,18 @@ object UiUtils {
      * 设置TextView图标
      */
     fun setIconFont(
-        textView: TextView,
-        icon: IIcon,
-        size: Int = 16,
-        padding: Int = 4,
-        color: Int = R.attr.colorPrimary
+            textView: TextView,
+            icon: IIcon,
+            size: Int = 16,
+            padding: Int = 4,
+            color: Int = R.attr.colorPrimary
     ) {
         textView.setCompoundDrawablesWithIntrinsicBounds(
-            IconicsDrawable(textView.context)
-                .icon(icon)
-                .color(getThemeColor(textView.context, color))
-                .sizeDp(size),
-            null, null, null
+                IconicsDrawable(textView.context)
+                        .icon(icon)
+                        .color(getThemeColor(textView.context, color))
+                        .sizeDp(size),
+                null, null, null
         )
         textView.compoundDrawablePadding = ViewUtils.dp2px(textView.context, padding)
     }
@@ -231,8 +208,8 @@ object UiUtils {
      */
     fun getIconFont(context: Context, icon: IIcon, size: Int = 16, color: Int = R.attr.colorPrimary): Drawable {
         return IconicsDrawable(context)
-            .icon(icon)
-            .color(getThemeColor(context, color))
-            .sizeDp(size)
+                .icon(icon)
+                .color(getThemeColor(context, color))
+                .sizeDp(size)
     }
 }

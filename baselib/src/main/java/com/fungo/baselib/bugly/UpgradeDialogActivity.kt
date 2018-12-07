@@ -21,7 +21,7 @@ class UpgradeDialogActivity(override val layoutResID: Int = R.layout.base_activi
             .title(text = AppUpdater.getUpdateTitle())
             .message(text = AppUpdater.getUpdateNewFeature())
             .cancelOnTouchOutside(false)
-            .positiveButton(R.string.base_download)
+            .positiveButton(R.string.app_download)
             .positiveButton { AppUpdater.startDownload() }
             .onDismiss { finish() }
             .show()

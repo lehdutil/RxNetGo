@@ -6,6 +6,7 @@ import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
+import android.os.Bundle
 import android.text.TextUtils
 import android.webkit.ValueCallback
 import android.webkit.WebView
@@ -22,6 +23,21 @@ import kotlinx.android.synthetic.main.base_fragment_web.*
 
 class WebFragment : BaseWebFragment() {
 
+    companion object {
+        private const val FILE_CHOOSER_RESULT_CODE = 1001
+
+        fun getInstance(url: String, title: String? = null, webBack: Boolean = true, swipeBack: Boolean = true): WebFragment {
+            val fragment = WebFragment()
+            val bundle = Bundle()
+            bundle.putString(WebConstant.KEY_WEB_URL, url)
+            bundle.putString(WebConstant.KEY_WEB_TITLE, title)
+            bundle.putBoolean(WebConstant.KEY_WEB_BACK, webBack)
+            bundle.putBoolean(WebConstant.KEY_WEB_SWIPE_BACK, swipeBack)
+            fragment.arguments = bundle
+            return fragment
+        }
+    }
+
     override fun getContentResID(): Int {
         return R.layout.base_fragment_web
     }
@@ -29,9 +45,6 @@ class WebFragment : BaseWebFragment() {
     private var uploadMessage: ValueCallback<Uri>? = null
     private var uploadMessageAboveL: ValueCallback<Array<Uri>>? = null
 
-    companion object {
-        private const val FILE_CHOOSER_RESULT_CODE = 1001
-    }
 
     override fun getWebView(): WebView {
         return webView
@@ -44,7 +57,6 @@ class WebFragment : BaseWebFragment() {
     @SuppressLint("AddJavascriptInterface")
     override fun addWebJsInteract(sonicSessionClient: SonicSessionClientImpl?, intent: Intent?, webView: WebView?) {
     }
-
 
     private fun openImageChooserActivity() {
         val i = Intent(Intent.ACTION_GET_CONTENT)
@@ -141,5 +153,10 @@ class WebFragment : BaseWebFragment() {
         }
         mWebTitle = title
         setPageTitle(title)
+    }
+
+
+    override fun isSwipeBackEnable(): Boolean {
+        return arguments?.getBoolean(WebConstant.KEY_WEB_SWIPE_BACK) ?: false
     }
 }

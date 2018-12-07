@@ -64,7 +64,7 @@ object AppUpdater {
 
     fun showUpdateLeast() {
         if (!isSilence) {
-            ToastUtils.showSuccess(ViewUtils.getString(AppUtils.getContext(), R.string.base_update_least))
+            ToastUtils.showSuccess(ViewUtils.getString(AppUtils.getContext(), R.string.app_update_least))
         }
     }
 

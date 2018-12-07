@@ -18,6 +18,7 @@ import androidx.annotation.NonNull
 import androidx.annotation.StringRes
 import com.fungo.baseuilib.R
 import com.fungo.baseuilib.basic.IView
+import com.fungo.baseuilib.theme.AppTheme
 import com.fungo.baseuilib.theme.UiUtils
 import com.fungo.baseuilib.utils.StatusBarUtils
 import com.hwangjr.rxbus.RxBus
@@ -55,7 +56,7 @@ abstract class BaseActivity : SupportActivity(), IView {
 
         if (isSetAppTheme()) {
             // 主题
-            UiUtils.setAppTheme(this)
+            UiUtils.setAppTheme(this, getAppTheme())
         }
 
         // 沉浸式
@@ -74,6 +75,7 @@ abstract class BaseActivity : SupportActivity(), IView {
 
         if (isRegisterRxBus()) RxBus.get().register(this)
     }
+
 
     /**
      * 页面布局的id
@@ -126,6 +128,11 @@ abstract class BaseActivity : SupportActivity(), IView {
      * 是否设置App的主题,如果不需要设置主题,则重写本方法过滤
      */
     protected open fun isSetAppTheme(): Boolean = true
+
+    /**
+     * 获取App的主题，子类可以重写
+     */
+    protected open fun getAppTheme(): AppTheme = UiUtils.getAppTheme(this)
 
     /**
      * 根据id查找View

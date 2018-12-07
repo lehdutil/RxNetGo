@@ -8,7 +8,19 @@
     <!--常规色-->
     <color name="white">#FFFFFF</color>
     <color name="black">#040404</color>
+
+    <!--透明色-->
     <color name="transparent">#00000000</color>
+    <color name="transparent_66">#66000000</color>
+    <color name="transparent_4c">#4c000000</color>
+    <color name="transparent_80">#80000000</color>
+    <color name="transparent_62">#66202020</color>
+    <color name="transparent_e6">#e6202020</color>
+    <color name="transparent_33">#33000000</color>
+    <color name="transparent_cc">#cc202020</color>
+    <color name="transparent_82">#80202020</color>
+    <color name="transparent_05">#50000000</color>
+    <color name="transparent_ff">#ebffffff</color>
 
     <!-- 灰色 -->
     <color name="grey_dd">#DDDDDD</color>

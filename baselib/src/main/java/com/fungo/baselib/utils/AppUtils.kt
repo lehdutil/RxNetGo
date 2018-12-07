@@ -15,6 +15,9 @@ import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import com.fungo.baselib.R
+import com.fungo.baselib.web.WebActivity
+import com.fungo.baselib.web.WebFragment
+import com.fungo.baseuilib.activity.BaseActivity
 import java.io.File
 import java.util.*
 
@@ -63,7 +66,7 @@ object AppUtils {
      */
     fun getChannel(): String? {
         val appInfo: ApplicationInfo =
-            getContext().packageManager.getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA)
+                getContext().packageManager.getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA)
         return appInfo.metaData.get("CHANNEL")?.toString()
     }
 
@@ -140,11 +143,11 @@ object AppUtils {
         shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         try {
             context.startActivity(
-                Intent.createChooser(shareIntent, context.getString(R.string.base_share_to))
-                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    Intent.createChooser(shareIntent, context.getString(R.string.app_share_to))
+                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             )
         } catch (e: ActivityNotFoundException) {
-            ToastUtils.showWarning(context.getString(R.string.base_no_share_clients))
+            ToastUtils.showWarning(context.getString(R.string.app_no_share_clients))
         }
 
     }
@@ -158,11 +161,11 @@ object AppUtils {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         try {
             context.startActivity(
-                Intent.createChooser(intent, context.getString(R.string.base_open_market))
-                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    Intent.createChooser(intent, context.getString(R.string.app_open_market))
+                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             )
         } catch (e: ActivityNotFoundException) {
-            ToastUtils.showWarning(context.getString(R.string.base_no_market_clients))
+            ToastUtils.showWarning(context.getString(R.string.app_no_market_clients))
         }
 
     }
@@ -296,6 +299,38 @@ object AppUtils {
     }
 
     /**
+     * 跳转Activity，不带任何参数
+     */
+    fun startActivity(context: Context?, clazz: Class<*>) {
+        startActivity(context, Intent(context, clazz))
+    }
+
+    /**
+     * 跳转Activity
+     */
+    fun startActivity(context: Context?, intent: Intent) {
+        context?.startActivity(intent)
+    }
+
+
+    /**
+     * 跳转到Web页面，跳转Activity
+     */
+    fun startWebActivity(context: Context?, url: String, title: String? = null, canBack: Boolean = true) {
+        WebActivity.start(context, url, title, canBack)
+    }
+
+    /**
+     * 跳转到Web页面，跳转Fragment
+     */
+    fun startWebFragment(context: Context?, url: String, title: String? = null, webBack: Boolean = true, swipeBack: Boolean = true) {
+        if (context is BaseActivity) {
+            context.start(WebFragment.getInstance(url, title, webBack, swipeBack))
+        }
+    }
+
+
+    /**
      * 安装app
      * 需要权限：<uses-permission android:name="android.permission.INSTALL_PACKAGES" />
      */
@@ -351,8 +386,8 @@ object AppUtils {
             true
         } else {
             Log.e(
-                "AppUtils", "installAppSilent successMsg: " + commandResult.successMsg +
-                        ", errorMsg: " + commandResult.errorMsg
+                    "AppUtils", "installAppSilent successMsg: " + commandResult.successMsg +
+                    ", errorMsg: " + commandResult.errorMsg
             )
             false
         }
@@ -392,8 +427,8 @@ object AppUtils {
             true
         } else {
             Log.e(
-                "AppUtils", "uninstallAppSilent successMsg: " + commandResult.successMsg +
-                        ", errorMsg: " + commandResult.errorMsg
+                    "AppUtils", "uninstallAppSilent successMsg: " + commandResult.successMsg +
+                    ", errorMsg: " + commandResult.errorMsg
             )
             false
         }
@@ -481,14 +516,14 @@ object AppUtils {
     private fun isDeviceRooted(): Boolean {
         val su = "su"
         val locations = arrayOf(
-            "/system/bin/",
-            "/system/xbin/",
-            "/sbin/",
-            "/system/sd/xbin/",
-            "/system/bin/failsafe/",
-            "/data/local/xbin/",
-            "/data/local/bin/",
-            "/data/local/"
+                "/system/bin/",
+                "/system/xbin/",
+                "/sbin/",
+                "/system/sd/xbin/",
+                "/system/bin/failsafe/",
+                "/data/local/xbin/",
+                "/data/local/bin/",
+                "/data/local/"
         )
         for (location in locations) {
             if (File(location + su).exists()) {
@@ -502,8 +537,8 @@ object AppUtils {
      * The application's information.
      */
     class AppInfo(
-        packageName: String, name: String, icon: Drawable, packagePath: String,
-        versionName: String, versionCode: Int, isSystem: Boolean
+            packageName: String, name: String, icon: Drawable, packagePath: String,
+            versionName: String, versionCode: Int, isSystem: Boolean
     ) {
 
         var packageName: String? = null

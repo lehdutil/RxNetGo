@@ -16,6 +16,8 @@ class MainFragment : BaseNavFragment() {
 
     private val mFragments = arrayListOf<BaseFragment>()
 
+    override fun isMainPage(): Boolean = true
+
     override fun getPageTitle(): String? = getString(R.string.app_name)
 
     override fun getContentResID(): Int = R.layout.fragment_main
