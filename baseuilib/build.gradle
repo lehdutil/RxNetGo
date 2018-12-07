@@ -1,0 +1,54 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+
+    compileSdkVersion COMPILE_SDK_VERSION as int
+
+    defaultConfig {
+        minSdkVersion MIN_SDK_VERSION as int
+        targetSdkVersion TARGET_SDK_VERSION as int
+        versionCode VERSION_CODE as int
+        versionName VERSION_NAME
+    }
+
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    // 官方api
+    api appcompat
+    api material
+    api cardview
+    api recyclerview
+    api constraintlayout
+    api dialogs
+    api dialogs_color
+
+    // kotlin支持
+    api kotlin
+
+    // fragment封装处理
+    api fragmentation_core
+    api fragmentation_swipeback
+
+    // 下拉刷新
+    api smartrefresh
+    api smartrefresh_header
+
+    // 字体图标
+    api iconics
+    api material_design_iconic
+
+    api rxbus
+    api rxpermissions
+}

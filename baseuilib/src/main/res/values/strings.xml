@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">baseuilib</string>
+
+    <string name="appbar_spring_behavior">com.google.android.material.appbar.AppBarLayoutSpringBehavior</string>
+
+    <string name="base_loading">正在加载中…</string>
+    <string name="base_download">下载</string>
+    <string name="base_waiting">稍等</string>
+    <string name="base_open_market">应用市场</string>
+    <string name="base_no_market_clients">应用市场未安装</string>
+    <string name="base_share_to">分享到</string>
+    <string name="base_no_share_clients">分享客户端未安装</string>
+    <string name="base_update_least">您已经安装了最新版本</string>
+
+
+</resources>

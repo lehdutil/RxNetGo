@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">NetGo</string>
+
+    <string name="gank_title">干货</string>
+    <string name="news_title">新闻</string>
+    <string name="explore_title">发现</string>
 </resources>

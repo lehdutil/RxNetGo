@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/bottom_gank"
+        android:icon="@drawable/ic_whatshot_white_24dp"
+        android:title="@string/gank_title" />
+
+    <item
+        android:id="@+id/bottom_news"
+        android:icon="@drawable/ic_toys_white_24dp"
+        android:title="@string/news_title" />
+
+    <item
+        android:id="@+id/bottom_explore"
+        android:icon="@drawable/ic_explore_white_24dp"
+        android:title="@string/explore_title" />
+
+</menu>
