@@ -22,5 +22,5 @@ data class GankDataBean(
         val url: String,
         val used: Boolean,
         val who: String,
-        val images: List<String>
+        val images: List<String>?
 )

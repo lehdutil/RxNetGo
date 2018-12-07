@@ -1,8 +1,12 @@
 package com.fungo.sample.ui.gank
 
 import android.os.Bundle
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
+import com.fungo.baseuilib.R
 import com.fungo.baseuilib.recycler.BaseRecyclerContract
 import com.fungo.baseuilib.recycler.BaseRecyclerFragment
+import com.fungo.baseuilib.recycler.item.DividerItemDecoration
 import com.fungo.sample.data.api.GankApi
 
 /**
@@ -37,5 +41,9 @@ class GankDataFragment : BaseRecyclerFragment() {
 
     override fun initPageView() {
         register(GankDataBean::class.java, GankDataHolder())
+    }
+
+    override fun generateItemDivider(): RecyclerView.ItemDecoration {
+        return DividerItemDecoration(ContextCompat.getColor(context!!, R.color.grey_f2),height = 12)
     }
 }
