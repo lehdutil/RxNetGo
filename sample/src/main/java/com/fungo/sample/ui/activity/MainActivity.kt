@@ -1,6 +1,5 @@
 package com.fungo.sample.ui.activity
 
-import android.os.Bundle
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import com.fungo.baseuilib.activity.BasePageActivity
@@ -16,11 +15,6 @@ import com.fungo.sample.ui.fragment.MainFragment
 class MainActivity : BasePageActivity() {
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        addFallingView()
-    }
-
     override fun getPageFragment(): BaseFragment = MainFragment()
 
     /**
@@ -28,18 +22,25 @@ class MainActivity : BasePageActivity() {
      */
     override fun getAppTheme(): AppTheme = UiUtils.getRandomTheme()
 
+
+    override fun initPageView() {
+        addFallingView()
+    }
+
+
     private fun addFallingView() {
 
         // 添加雪花飘落的View
         val fallingView = FallingView(this)
         if (getRootView() is ViewGroup) {
             (getRootView() as ViewGroup).addView(fallingView)
-            fallingView.bringToFront()
         }
         val snowDrawable = ContextCompat.getDrawable(this, R.drawable.ic_snow)
         if (snowDrawable != null) {
-            val fallingEntity = FallingEntity.Builder(snowDrawable).build()
-            fallingView.addFallEntity(fallingEntity, 10)
+            val fallingEntity = FallingEntity.Builder(snowDrawable)
+                    .setSize(56, 56)
+                    .build()
+            fallingView.addFallEntity(fallingEntity, 50)
         }
     }
 
