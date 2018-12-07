@@ -21,6 +21,57 @@ import java.util.*
 
 class FallingEntity {
 
+    companion object {
+        const val defaultSpeed = 10            // 默认下降速度
+        const val defaultWindLevel = 0         // 默认风力等级
+        const val defaultWindSpeed = 10        // 默认单位风速
+        const val HALF_PI = Math.PI.toFloat() / 2 // π/2
+
+
+        /**
+         * drawable图片资源转bitmap
+         *
+         * @param drawable
+         * @return
+         */
+        fun drawableToBitmap(drawable: Drawable): Bitmap {
+            val bitmap = Bitmap.createBitmap(
+                    drawable.intrinsicWidth,
+                    drawable.intrinsicHeight,
+                    if (drawable.opacity != PixelFormat.OPAQUE)
+                        Bitmap.Config.ARGB_8888
+                    else
+                        Bitmap.Config.RGB_565)
+            val canvas = Canvas(bitmap)
+            drawable.setBounds(0, 0, drawable.intrinsicWidth, drawable.intrinsicHeight)
+            drawable.draw(canvas)
+            return bitmap
+        }
+
+        /**
+         * 改变bitmap的大小
+         *
+         * @param bitmap 目标bitmap
+         * @param newW   目标宽度
+         * @param newH   目标高度
+         * @return
+         */
+        fun changeBitmapSize(bitmap: Bitmap?, newW: Int, newH: Int): Bitmap? {
+            var newBitmap = bitmap
+            val oldW = newBitmap!!.width
+            val oldH = newBitmap.height
+            // 计算缩放比例
+            val scaleWidth = newW.toFloat() / oldW
+            val scaleHeight = newH.toFloat() / oldH
+            // 取得想要缩放的matrix参数
+            val matrix = Matrix()
+            matrix.postScale(scaleWidth, scaleHeight)
+            // 得到新的图片
+            newBitmap = Bitmap.createBitmap(newBitmap, 0, 0, oldW, oldH, matrix, true)
+            return newBitmap
+        }
+    }
+
     private var initX: Int = 0
     private var initY: Int = 0
     private val random: Random = Random()
@@ -29,10 +80,6 @@ class FallingEntity {
     private var objectWidth: Float = 0.toFloat()   // 下落物体宽度
     private var objectHeight: Float = 0.toFloat()  // 下落物体高度
 
-    private val defaultSpeed = 10            // 默认下降速度
-    private val defaultWindLevel = 0         // 默认风力等级
-    private val defaultWindSpeed = 10        // 默认单位风速
-    private val HALF_PI = Math.PI.toFloat() / 2 // π/2
 
     private var initSpeed: Int = 0       // 初始下降速度
     private var initWindLevel: Int = 0   // 初始风力等级
@@ -43,7 +90,7 @@ class FallingEntity {
     private var angle: Float = 0.toFloat()         // 物体下落角度
 
     private var bitmap: Bitmap? = null
-    lateinit var builder: Builder
+    private var builder: Builder
 
     private var isSpeedRandom: Boolean = false // 物体初始下降速度比例是否随机
     private var isSizeRandom: Boolean = false  // 物体初始大小比例是否随机
@@ -81,9 +128,7 @@ class FallingEntity {
         isWindChange = builder.isWindChange
     }
 
-    constructor()
-
-    inner class Builder {
+    class Builder {
         var initSpeed: Int = 0
         var initWindLevel: Int = 0
         var bitmap: Bitmap? = null
@@ -236,10 +281,10 @@ class FallingEntity {
      * 随机物体初始下落速度
      */
     private fun randomSpeed() {
-        if (isSpeedRandom) {
-            presentSpeed = ((random.nextInt(3) + 1) * 0.1 + 1).toFloat() * initSpeed//这些随机数大家可以按自己的需要进行调整
+        presentSpeed = if (isSpeedRandom) {
+            ((random.nextInt(3) + 1) * 0.1 + 1).toFloat() * initSpeed//这些随机数大家可以按自己的需要进行调整
         } else {
-            presentSpeed = initSpeed.toFloat()
+            initSpeed.toFloat()
         }
     }
 
@@ -247,13 +292,13 @@ class FallingEntity {
      * 随机物体初始大小比例
      */
     private fun randomSize() {
-        if (isSizeRandom) {
+        bitmap = if (isSizeRandom) {
             val r = (random.nextInt(10) + 1) * 0.1f
             val rW = r * builder.bitmap!!.width
             val rH = r * builder.bitmap!!.height
-            bitmap = changeBitmapSize(builder.bitmap, rW.toInt(), rH.toInt())
+            changeBitmapSize(builder.bitmap, rW.toInt(), rH.toInt())
         } else {
-            bitmap = builder.bitmap
+            builder.bitmap
         }
         objectWidth = bitmap!!.width.toFloat()
         objectHeight = bitmap!!.height.toFloat()
@@ -263,10 +308,10 @@ class FallingEntity {
      * 随机风的风向和风力大小比例，即随机物体初始下落角度
      */
     private fun randomWind() {
-        if (isWindRandom) {
-            angle = ((if (random.nextBoolean()) -1 else 1).toDouble() * Math.random() * initWindLevel.toDouble() / 50).toFloat()
+        angle = if (isWindRandom) {
+            ((if (random.nextBoolean()) -1 else 1).toDouble() * Math.random() * initWindLevel.toDouble() / 50).toFloat()
         } else {
-            angle = initWindLevel.toFloat() / 50
+            initWindLevel.toFloat() / 50
         }
 
         // 限制angle的最大最小值
@@ -278,47 +323,9 @@ class FallingEntity {
     }
 
 
-    /**
-     * drawable图片资源转bitmap
-     *
-     * @param drawable
-     * @return
-     */
-    fun drawableToBitmap(drawable: Drawable): Bitmap {
-        val bitmap = Bitmap.createBitmap(
-                drawable.intrinsicWidth,
-                drawable.intrinsicHeight,
-                if (drawable.opacity != PixelFormat.OPAQUE)
-                    Bitmap.Config.ARGB_8888
-                else
-                    Bitmap.Config.RGB_565)
-        val canvas = Canvas(bitmap)
-        drawable.setBounds(0, 0, drawable.intrinsicWidth, drawable.intrinsicHeight)
-        drawable.draw(canvas)
-        return bitmap
+    fun getBuilder(): Builder {
+        return builder
     }
 
-    /**
-     * 改变bitmap的大小
-     *
-     * @param bitmap 目标bitmap
-     * @param newW   目标宽度
-     * @param newH   目标高度
-     * @return
-     */
-    fun changeBitmapSize(bitmap: Bitmap?, newW: Int, newH: Int): Bitmap? {
-        var newBitmap = bitmap
-        val oldW = newBitmap!!.width
-        val oldH = newBitmap.height
-        // 计算缩放比例
-        val scaleWidth = newW.toFloat() / oldW
-        val scaleHeight = newH.toFloat() / oldH
-        // 取得想要缩放的matrix参数
-        val matrix = Matrix()
-        matrix.postScale(scaleWidth, scaleHeight)
-        // 得到新的图片
-        newBitmap = Bitmap.createBitmap(newBitmap, 0, 0, oldW, oldH, matrix, true)
-        return newBitmap
-    }
 
 }

@@ -134,7 +134,7 @@ object UiUtils {
     /**
      * 获取某一个属性的主题颜色
      */
-    fun getThemeColor(context: Context, attrRes: Int): Int {
+    fun getThemeColor(context: Context, attrRes: Int = R.attr.colorPrimary): Int {
         val theme = context.theme
         val typedArray = theme.obtainStyledAttributes(intArrayOf(attrRes))
         val color = typedArray.getColor(0, Color.LTGRAY)

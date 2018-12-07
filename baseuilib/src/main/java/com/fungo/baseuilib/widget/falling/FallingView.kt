@@ -5,7 +5,6 @@ import android.graphics.Canvas
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewTreeObserver
-import java.util.*
 
 /**
  * @author Pinger
@@ -16,8 +15,7 @@ import java.util.*
 
 class FallingView : View {
 
-
-    private var mFallingEntities: MutableList<FallingEntity>? = null
+    private var mFallingEntities = arrayListOf<FallingEntity>()
 
     private var viewWidth: Int = 0
     private var viewHeight: Int = 0
@@ -30,17 +28,10 @@ class FallingView : View {
     // 重绘线程
     private val runnable = Runnable { invalidate() }
 
-    constructor(context: Context) : super(context) {
-        init()
-    }
+    constructor(context: Context) : super(context)
 
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
-        init()
-    }
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
 
-    private fun init() {
-        mFallingEntities = ArrayList()
-    }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
@@ -67,10 +58,10 @@ class FallingView : View {
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        if (mFallingEntities!!.size > 0) {
-            for (i in mFallingEntities!!.indices) {
+        if (mFallingEntities.size > 0) {
+            for (i in mFallingEntities.indices) {
                 // 然后进行绘制
-                mFallingEntities!![i].drawObject(canvas)
+                mFallingEntities[i].drawObject(canvas)
             }
             // 隔一段时间重绘一次, 动画效果
             handler.postDelayed(runnable, intervalTime.toLong())
@@ -88,8 +79,7 @@ class FallingView : View {
             override fun onPreDraw(): Boolean {
                 viewTreeObserver.removeOnPreDrawListener(this)
                 for (i in 0 until num) {
-                    val newFallEntity = FallingEntity(fallingEntity.builder, viewWidth, viewHeight)
-                    mFallingEntities!!.add(newFallEntity)
+                    mFallingEntities.add(FallingEntity(fallingEntity.getBuilder(), viewWidth, viewHeight))
                 }
                 invalidate()
                 return true

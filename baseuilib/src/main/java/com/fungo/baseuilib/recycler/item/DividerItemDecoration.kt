@@ -15,18 +15,15 @@ import java.util.*
  * 线性分割线
  */
 class DividerItemDecoration(
-    val color: Int = Color.DKGRAY,
-    val height: Int = 3,
-    paddingLeft: Int = 0,
-    paddingRight: Int = 0,
-    backgroundColor: Int = Color.TRANSPARENT
+        color: Int = Color.DKGRAY,
+        var height: Int = 3,
+        val paddingLeft: Int = 0,
+        val paddingRight: Int = 0,
+        backgroundColor: Int = Color.TRANSPARENT
 ) : RecyclerView.ItemDecoration() {
 
     private val mBackgroundColorDrawable: ColorDrawable = ColorDrawable(backgroundColor)
     private var mDividerColorDrawable: ColorDrawable = ColorDrawable(color)
-    private var mHeight: Int = height
-    private val mPaddingLeft: Int = paddingLeft
-    private val mPaddingRight: Int = paddingRight
     private var mDrawLastItem = true
     private var mDrawHeaderFooter = false
     private var mDividerFilterList: MutableList<DividerFilter>? = null
@@ -72,10 +69,6 @@ class DividerItemDecoration(
             is LinearLayoutManager -> orientation = layoutManager.orientation
         }
 
-        var dividerHeight = mHeight
-
-        // 分割线过滤，被过滤的位置不绘制分割线
-
         // 分割线过滤，被过滤的位置不绘制分割线
         if (mDividerFilterList != null) {
             var skip = false
@@ -86,30 +79,30 @@ class DividerItemDecoration(
                 }
             }
             if (skip) {
-                dividerHeight = 0
+                height = 0
             }
         }
 
         if (position >= 0 && position < parent.adapter!!.itemCount || mDrawHeaderFooter) {
             if (orientation == OrientationHelper.VERTICAL) {
                 if (position == 0 && mDrawFirstDivider) {
-                    outRect.top = dividerHeight
+                    outRect.top = height
                 }
-                if (position != parent.adapter!!.getItemCount() - 1 || mDrawLastDivider) {
-                    outRect.bottom = dividerHeight
+                if (position != parent.adapter!!.itemCount - 1 || mDrawLastDivider) {
+                    outRect.bottom = height
                 }
             } else {
                 if (position == 0 && mDrawFirstDivider) {
-                    outRect.left = dividerHeight
+                    outRect.left = height
                 }
-                if (position != parent.adapter!!.getItemCount() - 1 || mDrawLastDivider) {
-                    outRect.right = dividerHeight
+                if (position != parent.adapter!!.itemCount - 1 || mDrawLastDivider) {
+                    outRect.right = height
                 }
             }
         }
     }
 
-    override fun onDrawOver(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
+    override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
 
         if (parent.adapter == null) {
             return
@@ -129,11 +122,11 @@ class DividerItemDecoration(
         val start: Int
         val end: Int
         if (orientation == OrientationHelper.VERTICAL) {
-            start = parent.paddingLeft + mPaddingLeft
-            end = parent.width - parent.paddingRight - mPaddingRight
+            start = parent.paddingLeft + paddingLeft
+            end = parent.width - parent.paddingRight - paddingRight
         } else {
-            start = parent.paddingTop + mPaddingLeft
-            end = parent.height - parent.paddingBottom - mPaddingRight
+            start = parent.paddingTop + paddingLeft
+            end = parent.height - parent.paddingBottom - paddingRight
         }
 
         val childCount = parent.childCount
@@ -143,15 +136,15 @@ class DividerItemDecoration(
 
             if (position >= 0 && position < dataCount - 1//数据项除了最后一项
 
-                || position == dataCount - 1 && mDrawLastItem//数据项最后一项
+                    || position == dataCount - 1 && mDrawLastItem//数据项最后一项
 
-                || position !in 0..(dataCount - 1) && mDrawHeaderFooter
+                    || position !in 0..(dataCount - 1) && mDrawHeaderFooter
             ) {
 
                 if (orientation == OrientationHelper.VERTICAL) {
                     val params = child.layoutParams as RecyclerView.LayoutParams
                     val top = child.bottom + params.bottomMargin
-                    val bottom = top + mHeight
+                    val bottom = top + height
                     if (start > 0) {
                         mBackgroundColorDrawable.setBounds(0, top, start, bottom)
                         mBackgroundColorDrawable.draw(c)
@@ -166,7 +159,7 @@ class DividerItemDecoration(
                 } else {
                     val params = child.layoutParams as RecyclerView.LayoutParams
                     val left = child.right + params.rightMargin
-                    val right = left + mHeight
+                    val right = left + height
                     if (start > 0) {
                         mBackgroundColorDrawable.setBounds(left, 0, right, end)
                         mBackgroundColorDrawable.draw(c)

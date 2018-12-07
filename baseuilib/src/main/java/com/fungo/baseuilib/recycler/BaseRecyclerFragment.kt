@@ -110,9 +110,8 @@ abstract class BaseRecyclerFragment : BaseNavFragment(), BaseRecyclerContract.Vi
      * 生成分割线
      */
     protected open fun generateItemDivider(): RecyclerView.ItemDecoration {
-        return DividerItemDecoration(color = ContextCompat.getColor(context!!, R.color.line_grey))
+        return DividerItemDecoration(ContextCompat.getColor(context!!, R.color.line_grey))
     }
-
 
     /**
      * 展示所有数据
