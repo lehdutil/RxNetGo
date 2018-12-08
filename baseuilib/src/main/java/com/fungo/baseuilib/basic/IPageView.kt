@@ -8,21 +8,14 @@ package com.fungo.baseuilib.basic
  */
 interface IPageView {
 
-    fun showPageLoadingDialog()
-
-    fun showPageLoadingDialog(msg: String)
-
+    fun showPageLoadingDialog(msg: String? = null)
     fun hidePageLoadingDialog()
 
-    fun showPageLoading()
-    fun showPageLoading(msg: String)
-
+    fun showPageLoading(msg: String? = null)
     fun hidePageLoading()
 
-    fun showPageEmpty()
-
-    fun showPageError()
-    fun showPageError(msg: String?)
+    fun showPageEmpty(msg: String? = null)
+    fun showPageError(msg: String? = null)
 
     fun showPageContent()
 }

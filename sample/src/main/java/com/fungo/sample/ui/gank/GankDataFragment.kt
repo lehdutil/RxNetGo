@@ -3,11 +3,14 @@ package com.fungo.sample.ui.gank
 import android.os.Bundle
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.fungo.baseuilib.R
 import com.fungo.baseuilib.recycler.BaseRecyclerContract
 import com.fungo.baseuilib.recycler.BaseRecyclerFragment
 import com.fungo.baseuilib.recycler.item.DividerItemDecoration
+import com.fungo.baseuilib.recycler.item.GridItemSpaceDecoration
 import com.fungo.sample.data.api.GankApi
+
 
 /**
  * @author Pinger
@@ -31,7 +34,6 @@ class GankDataFragment : BaseRecyclerFragment() {
         }
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         mGankType = arguments?.getString(GANK_TYPE) ?: GankApi.GANK_TYPE_ALL
         super.onCreate(savedInstanceState)
@@ -40,10 +42,20 @@ class GankDataFragment : BaseRecyclerFragment() {
     override fun getPresenter(): BaseRecyclerContract.Presenter = GankDataPresenter(this, mGankType)
 
     override fun initPageView() {
-        register(GankDataBean::class.java, GankDataHolder())
+        register(GankDataBean::class.java, GankDataHolder(mGankType))
     }
 
     override fun generateItemDivider(): RecyclerView.ItemDecoration {
-        return DividerItemDecoration(ContextCompat.getColor(context!!, R.color.grey_f2),height = 12)
+        return if (mGankType == GankApi.GANK_TYPE_WELFARE) {
+            GridItemSpaceDecoration(2, 24, 24)
+        } else {
+            DividerItemDecoration(ContextCompat.getColor(context!!, R.color.grey_f2), height = 18)
+        }
+    }
+
+    override fun getLayoutManager(): RecyclerView.LayoutManager {
+        return if (mGankType == GankApi.GANK_TYPE_WELFARE) {
+            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        } else super.getLayoutManager()
     }
 }

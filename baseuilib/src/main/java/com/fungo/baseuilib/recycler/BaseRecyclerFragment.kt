@@ -60,16 +60,16 @@ abstract class BaseRecyclerFragment : BaseNavFragment(), BaseRecyclerContract.Vi
             mPresenter.loadData(mPage)
         }
 
-        val layoutManager = LinearLayoutManager(context)
-        mRecyclerView?.layoutManager = layoutManager
+        mRecyclerView?.layoutManager = getLayoutManager()
         mAdapter = getAdapter()
         mRecyclerView?.adapter = mAdapter
-        mRecyclerView?.addItemDecoration(generateItemDivider())
+        if (generateItemDivider() != null) {
+            mRecyclerView?.addItemDecoration(generateItemDivider()!!)
+        }
         setPageErrorRetryListener(View.OnClickListener { initData() })
 
         initPageView()
     }
-
 
     final override fun initData() {
         mPage = 0
@@ -107,9 +107,16 @@ abstract class BaseRecyclerFragment : BaseNavFragment(), BaseRecyclerContract.Vi
     protected open fun getRecyclerView(): RecyclerView = baseNavRecyclerView
 
     /**
+     * 子类生成布局管理器
+     */
+    protected open fun getLayoutManager(): RecyclerView.LayoutManager {
+        return LinearLayoutManager(context)
+    }
+
+    /**
      * 生成分割线
      */
-    protected open fun generateItemDivider(): RecyclerView.ItemDecoration {
+    protected open fun generateItemDivider(): RecyclerView.ItemDecoration? {
         return DividerItemDecoration(ContextCompat.getColor(context!!, R.color.line_grey))
     }
 
@@ -257,9 +264,9 @@ abstract class BaseRecyclerFragment : BaseNavFragment(), BaseRecyclerContract.Vi
     /**
      * 当展示空视图的时候，可以下拉，但是不可以上拉
      */
-    override fun showPageEmpty() {
+    override fun showPageEmpty(msg: String?) {
         mSmartRefreshLayout?.isEnableLoadmore = false
-        super.showPageEmpty()
+        super.showPageEmpty(msg)
     }
 
 

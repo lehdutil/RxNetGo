@@ -1,6 +1,7 @@
 package com.fungo.baseuilib.fragment
 
 import android.app.AlertDialog
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
@@ -178,7 +179,11 @@ abstract class BaseNavFragment : BaseFragment() {
      * 展示加载对话框
      * 适用于页面UI已经绘制了，需要再加载数据更新的情况
      */
-    open fun showPageLoadingDialog(msg: String) {
+    open fun showPageLoadingDialog(msg: String? = null) {
+        val loadingText = if (TextUtils.isEmpty(msg)) {
+            getString(R.string.app_loading)
+        } else msg
+
         if (mLoadingDialog == null) {
             mLoadingDialog = AlertDialog.Builder(context).create()
             mLoadingDialog!!.setCanceledOnTouchOutside(false)
@@ -188,13 +193,9 @@ abstract class BaseNavFragment : BaseFragment() {
             mLoadingDialog!!.show()
             val dialogView = LayoutInflater.from(context).inflate(R.layout.base_layout_loading_dialog, null)
             mLoadingDialog!!.setContentView(dialogView)
-            dialogView.findViewById<TextView>(R.id.tvLoadingMessage).text = msg
+            dialogView.findViewById<TextView>(R.id.tvLoadingMessage).text = loadingText
             isLoadingDialogShowing = true
         }
-    }
-
-    open fun showPageLoadingDialog() {
-        showPageLoadingDialog(getString(R.string.app_loading))
     }
 
     /**
@@ -208,12 +209,7 @@ abstract class BaseNavFragment : BaseFragment() {
     /**
      * 展示加载中的占位图
      */
-    open fun showPageLoading() {
-        basePlaceholder?.showLoading()
-        isLoadingShowing = true
-    }
-
-    open fun showPageLoading(msg: String) {
+    open fun showPageLoading(msg: String? = null) {
         basePlaceholder?.showLoading()
         basePlaceholder?.setPageLoadingText(msg)
         isLoadingShowing = true
@@ -227,18 +223,15 @@ abstract class BaseNavFragment : BaseFragment() {
     /**
      * 展示空数据的占位图
      */
-    open fun showPageEmpty() {
+    open fun showPageEmpty(msg: String? = null) {
+        basePlaceholder.setPageEmptyText(msg)
         basePlaceholder?.showEmpty()
     }
 
     /**
      * 展示加载错误的占位图
      */
-    open fun showPageError() {
-        showPageError(null)
-    }
-
-    open fun showPageError(msg: String?) {
+    open fun showPageError(msg: String? = null) {
         basePlaceholder?.setPageErrorText(msg)
         basePlaceholder?.showError()
     }

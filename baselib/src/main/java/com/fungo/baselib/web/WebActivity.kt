@@ -31,7 +31,7 @@ class WebActivity : BaseSwipeBackActivity() {
      * 跳转暂时使用传统方法
      */
     companion object {
-        fun start(context: Context?, url: String, title: String? = null, webBack: Boolean = true) {
+        fun start(context: Context?, url: String?, title: String? = null, webBack: Boolean = true) {
             val intent = Intent(context, WebActivity::class.java)
             intent.putExtra(WebConstant.KEY_WEB_URL, url)
             intent.putExtra(WebConstant.KEY_WEB_TITLE, title)

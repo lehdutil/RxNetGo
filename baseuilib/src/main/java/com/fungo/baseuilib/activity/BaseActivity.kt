@@ -53,7 +53,6 @@ abstract class BaseActivity : SupportActivity(), IView {
      * 提前初始化状态栏和主题颜色等属性
      */
     private fun initPre() {
-
         if (isSetAppTheme()) {
             // 主题
             UiUtils.setAppTheme(this, getAppTheme())

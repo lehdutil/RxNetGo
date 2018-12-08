@@ -24,8 +24,8 @@ class PlaceholderView : FrameLayout {
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
 
     constructor(
-        context: Context, attrs: AttributeSet?,
-        defStyleAttr: Int
+            context: Context, attrs: AttributeSet?,
+            defStyleAttr: Int
     ) : super(context, attrs, defStyleAttr)
 
     init {
@@ -113,7 +113,9 @@ class PlaceholderView : FrameLayout {
     /**
      * 设置页面加载中的提示信息
      */
-    fun setPageLoadingText(loadingMsg: String) {
-        tvLoading?.text = loadingMsg
+    fun setPageLoadingText(loadingMsg: String?) {
+        if (!TextUtils.isEmpty(loadingMsg)) {
+            tvLoading?.text = loadingMsg
+        }
     }
 }

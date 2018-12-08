@@ -11,6 +11,7 @@ import android.view.KeyEvent
 import android.view.View
 import android.webkit.*
 import android.widget.ProgressBar
+import com.fungo.baselib.R
 import com.fungo.baselib.web.sonic.SonicRuntimeImpl
 import com.fungo.baselib.web.sonic.SonicSessionClientImpl
 import com.fungo.baseuilib.fragment.BaseNavFragment
@@ -70,7 +71,7 @@ abstract class BaseWebFragment : BaseNavFragment() {
 
     override fun initData() {
         if (TextUtils.isEmpty(mWebUrl)) {
-            showPageEmpty()
+            showPageEmpty(getString(R.string.app_web_empty))
             return
         }
         loadUrl(mWebUrl)

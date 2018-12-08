@@ -26,7 +26,7 @@ class WebFragment : BaseWebFragment() {
     companion object {
         private const val FILE_CHOOSER_RESULT_CODE = 1001
 
-        fun getInstance(url: String, title: String? = null, webBack: Boolean = true, swipeBack: Boolean = true): WebFragment {
+        fun getInstance(url: String?, title: String? = null, webBack: Boolean = true, swipeBack: Boolean = true): WebFragment {
             val fragment = WebFragment()
             val bundle = Bundle()
             bundle.putString(WebConstant.KEY_WEB_URL, url)

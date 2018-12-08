@@ -11,7 +11,6 @@ import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
-import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import com.fungo.baselib.R
@@ -33,14 +32,12 @@ object AppUtils {
     private lateinit var mApplication: Application
     private val mActivityList = LinkedList<Activity>()
 
-
     /**
      * 初始化Application，获取引用，和注册全局Handle
      */
     fun init(application: Application) {
         mApplication = application
         mHandler = Handler()
-        //registerActivityCallback()
     }
 
     /**
@@ -211,42 +208,6 @@ object AppUtils {
         return mActivityList
     }
 
-
-    /**
-     * Activity生命周期回调
-     */
-    private fun registerActivityCallback() {
-        mApplication.registerActivityLifecycleCallbacks(object : Application.ActivityLifecycleCallbacks {
-            override fun onActivityCreated(activity: Activity, bundle: Bundle) {
-                setTopActivity(activity)
-            }
-
-            override fun onActivityStarted(activity: Activity) {
-                setTopActivity(activity)
-            }
-
-            override fun onActivityResumed(activity: Activity) {
-                setTopActivity(activity)
-            }
-
-            override fun onActivityPaused(activity: Activity) {
-
-            }
-
-            override fun onActivityStopped(activity: Activity) {
-
-            }
-
-            override fun onActivitySaveInstanceState(activity: Activity, bundle: Bundle) {
-
-            }
-
-            override fun onActivityDestroyed(activity: Activity) {
-                mActivityList.remove(activity)
-            }
-        })
-    }
-
     /**
      * Post一个Runnable
      */
@@ -316,19 +277,18 @@ object AppUtils {
     /**
      * 跳转到Web页面，跳转Activity
      */
-    fun startWebActivity(context: Context?, url: String, title: String? = null, canBack: Boolean = true) {
+    fun startWebActivity(context: Context?, url: String?, title: String? = null, canBack: Boolean = true) {
         WebActivity.start(context, url, title, canBack)
     }
 
     /**
      * 跳转到Web页面，跳转Fragment
      */
-    fun startWebFragment(context: Context?, url: String, title: String? = null, webBack: Boolean = true, swipeBack: Boolean = true) {
+    fun startWebFragment(context: Context?, url: String?, title: String? = null, webBack: Boolean = true, swipeBack: Boolean = true) {
         if (context is BaseActivity) {
             context.start(WebFragment.getInstance(url, title, webBack, swipeBack))
         }
     }
-
 
     /**
      * 安装app
