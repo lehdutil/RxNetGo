@@ -27,8 +27,7 @@
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/baseNavTabLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:tabTextColor="@color/white" />
+            android:layout_height="wrap_content"/>
 
 
     </com.google.android.material.appbar.AppBarLayout>
