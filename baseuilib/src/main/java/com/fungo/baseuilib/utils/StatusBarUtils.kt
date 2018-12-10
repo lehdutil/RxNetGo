@@ -9,6 +9,8 @@ import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import androidx.annotation.IntDef
+import com.fungo.baseuilib.R
+import com.fungo.baseuilib.theme.UiUtils
 
 
 /**
@@ -35,11 +37,13 @@ object StatusBarUtils {
     fun setStatusBarTranslucent(activity: Activity) {
         // 先清除掉全屏模式
         clearFullScreen(activity)
-        val window = activity.window
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-        window.statusBarColor = Color.TRANSPARENT
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            val window = activity.window
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            window.statusBarColor = Color.TRANSPARENT
+        }
     }
 
     /**
@@ -55,6 +59,16 @@ object StatusBarUtils {
         if (setMIUIStatusBarLightMode(activity, isBlack)) return
         // 魅族系统
         if (setFlymeStatusBarLightMode(activity.window, isBlack)) return
+    }
+
+    /**
+     * 设置状态栏颜色
+     */
+    fun setStatusBarColor(activity: Activity) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            val window = activity.window
+            window.statusBarColor = UiUtils.getThemeColor(activity, R.attr.colorPrimaryDark)
+        }
     }
 
 

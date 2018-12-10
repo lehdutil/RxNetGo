@@ -58,4 +58,6 @@ class GankDataFragment : BaseRecyclerFragment() {
             StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         } else super.getLayoutManager()
     }
+
+    override fun getStartPage(): Int = 1
 }

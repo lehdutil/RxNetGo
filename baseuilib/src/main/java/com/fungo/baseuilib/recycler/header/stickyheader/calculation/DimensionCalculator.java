@@ -1,4 +1,4 @@
-package com.fungo.baseuilib.recycler.stickyheader.calculation;
+package com.fungo.baseuilib.recycler.header.stickyheader.calculation;
 
 import android.graphics.Rect;
 import android.view.View;

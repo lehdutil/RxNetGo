@@ -1,9 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!--自定义主题属性-->
     <attr name="colorWhite" format="color" />
     <attr name="colorBlack" format="color" />
 
-    <!-- 以下是重用attr的正确姿势,一切为了在布局中可以自动提示-->
+    <!--谷歌下拉头属性-->
+    <declare-styleable name="GoogleMaterialHeader">
+        <attr name="gmhPrimaryColor" format="color" />
+        <attr name="gmhShadowColor" format="color" />
+        <attr name="gmhShadowRadius" format="dimension" />
+        <attr name="gmhShowBezierWave" format="boolean" />
+    </declare-styleable>
+
+
+    <!--圆角布局属性-->
     <!-- 圆角矩形背景色 -->
     <attr name="rv_backgroundColor" format="color" />
     <!-- 圆角矩形背景色press -->

@@ -65,11 +65,7 @@ interface IView : View.OnClickListener {
     fun showLongToast(@StringRes resId: Int)
 
     // 判空
-    fun checkNotNull(any: Any?) {
-        checkNotNull(any, "$any not be null.")
-    }
-
-    fun checkNotNull(any: Any?, msg: String) {
+    fun checkNotNull(any: Any?, msg: String? = "$any not be null.") {
         if (any == null) {
             throw NullPointerException(msg)
         }

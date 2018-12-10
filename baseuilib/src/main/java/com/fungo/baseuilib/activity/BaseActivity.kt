@@ -61,6 +61,8 @@ abstract class BaseActivity : SupportActivity(), IView {
         // 沉浸式
         if (isStatusBarTranslate()) {
             StatusBarUtils.setStatusBarTranslucent(this)
+        } else {
+            StatusBarUtils.setStatusBarColor(this)
         }
 
         // 设置状态栏前景颜色

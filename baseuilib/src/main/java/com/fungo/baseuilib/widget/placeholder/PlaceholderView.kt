@@ -19,35 +19,29 @@ import kotlinx.android.synthetic.main.base_layout_place_holder.view.*
 class PlaceholderView : FrameLayout {
 
 
-    constructor(context: Context) : this(context, null)
-
-    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
-
-    constructor(
-            context: Context, attrs: AttributeSet?,
-            defStyleAttr: Int
-    ) : super(context, attrs, defStyleAttr)
-
     init {
         visibility = View.GONE
         LayoutInflater.from(context).inflate(R.layout.base_layout_place_holder, this)
     }
 
+    constructor(context: Context) : this(context, null)
+    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
+    constructor(
+            context: Context, attrs: AttributeSet?,
+            defStyleAttr: Int
+    ) : super(context, attrs, defStyleAttr)
 
     fun showLoading() {
         performViewVisible(true, false, false)
     }
 
-
     fun showEmpty() {
         performViewVisible(false, true, false)
     }
 
-
     fun showError() {
         performViewVisible(false, false, true)
     }
-
 
     fun showContent() {
         visibility = View.GONE
@@ -59,7 +53,6 @@ class PlaceholderView : FrameLayout {
     fun hideLoading() {
         showContent()
     }
-
 
     /**
      * 统一处理各种状态
@@ -85,7 +78,6 @@ class PlaceholderView : FrameLayout {
         visibility = View.VISIBLE
     }
 
-
     /**
      * 设置错误重连的监听
      */
@@ -93,7 +85,6 @@ class PlaceholderView : FrameLayout {
         tvErrorRetry?.visibility = View.VISIBLE
         tvErrorRetry?.setOnClickListener(listener)
     }
-
 
     /**
      * 设置页面错误的提示信息
@@ -118,4 +109,14 @@ class PlaceholderView : FrameLayout {
             tvLoading?.text = loadingMsg
         }
     }
+
+
+    /**
+     * 是否正在加载中
+     */
+    fun isLoading(): Boolean {
+        return this.visibility == View.VISIBLE && loadingContainer.visibility == View.VISIBLE
+    }
+
+
 }

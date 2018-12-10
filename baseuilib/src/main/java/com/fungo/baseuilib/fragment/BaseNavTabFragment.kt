@@ -1,27 +1,25 @@
-package com.fungo.baseuilib.activity
+package com.fungo.baseuilib.fragment
 
 import androidx.appcompat.widget.Toolbar
 import com.fungo.baseuilib.R
 import com.fungo.baseuilib.adapter.BaseFragmentPageAdapter
-import com.fungo.baseuilib.fragment.BaseFragment
 import com.fungo.baseuilib.theme.UiUtils
 import com.fungo.baseuilib.utils.ViewUtils
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
 import com.mikepenz.google_material_typeface_library.GoogleMaterial
 import kotlinx.android.synthetic.main.base_nav_tab.*
 
 /**
  * @author Pinger
- * @since 18-12-7 下午4:16
- *
- * 带有导航栏和TabLayout的Activity
- * 使用ViewPager填充Fragment
+ * @since 18-12-10 下午6:01
  */
-abstract class BaseNavTabActivity(override val layoutResID: Int = R.layout.base_nav_tab) : BaseActivity() {
+abstract class BaseNavTabFragment : BaseFragment() {
+
+    override fun getLayoutResID(): Int = R.layout.base_nav_tab
 
     // 导航栏标题
     private var mPageTitle: String? = null
-
 
     final override fun initView() {
         // 设置是否展示标题栏
@@ -38,13 +36,13 @@ abstract class BaseNavTabActivity(override val layoutResID: Int = R.layout.base_
                 isShowBackIcon()
                 R.style.ToolbarMainTextAppearance
             } else R.style.ToolbarTextAppearance
-            baseNavToolbar.setTitleTextAppearance(this, toolbarTitleStyle)
+            baseNavToolbar.setTitleTextAppearance(context, toolbarTitleStyle)
 
 
             // 左侧返回按钮
             if (isShowBackIcon()) {
                 baseNavToolbar.navigationIcon =
-                        UiUtils.getIconFont(this, GoogleMaterial.Icon.gmd_arrow_back, color = R.attr.colorWhite)
+                        UiUtils.getIconFont(context!!, GoogleMaterial.Icon.gmd_arrow_back, color = R.attr.colorWhite)
                 baseNavToolbar.setNavigationOnClickListener {
                     onBackClick()
                 }
@@ -60,7 +58,7 @@ abstract class BaseNavTabActivity(override val layoutResID: Int = R.layout.base_
         }
 
         val fragments = getFragments()
-        val adapter = BaseFragmentPageAdapter(supportFragmentManager, fragments, getTitles())
+        val adapter = BaseFragmentPageAdapter(childFragmentManager, fragments, getTitles())
         baseNavViewPager.adapter = adapter
         baseNavViewPager.offscreenPageLimit = fragments.size
         baseNavTabLayout.tabMode = TabLayout.MODE_SCROLLABLE
@@ -81,19 +79,23 @@ abstract class BaseNavTabActivity(override val layoutResID: Int = R.layout.base_
      */
     abstract fun getTitles(): ArrayList<String>
 
-
-    /**
-     * 不需要沉浸式
-     */
-    override fun isStatusBarTranslate(): Boolean = false
-
-
     /**
      * 给子类初始化View使用
      */
     protected open fun initContentView() {
 
     }
+
+    /**
+     * 获取菜单项资源ID
+     */
+    protected open fun getMenuResID(): Int = 0
+
+    /**
+     * 菜单项点击
+     */
+    protected open fun onMenuItemSelected(itemId: Int): Boolean = true
+
 
     /**
      * 获取标题栏对象，让子类主动去设置样式
@@ -138,7 +140,7 @@ abstract class BaseNavTabActivity(override val layoutResID: Int = R.layout.base_
      * 是否可以返回，如果可以则展示返回按钮，并且设置返回事件
      * 默认可以返回
      */
-    protected open fun isShowBackIcon(): Boolean = true
+    protected open fun isShowBackIcon(): Boolean = false
 
 
     /**
@@ -159,7 +161,5 @@ abstract class BaseNavTabActivity(override val layoutResID: Int = R.layout.base_
     /**
      * 获取悬浮按钮
      */
-    protected open fun getFloatActionButton() = baseNavFloatButton
-
-
+    protected open fun getFloatActionButton(): FloatingActionButton? = baseNavFloatButton
 }

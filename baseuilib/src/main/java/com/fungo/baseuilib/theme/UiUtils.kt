@@ -2,11 +2,14 @@ package com.fungo.baseuilib.theme
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import com.fungo.baseuilib.R
 import com.fungo.baseuilib.utils.ViewUtils
 import com.mikepenz.iconics.IconicsDrawable
@@ -166,14 +169,15 @@ object UiUtils {
 
     /**
      * 设置ImageView的图标
+     * 传入的是IconFont
      */
     fun setIconFont(
-            imageView: ImageView,
+            imageView: ImageView?,
             icon: IIcon,
             size: Int = 16,
             color: Int = R.attr.colorPrimary
     ) {
-        imageView.setImageDrawable(
+        imageView?.setImageDrawable(
                 IconicsDrawable(imageView.context)
                         .icon(icon)
                         .color(getThemeColor(imageView.context, color))
@@ -183,23 +187,44 @@ object UiUtils {
 
 
     /**
+     * 设置ImageView的图标
+     * 传入的是IconFont
+     */
+    fun setIconFont(
+            imageView: ImageView?,
+            drawable: Drawable?,
+            color: Int = R.attr.colorPrimary
+    ) {
+        if (imageView != null && drawable != null) {
+            val wrap = DrawableCompat.wrap(drawable)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                wrap.setTintList(ColorStateList.valueOf(getThemeColor(imageView.context, color)))
+            }
+            imageView.setImageDrawable(wrap)
+        }
+    }
+
+
+    /**
      * 设置TextView图标
      */
     fun setIconFont(
-            textView: TextView,
+            textView: TextView?,
             icon: IIcon,
             size: Int = 16,
             padding: Int = 4,
             color: Int = R.attr.colorPrimary
     ) {
-        textView.setCompoundDrawablesWithIntrinsicBounds(
-                IconicsDrawable(textView.context)
-                        .icon(icon)
-                        .color(getThemeColor(textView.context, color))
-                        .sizeDp(size),
-                null, null, null
-        )
-        textView.compoundDrawablePadding = ViewUtils.dp2px(textView.context, padding)
+        if (textView != null) {
+            textView.setCompoundDrawablesWithIntrinsicBounds(
+                    IconicsDrawable(textView.context)
+                            .icon(icon)
+                            .color(getThemeColor(textView.context, color))
+                            .sizeDp(size),
+                    null, null, null
+            )
+            textView.compoundDrawablePadding = ViewUtils.dp2px(textView.context, padding)
+        }
     }
 
 

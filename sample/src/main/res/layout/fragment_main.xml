@@ -18,9 +18,7 @@
         android:id="@+id/bottomBar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/grey_f2"
-        app:itemIconTint="?attr/colorPrimary"
-        app:itemTextColor="@color/text_black"
+        android:background="@color/grey_tab"
         app:menu="@menu/menu_bottom_bar" />
 
 

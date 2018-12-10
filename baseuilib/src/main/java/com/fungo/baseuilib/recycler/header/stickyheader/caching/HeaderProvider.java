@@ -1,4 +1,4 @@
-package com.fungo.baseuilib.recycler.stickyheader.caching;
+package com.fungo.baseuilib.recycler.header.stickyheader.caching;
 
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;

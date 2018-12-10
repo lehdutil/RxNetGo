@@ -24,6 +24,7 @@
     <color name="transparent_ff">#ebffffff</color>
 
     <!-- 灰色 -->
+    <color name="grey_tab">#FAFBFC</color>
     <color name="grey_dd">#DDDDDD</color>
     <color name="grey_f7">#F7F7F7</color>
     <color name="grey_f8">#F8F8F8</color>

@@ -1,4 +1,4 @@
-package com.fungo.baseuilib.recycler.stickyheader;
+package com.fungo.baseuilib.recycler.header.stickyheader;
 
 import android.graphics.Canvas;
 import android.graphics.Rect;
@@ -7,12 +7,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.util.SparseArray;
 import android.view.View;
 
-import com.fungo.baseuilib.recycler.stickyheader.caching.HeaderProvider;
-import com.fungo.baseuilib.recycler.stickyheader.caching.HeaderViewCache;
-import com.fungo.baseuilib.recycler.stickyheader.calculation.DimensionCalculator;
-import com.fungo.baseuilib.recycler.stickyheader.rendering.HeaderRenderer;
-import com.fungo.baseuilib.recycler.stickyheader.utils.LinearLayoutOrientationProvider;
-import com.fungo.baseuilib.recycler.stickyheader.utils.OrientationProvider;
+import com.fungo.baseuilib.recycler.header.stickyheader.caching.HeaderProvider;
+import com.fungo.baseuilib.recycler.header.stickyheader.caching.HeaderViewCache;
+import com.fungo.baseuilib.recycler.header.stickyheader.utils.LinearLayoutOrientationProvider;
+import com.fungo.baseuilib.recycler.header.stickyheader.utils.OrientationProvider;
+import com.fungo.baseuilib.recycler.header.stickyheader.calculation.DimensionCalculator;
+import com.fungo.baseuilib.recycler.header.stickyheader.rendering.HeaderRenderer;
 
 
 public class StickyRecyclerHeadersDecoration extends RecyclerView.ItemDecoration {

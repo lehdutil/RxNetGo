@@ -8,14 +8,10 @@
         android:id="@+id/baseNavAppBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
         android:orientation="vertical"
         android:theme="@style/AppTheme.AppBarOverlay">
 
-        <View
-            android:id="@+id/baseNavStatusView"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:background="?attr/colorPrimaryDark" />
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/baseNavToolbar"
@@ -24,6 +20,7 @@
             android:background="?attr/colorPrimary"
             android:theme="@style/ToolbarTheme"
             app:contentInsetStartWithNavigation="0dp"
+            app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/ToolbarMenuPopTheme"
             app:titleTextAppearance="@style/ToolbarTextAppearance" />
 
@@ -42,5 +39,14 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/baseNavFloatButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_margin="@dimen/dp_12"
+        android:visibility="gone"
+        app:layout_behavior="@string/appbar_float_button_behavior" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

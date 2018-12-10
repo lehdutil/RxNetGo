@@ -9,7 +9,7 @@ package com.fungo.sample.ui.gank
  *
  */
 
-data class GankResponse(val error: Boolean, val results: List<GankDataBean>)
+data class GankResponse(var error: Boolean, var results: List<GankDataBean>)
 
 
 data class GankDataBean(

@@ -44,4 +44,5 @@ class MainActivity : BasePageActivity() {
         }
     }
 
+    override fun isStatusBarTranslate(): Boolean = false
 }

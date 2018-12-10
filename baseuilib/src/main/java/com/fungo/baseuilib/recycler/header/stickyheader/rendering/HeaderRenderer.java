@@ -1,4 +1,4 @@
-package com.fungo.baseuilib.recycler.stickyheader.rendering;
+package com.fungo.baseuilib.recycler.header.stickyheader.rendering;
 
 import android.graphics.Canvas;
 import android.graphics.Rect;
@@ -6,8 +6,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.fungo.baseuilib.recycler.stickyheader.calculation.DimensionCalculator;
-import com.fungo.baseuilib.recycler.stickyheader.utils.OrientationProvider;
+import com.fungo.baseuilib.recycler.header.stickyheader.utils.OrientationProvider;
+import com.fungo.baseuilib.recycler.header.stickyheader.calculation.DimensionCalculator;
 
 
 /**

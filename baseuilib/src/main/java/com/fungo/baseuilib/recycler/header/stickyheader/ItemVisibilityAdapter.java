@@ -1,4 +1,4 @@
-package com.fungo.baseuilib.recycler.stickyheader;
+package com.fungo.baseuilib.recycler.header.stickyheader;
 
 /**
  * ItemVisibilityAdapter provides a way for StickyRecyclerHeadersDecoration

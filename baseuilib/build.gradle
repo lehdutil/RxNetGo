@@ -43,7 +43,6 @@ dependencies {
 
     // 下拉刷新
     api smartrefresh
-    api smartrefresh_header
 
     // 字体图标
     api iconics

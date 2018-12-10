@@ -7,13 +7,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fungo.baseuilib.R
 import com.fungo.baseuilib.fragment.BaseNavFragment
+import com.fungo.baseuilib.recycler.header.RecyclerClassicsFooter
+import com.fungo.baseuilib.recycler.header.material.GoogleMaterialHeader
 import com.fungo.baseuilib.recycler.item.DividerItemDecoration
 import com.fungo.baseuilib.recycler.multitype.MultiTypeAdapter
 import com.fungo.baseuilib.recycler.multitype.MultiTypeViewHolder
 import com.fungo.baseuilib.recycler.multitype.OneToManyFlow
-import com.scwang.smartrefresh.header.MaterialHeader
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
-import com.scwang.smartrefresh.layout.footer.BallPulseFooter
+import com.scwang.smartrefresh.layout.api.RefreshFooter
+import com.scwang.smartrefresh.layout.api.RefreshHeader
 import kotlinx.android.synthetic.main.base_fragment_recycler.*
 
 /**
@@ -28,7 +30,7 @@ abstract class BaseRecyclerFragment : BaseNavFragment(), BaseRecyclerContract.Vi
 
     private var mSmartRefreshLayout: SmartRefreshLayout? = null
     private var mRecyclerView: RecyclerView? = null
-
+    private var mRefreshFooter: RecyclerClassicsFooter? = null
     private var mPage = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,12 +49,12 @@ abstract class BaseRecyclerFragment : BaseNavFragment(), BaseRecyclerContract.Vi
         mRecyclerView = getRecyclerView()
 
         if (!isEnablePureScrollMode()) {
-            mSmartRefreshLayout?.refreshHeader = MaterialHeader(context)
-            mSmartRefreshLayout?.refreshFooter = BallPulseFooter(context!!)
+            mSmartRefreshLayout?.refreshHeader = getRefreshHeader()
+            mSmartRefreshLayout?.refreshFooter = getRefreshFooter()
         }
 
         mSmartRefreshLayout?.setOnRefreshListener {
-            mPage = 0
+            mPage = getStartPage()
             mPresenter.loadData(mPage)
         }
         mSmartRefreshLayout?.setOnLoadmoreListener {
@@ -71,8 +73,9 @@ abstract class BaseRecyclerFragment : BaseNavFragment(), BaseRecyclerContract.Vi
         initPageView()
     }
 
+
     final override fun initData() {
-        mPage = 0
+        mPage = getStartPage()
         setSmartLayoutAttrs()
         if (isShowLoadingPage()) {
             showPageLoading()
@@ -94,6 +97,12 @@ abstract class BaseRecyclerFragment : BaseNavFragment(), BaseRecyclerContract.Vi
         super.onStop()
         mPresenter.onStop()
     }
+
+    /**
+     * 获取开始加载的起始页，不一定是从0开始，默认从0开始
+     */
+    protected open fun getStartPage(): Int = 0
+
 
     /**
      * 从子类设置SmartRefreshLayout对象
@@ -121,22 +130,34 @@ abstract class BaseRecyclerFragment : BaseNavFragment(), BaseRecyclerContract.Vi
     }
 
     /**
+     * 获取下拉刷新的头部
+     */
+    protected open fun getRefreshHeader(): RefreshHeader {
+        return GoogleMaterialHeader(context!!)
+    }
+
+    /**
+     * 获取刷新底部
+     */
+    protected open fun getRefreshFooter(): RefreshFooter {
+        mRefreshFooter = RecyclerClassicsFooter(context!!)
+        return mRefreshFooter!!
+    }
+
+    /**
      * 展示所有数据
      */
     override fun <T> showContent(datas: List<T>?) {
-        hideLoading()
-        finishLoading()
-
-        // 处理空数据的情况
-        if (mPage == 0) {
+        if (mPage == getStartPage()) {
             mAdapter.clear()
-            if (datas == null || datas.isEmpty())
-                showPageEmpty()
-            else mAdapter.addAll(datas)
+        }
+
+        if (datas == null || datas.isEmpty()) {
+            showPageEmpty()
         } else {
-            if (datas == null || datas.isEmpty()) {
-                showToast("暂无更多数据")
-            } else mAdapter.addAll(datas)
+            hideLoading()
+            hideRefreshing()
+            mAdapter.addAll(datas)
         }
     }
 
@@ -144,18 +165,17 @@ abstract class BaseRecyclerFragment : BaseNavFragment(), BaseRecyclerContract.Vi
      * 展示一个数据
      */
     override fun <T> showContent(data: T?) {
-        hideLoading()
-        finishLoading()
-
-        // 处理空数据的情况
-        if (mPage == 0) {
+        if (mPage == getStartPage()) {
             mAdapter.clear()
         }
         if (data == null) {
             showPageEmpty()
-            return
+        } else {
+            hideLoading()
+            hideRefreshing()
+
+            mAdapter.add(data)
         }
-        mAdapter.add(data)
     }
 
 
@@ -192,12 +212,16 @@ abstract class BaseRecyclerFragment : BaseNavFragment(), BaseRecyclerContract.Vi
     /**
      * 结束刷新
      */
-    private fun finishLoading() {
+    private fun hideRefreshing(hasMore: Boolean = true) {
         if (mSmartRefreshLayout?.isRefreshing == true) {
             mSmartRefreshLayout?.finishRefresh()
         }
         if (mSmartRefreshLayout?.isLoading == true) {
-            mSmartRefreshLayout?.finishLoadmore()
+            if (hasMore) {
+                mSmartRefreshLayout?.finishLoadmore()
+            } else {
+                mSmartRefreshLayout?.finishLoadmoreWithNoMoreData()
+            }
         }
     }
 
@@ -211,7 +235,7 @@ abstract class BaseRecyclerFragment : BaseNavFragment(), BaseRecyclerContract.Vi
     /**
      * 有没有数据
      */
-    protected open fun isEmptyList(): Boolean {
+    protected open fun isEmptyRecycler(): Boolean {
         return mAdapter.itemCount == 0
     }
 
@@ -253,10 +277,9 @@ abstract class BaseRecyclerFragment : BaseNavFragment(), BaseRecyclerContract.Vi
      * 隐藏正在加载的进度条
      */
     private fun hideLoading() {
-        if (isLoadingShowing) {
+        // 只有第0页才有加载框
+        if (mPage == getStartPage()) {
             hidePageLoading()
-        }
-        if (isLoadingDialogShowing) {
             hidePageLoadingDialog()
         }
     }
@@ -265,31 +288,41 @@ abstract class BaseRecyclerFragment : BaseNavFragment(), BaseRecyclerContract.Vi
      * 当展示空视图的时候，可以下拉，但是不可以上拉
      */
     override fun showPageEmpty(msg: String?) {
-        mSmartRefreshLayout?.isEnableLoadmore = false
-        super.showPageEmpty(msg)
+        hideLoading()
+        if (mPage == getStartPage()) {
+            mSmartRefreshLayout?.isEnableLoadmore = false
+            hideRefreshing()
+            super.showPageEmpty(msg)
+        } else {
+            // 如果不是第一页，并且没有数据了，就不结束加载更多
+            hideRefreshing(false)
+        }
     }
 
 
     override fun showPageError(msg: String?) {
-        mSmartRefreshLayout?.isEnableLoadmore = false
-
         // 当加载异常时，要手动去关闭加载进度，这里统一处理
         hideLoading()
-        finishLoading()
+        hideRefreshing()
 
-        // 先把前期工作设置完，最后展示占位图
-        super.showPageError(msg)
+        if (mPage == getStartPage()) {
+            mSmartRefreshLayout?.isEnableLoadmore = false
+            super.showPageError(msg)
+        } else {
+            // 如果已经有数据了，就吐司提示
+            showToast(msg ?: getString(R.string.app_loading_error))
+        }
     }
 
 
     /**
-     * 是否可以自动加载更多
+     * 是否可以自动加载更多，默认可以
      */
-    protected open fun isEnableAutoLoadmore() = false
+    protected open fun isEnableAutoLoadmore() = true
 
 
     /**
-     * 是否可以加载更多，默认不可以
+     * 是否可以加载更多，默认可以
      */
     protected open fun isEnableLoadmore() = true
 

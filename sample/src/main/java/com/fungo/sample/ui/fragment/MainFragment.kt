@@ -1,7 +1,7 @@
 package com.fungo.sample.ui.fragment
 
+import com.fungo.baseuilib.fragment.BaseContentFragment
 import com.fungo.baseuilib.fragment.BaseFragment
-import com.fungo.baseuilib.fragment.BaseNavFragment
 import com.fungo.sample.R
 import com.fungo.sample.ui.explore.ExploreMainFragment
 import com.fungo.sample.ui.gank.GankMainFragment
@@ -12,13 +12,9 @@ import kotlinx.android.synthetic.main.fragment_main.*
  * @author Pinger
  * @since 18-12-7 上午10:16
  */
-class MainFragment : BaseNavFragment() {
+class MainFragment : BaseContentFragment() {
 
     private val mFragments = arrayListOf<BaseFragment>()
-
-    override fun isMainPage(): Boolean = true
-
-    override fun getPageTitle(): String? = getString(R.string.app_name)
 
     override fun getContentResID(): Int = R.layout.fragment_main
 

@@ -1,6 +1,5 @@
 package com.fungo.baseuilib.fragment
 
-import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
@@ -118,9 +117,16 @@ abstract class BaseFragment : SupportFragment(), IView {
         context?.startActivity(Intent(context, clazz))
     }
 
-    override fun <T : View> findView(@IdRes id: Int): T {
+    /**
+     * 获取根布局的View
+     */
+    protected open fun getRootView(): View {
         checkNotNull(mRootView)
-        return mRootView!!.findViewById(id) as T
+        return mRootView!!
+    }
+
+    override fun <T : View> findView(@IdRes id: Int): T {
+        return getRootView().findViewById(id) as T
     }
 
     override fun setOnClick(view: View?) {

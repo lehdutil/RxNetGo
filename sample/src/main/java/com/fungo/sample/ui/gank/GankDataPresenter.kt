@@ -1,9 +1,9 @@
 package com.fungo.sample.ui.gank
 
 import com.fungo.baselib.utils.AppUtils
-import com.fungo.baselib.utils.ToastUtils
 import com.fungo.baseuilib.recycler.BaseRecyclerContract
 import com.fungo.baseuilib.utils.ViewUtils
+import com.fungo.netgo.exception.ApiException
 import com.fungo.netgo.subscribe.JsonSubscriber
 import com.fungo.sample.data.api.GankApi
 import java.util.*
@@ -18,23 +18,21 @@ class GankDataPresenter(private val gankView: BaseRecyclerContract.View, private
     override fun loadData(page: Int) {
         GankApi.getGankData(gankType, page, object : JsonSubscriber<GankResponse>() {
             override fun onSuccess(data: GankResponse) {
-                if (!data.error && data.results.isNotEmpty()) {
+                if (!data.error) {
                     if (gankType == GankApi.GANK_TYPE_WELFARE) {
                         gankView.showContent(generateRandomHeight(data.results))
                     } else {
                         gankView.showContent(data.results)
                     }
                 } else {
-                    if (page == 0) {
-                        gankView.showPageEmpty()
-                    } else {
-                        ToastUtils.showInfo("暂无更多数据")
-                    }
+                    gankView.showPageEmpty()
                 }
             }
+
+            override fun onError(exception: ApiException) {
+                gankView.showPageError(exception.getMsg())
+            }
         })
-
-
     }
 
     /**

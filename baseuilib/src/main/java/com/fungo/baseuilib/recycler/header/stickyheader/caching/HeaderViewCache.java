@@ -1,4 +1,4 @@
-package com.fungo.baseuilib.recycler.stickyheader.caching;
+package com.fungo.baseuilib.recycler.header.stickyheader.caching;
 
 import androidx.collection.LongSparseArray;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -6,8 +6,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.fungo.baseuilib.recycler.stickyheader.StickyRecyclerHeadersAdapter;
-import com.fungo.baseuilib.recycler.stickyheader.utils.OrientationProvider;
+import com.fungo.baseuilib.recycler.header.stickyheader.utils.OrientationProvider;
+import com.fungo.baseuilib.recycler.header.stickyheader.StickyRecyclerHeadersAdapter;
 
 
 /**

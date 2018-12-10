@@ -27,11 +27,6 @@ abstract class BaseNavFragment : BaseFragment() {
     private var mPageTitle: String? = null
     private var mLoadingDialog: AlertDialog? = null
 
-    // 加载框是否在展示
-    protected var isLoadingShowing = false
-    // 加载对话框是否在展示
-    protected var isLoadingDialogShowing = false
-
     override fun getLayoutResID(): Int = R.layout.base_fragment_nav
 
     final override fun initView() {
@@ -194,7 +189,6 @@ abstract class BaseNavFragment : BaseFragment() {
             val dialogView = LayoutInflater.from(context).inflate(R.layout.base_layout_loading_dialog, null)
             mLoadingDialog!!.setContentView(dialogView)
             dialogView.findViewById<TextView>(R.id.tvLoadingMessage).text = loadingText
-            isLoadingDialogShowing = true
         }
     }
 
@@ -202,8 +196,9 @@ abstract class BaseNavFragment : BaseFragment() {
      * 隐藏加载对话框
      */
     open fun hidePageLoadingDialog() {
-        mLoadingDialog?.dismiss()
-        isLoadingDialogShowing = false
+        if (mLoadingDialog?.isShowing == true) {
+            mLoadingDialog?.dismiss()
+        }
     }
 
     /**
@@ -212,12 +207,12 @@ abstract class BaseNavFragment : BaseFragment() {
     open fun showPageLoading(msg: String? = null) {
         basePlaceholder?.showLoading()
         basePlaceholder?.setPageLoadingText(msg)
-        isLoadingShowing = true
     }
 
     open fun hidePageLoading() {
-        basePlaceholder?.hideLoading()
-        isLoadingShowing = false
+        if (basePlaceholder?.isLoading() == true) {
+            basePlaceholder?.hideLoading()
+        }
     }
 
     /**
@@ -255,6 +250,5 @@ abstract class BaseNavFragment : BaseFragment() {
      */
     open fun showPageContent() {
         basePlaceholder?.showContent()
-        isLoadingShowing = false
     }
 }

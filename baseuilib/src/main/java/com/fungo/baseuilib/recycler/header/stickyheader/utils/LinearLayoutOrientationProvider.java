@@ -1,4 +1,4 @@
-package com.fungo.baseuilib.recycler.stickyheader.utils;
+package com.fungo.baseuilib.recycler.header.stickyheader.utils;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
