@@ -8,7 +8,7 @@ import com.fungo.baseuilib.theme.UiUtils
 import com.fungo.baseuilib.utils.StatusBarUtils
 import com.fungo.baseuilib.utils.ViewUtils
 import com.mikepenz.google_material_typeface_library.GoogleMaterial
-import kotlinx.android.synthetic.main.base_activity_nav.*
+import kotlinx.android.synthetic.main.base_nav_page.*
 
 /**
  * @author Pinger
@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.base_activity_nav.*
  *
  * 带有导航栏的Activity，结构为Toolbar,
  */
-open class BaseNavActivity(override val layoutResID: Int = R.layout.base_activity_nav) : BaseActivity() {
+open class BaseNavActivity(override val layoutResID: Int = R.layout.base_nav_page) : BaseActivity() {
 
     // 导航栏标题
     private var mPageTitle: String? = null

@@ -11,7 +11,7 @@ import com.fungo.baseuilib.theme.UiUtils
 import com.fungo.baseuilib.utils.StatusBarUtils
 import com.fungo.baseuilib.utils.ViewUtils
 import com.mikepenz.google_material_typeface_library.GoogleMaterial
-import kotlinx.android.synthetic.main.base_fragment_nav.*
+import kotlinx.android.synthetic.main.base_nav_page.*
 
 /**
  * @author Pinger
@@ -27,7 +27,7 @@ abstract class BaseNavFragment : BaseFragment() {
     private var mPageTitle: String? = null
     private var mLoadingDialog: AlertDialog? = null
 
-    override fun getLayoutResID(): Int = R.layout.base_fragment_nav
+    override fun getLayoutResID(): Int = R.layout.base_nav_page
 
     final override fun initView() {
         // 设置是否展示标题栏
