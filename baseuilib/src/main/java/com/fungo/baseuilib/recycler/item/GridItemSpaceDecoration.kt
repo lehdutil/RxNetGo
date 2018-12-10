@@ -11,18 +11,15 @@ import androidx.recyclerview.widget.RecyclerView
  * 竖直的瀑布列表
  */
 class GridItemSpaceDecoration(
-    private val spanCount: Int,
-    private val itemSpace: Int,
-    private val topAndBottomSpace: Int = itemSpace
+        private val spanCount: Int,
+        private val itemSpace: Int,
+        private val topAndBottomSpace: Int = itemSpace
 ) : RecyclerView.ItemDecoration() {
 
 
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
         val position = parent.getChildLayoutPosition(view) // item position
         val column = position % spanCount // item column
-
-        outRect.left = itemSpace - column * itemSpace / spanCount // spacing - column * ((1f / spanCount) * spacing)
-        outRect.right = (column + 1) * itemSpace / spanCount // (column + 1) * ((1f / spanCount) * spacing)
 
         if (position < spanCount) { // top edge
             outRect.top = topAndBottomSpace
@@ -35,6 +32,10 @@ class GridItemSpaceDecoration(
         } else {
             outRect.bottom = itemSpace / 2 // item bottom
         }
+
+        outRect.left = itemSpace - column * itemSpace / spanCount // spacing - column * ((1f / spanCount) * spacing)
+        outRect.right = (column + 1) * itemSpace / spanCount // (column + 1) * ((1f / spanCount) * spacing)
+
     }
 
 }

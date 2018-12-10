@@ -13,13 +13,14 @@ import com.fungo.preview.wrapper.ImageEntity
 import com.fungo.preview.wrapper.ImagePreviewAdapter
 import com.fungo.sample.R
 import com.fungo.sample.data.api.GankApi
+import com.fungo.sample.utils.DateUtils
 import com.fungo.sample.utils.LaunchUtils
 
 /**
  * @author Pinger
  * @since 18-12-7 上午11:35
  */
-class GankDataHolder(val gankType: String) : MultiTypeViewHolder<GankDataBean, GankDataHolder.ViewHolder>() {
+class GankDataHolder(private val gankType: String) : MultiTypeViewHolder<GankDataBean, GankDataHolder.ViewHolder>() {
     override fun onCreateViewHolder(p0: ViewGroup): ViewHolder {
         val layoutRes = if (isGankWelfare()) {
             R.layout.holder_gank_image
@@ -37,13 +38,14 @@ class GankDataHolder(val gankType: String) : MultiTypeViewHolder<GankDataBean, G
 
         override fun onBindData(data: GankDataBean) {
             if (isGankWelfare()) {
-                val gankImage = findView<ImageView>(R.id.gankImage)
                 val params = gankImage.layoutParams as FrameLayout.LayoutParams
                 params.height = data.height
                 gankImage.layoutParams = params
                 loadImage(data.url, gankImage)
             } else {
                 setText(R.id.tvGankDesc, data.desc)
+                setText(R.id.tvGankAuthor, data.who)
+                setText(R.id.tvGankPublish, DateUtils.parseDate(data.publishedAt))
 
                 val imagePreview = findView<ImagePreview>(R.id.imagePreview)
                 val imageEntities = arrayListOf<ImageEntity>()

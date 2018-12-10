@@ -45,9 +45,9 @@ class GankDataFragment : BaseRecyclerFragment() {
         register(GankDataBean::class.java, GankDataHolder(mGankType))
     }
 
-    override fun generateItemDivider(): RecyclerView.ItemDecoration {
+    override fun generateItemDivider(): RecyclerView.ItemDecoration? {
         return if (mGankType == GankApi.GANK_TYPE_WELFARE) {
-            GridItemSpaceDecoration(2, 24, 24)
+            GridItemSpaceDecoration(2, 18)
         } else {
             DividerItemDecoration(ContextCompat.getColor(context!!, R.color.grey_f2), height = 18)
         }
