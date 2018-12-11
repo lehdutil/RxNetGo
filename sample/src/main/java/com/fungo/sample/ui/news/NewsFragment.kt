@@ -50,5 +50,7 @@ class NewsFragment : BaseRecyclerFragment() {
         return VerticalItemSpaceDecoration(36)
     }
 
+    override fun getStartPage(): Int = 1
+
 
 }

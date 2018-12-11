@@ -23,19 +23,20 @@ object NewsApi : BaseApi {
     private const val PAGE_SIZE = 30
 
     /**
-     * 获取新闻内容
+     * 获取新闻列表
      */
-    fun getNewsContent(channelId: String, subscriber: NewsSubscriber<NewsContentResponse>) {
+    fun getNewsContent(page: Int, channelId: String, subscriber: NewsSubscriber<NewsContentResponse>) {
         val params = HttpParams()
         params.put("channelId", channelId)
         params.put("maxResult", PAGE_SIZE)
-        params.put("needAllList", 1)
+        params.put("page", page)
         params.put("showapi_appid", APP_ID)
         params.put("showapi_timestamp", System.currentTimeMillis())
         val signUrl = sign(params)
         params.put("showapi_sign", signUrl)
         generateService()
                 .get<NewsContentResponse>("109-35")
+                .cacheKey("109-35$channelId$page")
                 .params(params)
                 .subscribe(subscriber)
     }
@@ -56,8 +57,11 @@ object NewsApi : BaseApi {
         val signUrl = sign(params)
         params.put("showapi_sign", signUrl)
 
+        // 因为参数在不断变化，所以不能使用默认的cacheKey
+
         generateService()
                 .get<NewsChannelResponse>("109-34")
+                .cacheKey("109-34")
                 .params(params)
                 .subscribe(subscriber)
     }

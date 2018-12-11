@@ -18,7 +18,7 @@ class NewsPresenter(private val newsView: BaseRecyclerContract.View, private val
             return
         }
 
-        NewsApi.getNewsContent(channelId!!, object : NewsSubscriber<NewsContentResponse>() {
+        NewsApi.getNewsContent(page, channelId!!, object : NewsSubscriber<NewsContentResponse>() {
             override fun onSuccess(data: NewsContentResponse) {
                 newsView.showContent(data.pagebean.contentlist)
             }
