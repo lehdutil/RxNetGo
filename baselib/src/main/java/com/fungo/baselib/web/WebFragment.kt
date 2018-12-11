@@ -10,10 +10,11 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.webkit.ValueCallback
 import android.webkit.WebView
-import android.widget.ProgressBar
 import com.fungo.baselib.R
+import com.fungo.baselib.utils.AppUtils
+import com.fungo.baselib.utils.ToastUtils
 import com.fungo.baselib.web.sonic.SonicSessionClientImpl
-import kotlinx.android.synthetic.main.base_fragment_web.*
+import com.fungo.baseuilib.utils.ViewUtils
 
 /**
  * @author Pinger
@@ -38,21 +39,36 @@ class WebFragment : BaseWebFragment() {
         }
     }
 
-    override fun getContentResID(): Int {
-        return R.layout.base_fragment_web
-    }
 
     private var uploadMessage: ValueCallback<Uri>? = null
     private var uploadMessageAboveL: ValueCallback<Array<Uri>>? = null
 
 
-    override fun getWebView(): WebView {
-        return webView
+    override fun getMenuResID(): Int = R.menu.menu_web
+
+
+    override fun onMenuItemSelected(itemId: Int): Boolean {
+
+        when (itemId) {
+            R.id.web_copy -> {
+                if (context != null && getWebView() != null) {
+                    ViewUtils.copyContent(context!!, getWebUrl()!!)
+                    ToastUtils.showSuccess(getString(R.string.app_copy_success))
+                } else {
+                    ToastUtils.showSuccess(getString(R.string.app_copy_failed))
+                }
+            }
+            R.id.web_refresh -> onReload()
+            R.id.web_open_in_browser -> AppUtils.startBrower(context, getWebUrl())
+            R.id.web_share -> {
+                if (context != null && getWebUrl() != null) {
+                    AppUtils.shareText(context!!, getWebUrl()!!)
+                }
+            }
+        }
+        return super.onMenuItemSelected(itemId)
     }
 
-    override fun getProgressBar(): ProgressBar? {
-        return progressBar
-    }
 
     @SuppressLint("AddJavascriptInterface")
     override fun addWebJsInteract(sonicSessionClient: SonicSessionClientImpl?, intent: Intent?, webView: WebView?) {
@@ -145,18 +161,5 @@ class WebFragment : BaseWebFragment() {
     override fun onShowFileChooser(filePathCallback: ValueCallback<Uri>) {
         uploadMessage = filePathCallback
         openImageChooserActivity()
-    }
-
-    override fun setWebTitle(title: String?) {
-        if (TextUtils.isEmpty(title)) {
-            return
-        }
-        mWebTitle = title
-        setPageTitle(title)
-    }
-
-
-    override fun isSwipeBackEnable(): Boolean {
-        return arguments?.getBoolean(WebConstant.KEY_WEB_SWIPE_BACK) ?: false
     }
 }

@@ -1,6 +1,6 @@
 package com.fungo.baselib.web
 
-import android.annotation.TargetApi
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
@@ -14,12 +14,16 @@ import android.widget.ProgressBar
 import com.fungo.baselib.R
 import com.fungo.baselib.web.sonic.SonicRuntimeImpl
 import com.fungo.baselib.web.sonic.SonicSessionClientImpl
-import com.fungo.baseuilib.fragment.BaseNavFragment
+import com.fungo.baseuilib.fragment.BaseFragment
+import com.fungo.baseuilib.theme.UiUtils
+import com.fungo.baseuilib.utils.StatusBarUtils
 import com.fungo.baseuilib.utils.ViewUtils
+import com.mikepenz.google_material_typeface_library.GoogleMaterial
 import com.tencent.sonic.sdk.SonicConfig
 import com.tencent.sonic.sdk.SonicEngine
 import com.tencent.sonic.sdk.SonicSession
 import com.tencent.sonic.sdk.SonicSessionConfig
+import kotlinx.android.synthetic.main.base_fragment_web.*
 
 /**
  * @author Pinger
@@ -28,15 +32,16 @@ import com.tencent.sonic.sdk.SonicSessionConfig
  * 提供两种加载展示方法，默认使用进度条的方法
  */
 
-abstract class BaseWebFragment : BaseNavFragment() {
+open class BaseWebFragment : BaseFragment() {
+
+    override fun getLayoutResID(): Int = R.layout.base_fragment_web
 
     private var mSonicSession: SonicSession? = null
     private var mSonicSessionClient: SonicSessionClientImpl? = null
+    private var mWebUrl: String? = null
+    private var mWebTitle: String? = null
 
-    private var mWebView: WebView? = null
-    protected var mWebUrl: String? = null
-    protected var mWebTitle: String? = null
-    private var mIntent: Intent? = null
+    private lateinit var mIntent: Intent
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,29 +54,51 @@ abstract class BaseWebFragment : BaseNavFragment() {
             WebView.setWebContentsDebuggingEnabled(true)
         }
         mIntent = getIntent(arguments)
-        mWebUrl = getWebUrl()
-        mWebTitle = getWebTitle()
+        mWebUrl = mIntent.getStringExtra(WebConstant.KEY_WEB_URL)
+        mWebTitle = mIntent.getStringExtra(WebConstant.KEY_WEB_TITLE)
 
-        if (isCleanCache) {
+        if (isCleanCache()) {
             SonicEngine.getInstance().cleanCache()
         }
     }
 
-    private fun getIntent(bundle: Bundle?): Intent {
-        val intent = Intent()
-        if (bundle != null) {
-            intent.putExtras(bundle)
-        }
-        return intent
-    }
 
-    override fun initContentView() {
+    override fun initView() {
+        // 设置是否展示标题栏
+        ViewUtils.setVisible(baseWebAppBar, isShowToolBar())
+
+        StatusBarUtils.setStatusBarHeight(baseWebStatusView)
+
+        if (isShowToolBar()) {
+            setWebTitle(getWebTitle())
+
+            // 左侧返回按钮
+            if (isShowBackIcon()) {
+                baseWebToolbar.navigationIcon =
+                        UiUtils.getIconFont(context!!, GoogleMaterial.Icon.gmd_arrow_back, color = R.attr.colorWhite)
+                baseWebToolbar.setNavigationOnClickListener {
+                    onBackClick()
+                }
+            }
+
+            // 填充Menu
+            if (getMenuResID() != 0) {
+                baseWebToolbar.inflateMenu(getMenuResID())
+                baseWebToolbar.setOnMenuItemClickListener {
+                    onMenuItemSelected(it.itemId)
+                }
+            }
+
+        }
+
+        ViewUtils.setVisible(getProgressBar(), isProgressBarLoading())
+
         initWebView()
     }
 
     override fun initData() {
         if (TextUtils.isEmpty(mWebUrl)) {
-            showPageEmpty(getString(R.string.app_web_empty))
+            showPageError(getString(R.string.app_web_empty))
             return
         }
         loadUrl(mWebUrl)
@@ -85,7 +112,7 @@ abstract class BaseWebFragment : BaseNavFragment() {
         }
 
         // if it's sonic mode , startup sonic session at first time
-        if (isSonicLoad) { // sonic mode
+        if (isUseSonic()) { // sonic mode
             val sessionConfigBuilder = SonicSessionConfig.Builder()
             sessionConfigBuilder.setSupportLocalServer(true)
 
@@ -94,7 +121,7 @@ abstract class BaseWebFragment : BaseNavFragment() {
                 return
             }
             mSonicSession = SonicEngine.getInstance().createSession(mWebUrl!!, sessionConfigBuilder.build())
-            if (null != mSonicSession) {
+            if (mSonicSession != null) {
                 mSonicSessionClient = SonicSessionClientImpl()
                 mSonicSession!!.bindClient(mSonicSessionClient)
             }
@@ -105,161 +132,167 @@ abstract class BaseWebFragment : BaseNavFragment() {
     /**
      * init WebView
      */
+    @SuppressLint("SetJavaScriptEnabled")
     private fun initWebView() {
-        mWebView = getWebView()
-        mWebView!!.isLongClickable = true
-        mWebView!!.overScrollMode = View.OVER_SCROLL_NEVER
-        mWebView!!.isVerticalScrollBarEnabled = false
-        mWebView!!.isDrawingCacheEnabled = true
-        mWebView!!.webViewClient = object : WebViewClient() {
-            override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-                this@BaseWebFragment.onPageStarted(view, url, favicon)
-            }
-
-            override fun onPageFinished(view: WebView?, url: String?) {
-                if (mSonicSession != null) {
-                    mSonicSession!!.sessionClient.pageFinish(url)
+        if (getWebView() != null) {
+            getWebView()!!.isLongClickable = true
+            getWebView()!!.overScrollMode = View.OVER_SCROLL_NEVER
+            getWebView()!!.isVerticalScrollBarEnabled = false
+            getWebView()!!.webViewClient = object : WebViewClient() {
+                override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+                    this@BaseWebFragment.onPageStarted(view, url, favicon)
                 }
-                if (!TextUtils.isEmpty(view?.title)) {
-                    setWebTitle(view?.title)
-                }
-                this@BaseWebFragment.onPageFinished(view, url)
-            }
 
-            override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
-                return this@BaseWebFragment.shouldOverrideUrlLoading(view, url)
-            }
-
-            @TargetApi(21)
-            override fun shouldInterceptRequest(view: WebView?, request: WebResourceRequest): WebResourceResponse? {
-                return shouldInterceptRequest(view, request.url.toString())
-            }
-
-            override fun shouldInterceptRequest(view: WebView?, url: String?): WebResourceResponse? {
-                return if (mSonicSession != null) {
-                    val requestResource = mSonicSession!!.sessionClient.requestResource(url)
-                    if (requestResource != null) {
-                        requestResource as WebResourceResponse
-                    } else {
-                        super.shouldInterceptRequest(view, url)
+                override fun onPageFinished(view: WebView?, url: String?) {
+                    if (mSonicSession != null) {
+                        mSonicSession!!.sessionClient.pageFinish(url)
                     }
-                } else super.shouldInterceptRequest(view, url)
+                    if (!TextUtils.isEmpty(view?.title)) {
+                        setWebTitle(view?.title)
+                    }
+                    this@BaseWebFragment.onPageFinished(view, url)
+                }
             }
-        }
 
-        // Android　4.0版本没有　WebChromeClient.FileChooserParams　这个类，所有要单独处理
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mWebView!!.webChromeClient = object : WebChromeClient() {
-                /**
-                 *　加载进度发生改变
-                 */
-                override fun onProgressChanged(view: WebView?, newProgress: Int) {
-                    if (isProgressBarLoading) {
-                        val progressBar = getProgressBar() ?: return
-                        progressBar.progress = newProgress
-                        if (newProgress >= 100) {
-                            ViewUtils.setGone(progressBar)
+            // Android　4.0版本没有　WebChromeClient.FileChooserParams　这个类，所有要单独处理
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                getWebView()!!.webChromeClient = object : WebChromeClient() {
+                    /**
+                     *　加载进度发生改变
+                     */
+                    override fun onProgressChanged(view: WebView?, newProgress: Int) {
+                        if (isProgressBarLoading()) {
+                            getProgressBar()?.progress = newProgress
+                            if (newProgress >= 100) {
+                                ViewUtils.setGone(getProgressBar())
+                            }
+                        }
+                    }
+
+                    //  5.0及以上调用
+                    override fun onShowFileChooser(webView: WebView,
+                                                   filePathCallback: ValueCallback<Array<Uri>>,
+                                                   fileChooserParams: WebChromeClient.FileChooserParams): Boolean {
+                        this@BaseWebFragment.onShowFileChooser(webView, filePathCallback)
+                        return true
+                    }
+
+                    override fun onPermissionRequest(request: PermissionRequest) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            request.grant(request.resources)
+                        }
+                    }
+
+                    override fun onReceivedTitle(view: WebView?, title: String?) {
+                        super.onReceivedTitle(view, title)
+                        if (!TextUtils.isEmpty(title)) {
+                            setWebTitle(title)
                         }
                     }
                 }
+            } else {
+                getWebView()!!.webChromeClient = object : WebChromeClient() {
+                    // 3.0++版本
+                    fun openFileChooser(uploadMsg: ValueCallback<Uri>, acceptType: String) {
+                        openFileChooser(uploadMsg)
+                    }
 
-                //  5.0及以上调用
-                override fun onShowFileChooser(webView: WebView,
-                                               filePathCallback: ValueCallback<Array<Uri>>,
-                                               fileChooserParams: WebChromeClient.FileChooserParams): Boolean {
-                    this@BaseWebFragment.onShowFileChooser(webView, filePathCallback)
-                    return true
-                }
+                    // 3.0--版本
+                    fun openFileChooser(uploadMsg: ValueCallback<Uri>) {
+                        this@BaseWebFragment.onShowFileChooser(uploadMsg)
+                    }
 
-                override fun onPermissionRequest(request: PermissionRequest) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        request.grant(request.resources)
+                    fun openFileChooser(uploadMsg: ValueCallback<Uri>, acceptType: String, capture: String) {
+                        openFileChooser(uploadMsg)
                     }
                 }
             }
-        } else {
-            mWebView!!.webChromeClient = object : WebChromeClient() {
-                // 3.0++版本
-                fun openFileChooser(uploadMsg: ValueCallback<Uri>, acceptType: String) {
-                    openFileChooser(uploadMsg)
-                }
 
-                // 3.0--版本
-                fun openFileChooser(uploadMsg: ValueCallback<Uri>) {
-                    this@BaseWebFragment.onShowFileChooser(uploadMsg)
+            getWebView()!!.setOnKeyListener { _, keyCode, event ->
+                if (event.action == KeyEvent.ACTION_DOWN) {
+                    if (keyCode == KeyEvent.KEYCODE_BACK
+                            && getWebView()?.canGoBack() == true && !isOriginalUrl() && isCanBack()) {
+                        getWebView()?.goBack()
+                        return@setOnKeyListener true
+                    }
                 }
-
-                fun openFileChooser(uploadMsg: ValueCallback<Uri>, acceptType: String, capture: String) {
-                    openFileChooser(uploadMsg)
-                }
+                false
             }
-        }
+            val webSettings = getWebView()!!.settings
 
-        mWebView!!.setOnKeyListener { _, keyCode, event ->
-            if (event.action == KeyEvent.ACTION_DOWN) {
-                if (keyCode == KeyEvent.KEYCODE_BACK
-                        && mWebView?.canGoBack() == true && !isOriginalUrl && canBack()) {
-                    mWebView?.goBack()
-                    return@setOnKeyListener true
-                }
+            // add java script interface
+            // note:if api level lower than 17(android 4.2), addJavascriptInterface has security
+            // issue, please use x5 or see https://developer.android.com/reference/android/webkit/
+            // WebView.html#addJavascriptInterface(java.lang.Object, java.lang.String)
+            webSettings.javaScriptEnabled = true
+            getWebView()!!.removeJavascriptInterface("searchBoxJavaBridge_")
+            mIntent.putExtra(WebConstant.KEY_WEB_LOAD_URL_TIME, System.currentTimeMillis())
+
+            // add interface
+            addWebJsInteract(mSonicSessionClient, mIntent, getWebView())
+
+            // init webview settings
+            webSettings.allowContentAccess = true
+            webSettings.loadsImagesAutomatically = true
+            webSettings.useWideViewPort = true
+            webSettings.loadWithOverviewMode = false
+            webSettings.databaseEnabled = true
+            webSettings.domStorageEnabled = true
+            webSettings.setSupportZoom(true)
+            webSettings.setAppCacheEnabled(true)
+            webSettings.setSupportMultipleWindows(true)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                webSettings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
             }
-            false
+            CookieManager.getInstance().setAcceptCookie(true)
         }
-        val webSettings = mWebView!!.settings
 
-        // add java script interface
-        // note:if api level lower than 17(android 4.2), addJavascriptInterface has security
-        // issue, please use x5 or see https://developer.android.com/reference/android/webkit/
-        // WebView.html#addJavascriptInterface(java.lang.Object, java.lang.String)
-        webSettings.javaScriptEnabled = true
-        mWebView!!.removeJavascriptInterface("searchBoxJavaBridge_")
-        mIntent?.putExtra(WebConstant.KEY_WEB_LOAD_URL_TIME, System.currentTimeMillis())
-
-        // add interface
-        addWebJsInteract(mSonicSessionClient, mIntent, mWebView)
-
-        // init webview settings
-        webSettings.allowContentAccess = true
-        webSettings.loadsImagesAutomatically = true
-        webSettings.useWideViewPort = true
-        webSettings.loadWithOverviewMode = false
-        webSettings.databaseEnabled = true
-        webSettings.domStorageEnabled = true
-        webSettings.setSupportZoom(true)
-        webSettings.setAppCacheEnabled(true)
-        webSettings.setSupportMultipleWindows(true)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            webSettings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
-        }
-        CookieManager.getInstance().setAcceptCookie(true)
     }
 
-    override fun getPageTitle(): String? {
-        return mWebTitle
-    }
 
     /**
      * 加载Url
      */
     open fun loadUrl(url: String?) {
         // webview is ready now, just tell session client to bind
-        if (mSonicSessionClient != null && !canBack()) {
-            mSonicSessionClient!!.bindWebView(mWebView!!, canBack())
+        if (mSonicSessionClient != null && !isCanBack()) {
+            mSonicSessionClient!!.bindWebView(getWebView()!!, isCanBack())
             mSonicSessionClient!!.clientReady()
         } else { // default mode
-            mWebView?.loadUrl(url)
+            getWebView()?.loadUrl(url)
         }
     }
 
     /**
      * 返回按键的处理
      */
-    override fun onBackClick() {
-        if (mWebView?.canGoBack() == true && !isOriginalUrl && canBack()) {
-            mWebView?.goBack()
+    protected open fun onBackClick() {
+        if (getWebView()?.canGoBack() == true && !isOriginalUrl() && isCanBack()) {
+            getWebView()?.goBack()
         } else {
             getPageActivity()?.onBackPressedSupport()
         }
+    }
+
+
+    /**
+     * 获取菜单项资源ID
+     */
+    protected open fun getMenuResID(): Int = 0
+
+    /**
+     * 菜单项点击
+     */
+    protected open fun onMenuItemSelected(itemId: Int): Boolean = true
+
+    /**
+     * 重新加载
+     */
+    protected open fun onReload() {
+        if (isProgressBarLoading()) {
+            setVisible(getProgressBar())
+        }
+        getWebView()?.reload()
     }
 
     /**
@@ -270,8 +303,8 @@ abstract class BaseWebFragment : BaseNavFragment() {
      * @param favicon
      */
     protected open fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-        if (!isProgressBarLoading) {
-            showPageLoading()
+        if (!isProgressBarLoading()) {
+            placeholder?.showLoading()
         }
     }
 
@@ -282,32 +315,31 @@ abstract class BaseWebFragment : BaseNavFragment() {
      * @param url
      */
     protected open fun onPageFinished(view: WebView?, url: String?) {
-        if (!isProgressBarLoading) {
-            showPageContent()
+        if (!isProgressBarLoading()) {
+            placeholder?.showContent()
         }
     }
-
 
     /**
      * get web title
      */
-    protected fun getWebTitle(): String? {
-        return mIntent?.getStringExtra(WebConstant.KEY_WEB_TITLE)
+    protected open fun getWebTitle(): String? {
+        return mWebTitle
     }
 
     /**
      * get web url
      */
-    protected fun getWebUrl(): String? {
-        return mIntent?.getStringExtra(WebConstant.KEY_WEB_URL)
+    protected open fun getWebUrl(): String? {
+        return mWebUrl
     }
 
 
     /**
      * H5内部是否可以返回，默认不可以返回
      */
-    protected open fun canBack(): Boolean {
-        return mIntent?.getBooleanExtra(WebConstant.KEY_WEB_BACK, false) ?: false
+    protected open fun isCanBack(): Boolean {
+        return mIntent.getBooleanExtra(WebConstant.KEY_WEB_BACK, true)
     }
 
     /**
@@ -317,7 +349,7 @@ abstract class BaseWebFragment : BaseNavFragment() {
      * @param intent
      * @param webView
      */
-    open fun addWebJsInteract(sonicSessionClient: SonicSessionClientImpl?, intent: Intent?, webView: WebView?) {}
+    protected open fun addWebJsInteract(sonicSessionClient: SonicSessionClientImpl?, intent: Intent?, webView: WebView?) {}
 
     /**
      * override url
@@ -336,7 +368,10 @@ abstract class BaseWebFragment : BaseNavFragment() {
      * @param title
      */
     protected open fun setWebTitle(title: String?) {
-
+        if (mWebTitle != title) {
+            mWebTitle = title
+        }
+        baseWebToolbar?.title = title
     }
 
     /**
@@ -354,25 +389,17 @@ abstract class BaseWebFragment : BaseNavFragment() {
      */
     protected open fun onShowFileChooser(filePathCallback: ValueCallback<Uri>) {}
 
-
-    /**
-     * 是不是第一个URl
-     */
-    private val isOriginalUrl: Boolean
-        get() = mWebView?.copyBackForwardList()?.getItemAtIndex(0)?.url == mWebView?.copyBackForwardList()?.currentItem?.url
-
-
     /**
      * get web view
      *
      * @return
      */
-    protected abstract fun getWebView(): WebView
+    protected open fun getWebView(): WebView? = baseWebView
 
     /**
      * get progressbar
      */
-    protected open fun getProgressBar(): ProgressBar? = null
+    protected open fun getProgressBar(): ProgressBar? = baseWebProgressBar
 
 
     /**
@@ -380,27 +407,75 @@ abstract class BaseWebFragment : BaseNavFragment() {
      *
      * @return
      */
-    protected open val isCleanCache: Boolean = false
+    protected open fun isCleanCache(): Boolean = false
 
     /**
      * 是否使用sonic加载h5
      */
-    protected open val isSonicLoad: Boolean = true
+    protected open fun isUseSonic(): Boolean = true
+
+
+    /**
+     * 是不是第一个URl
+     */
+    protected open fun isOriginalUrl(): Boolean = getWebView()?.copyBackForwardList()?.getItemAtIndex(0)?.url == getWebView()?.copyBackForwardList()?.currentItem?.url
 
 
     /**
      * 是否使用进度条来呈现加载中占位图
-     * 默认使用进度天
+     * 默认使用进度条
      */
-    protected open val isProgressBarLoading: Boolean = true
+    protected open fun isProgressBarLoading(): Boolean = true
 
+
+    /**
+     * 设置ToolBar的展示状态
+     * @param isShow 是否展示
+     */
+    protected open fun setShowToolBar(isShow: Boolean) {
+        ViewUtils.setVisible(baseWebAppBar, isShow)
+    }
+
+    /**
+     * 是否展示ToolBar，如果设置为false则不展示。
+     * 如果不展示标题栏，则状态栏也不会展示。
+     */
+    protected open fun isShowToolBar(): Boolean = true
+
+    /**
+     * 是否可以返回，如果可以则展示返回按钮，并且设置返回事件
+     * 默认可以返回
+     */
+    protected open fun isShowBackIcon(): Boolean = true
+
+    /**
+     * 是否可以滑动返回
+     */
+    override fun isSwipeBackEnable(): Boolean {
+        return mIntent.getBooleanExtra(WebConstant.KEY_WEB_SWIPE_BACK, false)
+    }
 
     override fun onDetach() {
         mSonicSession?.destroy()
         mSonicSession = null
-        mWebView?.destroy()
-        mWebView = null
+        getWebView()?.destroy()
         super.onDetach()
     }
+
+    private fun getIntent(bundle: Bundle?): Intent {
+        val intent = Intent()
+        if (bundle != null) {
+            intent.putExtras(bundle)
+        }
+        return intent
+    }
+
+
+    private fun showPageError(msg: String?) {
+        placeholder?.setPageErrorText(msg)
+        placeholder?.setPageErrorRetryListener(View.OnClickListener { getWebView()?.reload() })
+        placeholder?.showError()
+    }
+
 
 }

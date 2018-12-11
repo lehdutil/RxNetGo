@@ -4,28 +4,67 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!--网页加载水平进度条-->
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/baseWebAppBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <View
+            android:id="@+id/baseWebStatusView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="?attr/colorPrimaryDark"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/baseWebToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:theme="@style/ToolbarTheme"
+            app:contentInsetStartWithNavigation="0dp"
+            app:layout_constraintTop_toBottomOf="@id/baseWebStatusView"
+            app:popupTheme="@style/ToolbarMenuPopTheme"
+            app:titleTextAppearance="@style/ToolbarTextAppearance" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+
     <ProgressBar
-        android:id="@+id/progressBar"
+        android:id="@+id/baseWebProgressBar"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="-3dp"
         android:indeterminate="false"
         android:max="100"
         android:minHeight="3dp"
         android:progressDrawable="@drawable/progress_bar_web_horizontal"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/baseWebAppBar" />
 
-    <!--网页WebView-->
+
     <WebView
-        android:id="@+id/webView"
+        android:id="@+id/baseWebView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/progressBar" />
+        app:layout_constraintTop_toBottomOf="@id/baseWebProgressBar" />
+
+
+    <com.fungo.baseuilib.widget.placeholder.PlaceholderView
+        android:id="@+id/placeholder"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@id/baseWebView"
+        app:layout_constraintEnd_toEndOf="@id/baseWebView"
+        app:layout_constraintStart_toStartOf="@id/baseWebView"
+        app:layout_constraintTop_toTopOf="@id/baseWebView" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

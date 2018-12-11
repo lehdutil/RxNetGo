@@ -150,25 +150,6 @@ object AppUtils {
     }
 
     /**
-     * 应用市场
-     */
-    fun openMarket(context: Context) {
-        val uri = Uri.parse("market://details?id=" + context.packageName)
-        val intent = Intent(Intent.ACTION_VIEW, uri)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        try {
-            context.startActivity(
-                    Intent.createChooser(intent, context.getString(R.string.app_open_market))
-                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            )
-        } catch (e: ActivityNotFoundException) {
-            ToastUtils.showWarning(context.getString(R.string.app_no_market_clients))
-        }
-
-    }
-
-
-    /**
      * @param key 由官网生成的key
      * @return 返回true表示呼起手Q成功，返回fals表示呼起失败
      */
@@ -259,6 +240,26 @@ object AppUtils {
         }
     }
 
+
+    /**
+     * 打开应用市场
+     */
+    fun startAppMarket(context: Context) {
+        val uri = Uri.parse("market://details?id=" + context.packageName)
+        val intent = Intent(Intent.ACTION_VIEW, uri)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        try {
+            context.startActivity(
+                    Intent.createChooser(intent, context.getString(R.string.app_open_market))
+                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            )
+        } catch (e: ActivityNotFoundException) {
+            ToastUtils.showWarning(context.getString(R.string.app_no_market_clients))
+        }
+
+    }
+
+
     /**
      * 跳转Activity，不带任何参数
      */
@@ -289,6 +290,22 @@ object AppUtils {
             context.start(WebFragment.getInstance(url, title, webBack, swipeBack))
         }
     }
+
+    /**
+     * 打开浏览器
+     */
+    fun startBrower(context: Context?, url: String?) {
+        try {
+            if (context != null && url != null) {
+                val uri = Uri.parse(url)
+                val intent = Intent(Intent.ACTION_VIEW, uri)
+                context.startActivity(intent)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
 
     /**
      * 安装app
