@@ -14,17 +14,15 @@ import com.fungo.sample.utils.LaunchUtils
  */
 open class BaseMainTabFragment : BaseNavTabFragment() {
 
-
     override fun initContentView() {
         if (isShowFloatButton()) {
             ViewUtils.setVisible(getFloatActionButton())
-            UiUtils.setIconFont(getFloatActionButton(), ContextCompat.getDrawable(context!!, R.drawable.ic_github), color = R.attr.colorWhite)
+            UiUtils.setIconFont(getFloatActionButton(), ContextCompat.getDrawable(context!!, R.mipmap.ic_github), color = R.attr.colorWhite)
             getFloatActionButton()?.setOnClickListener {
                 LaunchUtils.startWebPage(context, WebUrlProvider.getGithubUrl())
             }
         }
     }
 
-
-    protected open fun isShowFloatButton(): Boolean = false
+    protected open fun isShowFloatButton() = false
 }

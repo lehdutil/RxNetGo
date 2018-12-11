@@ -17,13 +17,7 @@ class FallingView : View {
 
     private var mFallingEntities = arrayListOf<FallingEntity>()
 
-    private var viewWidth: Int = 0
-    private var viewHeight: Int = 0
-
-    private val defaultWidth = 600     //默认宽度
-    private val defaultHeight = 1000   //默认高度
-    private val intervalTime = 5       //重绘间隔时间
-
+    private val intervalTime = 10       //重绘间隔时间
 
     // 重绘线程
     private val runnable = Runnable { invalidate() }
@@ -33,15 +27,6 @@ class FallingView : View {
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
 
 
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        val height = measureSize(defaultHeight, heightMeasureSpec)
-        val width = measureSize(defaultWidth, widthMeasureSpec)
-        setMeasuredDimension(width, height)
-
-        viewWidth = width
-        viewHeight = height
-    }
 
     private fun measureSize(defaultSize: Int, measureSpec: Int): Int {
         var result = defaultSize
@@ -79,11 +64,15 @@ class FallingView : View {
             override fun onPreDraw(): Boolean {
                 viewTreeObserver.removeOnPreDrawListener(this)
                 for (i in 0 until num) {
-                    mFallingEntities.add(FallingEntity(fallingEntity.getBuilder(), viewWidth, viewHeight))
+                    mFallingEntities.add(FallingEntity(fallingEntity.getBuilder(), measuredWidth, measuredHeight))
                 }
                 invalidate()
                 return true
             }
         })
+    }
+
+    fun release() {
+        handler.removeCallbacks(null)
     }
 }

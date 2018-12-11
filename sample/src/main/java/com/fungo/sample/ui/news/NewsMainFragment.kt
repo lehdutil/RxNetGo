@@ -12,13 +12,12 @@ import com.fungo.sample.ui.fragment.BaseMainTabFragment
  */
 class NewsMainFragment : BaseMainTabFragment() {
 
-
     companion object {
         private const val FILTER_CHANNEL = "焦点"
     }
 
 
-    override fun getPageTitle(): String? = getString(R.string.title_read)
+    override fun getPageTitle(): String? = getString(R.string.title_news)
 
     override fun initData() {
         NewsApi.getNewsChannel(object : NewsSubscriber<NewsChannelResponse>() {

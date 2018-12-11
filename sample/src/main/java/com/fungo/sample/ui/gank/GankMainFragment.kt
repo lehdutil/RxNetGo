@@ -41,5 +41,4 @@ class GankMainFragment : BaseMainTabFragment() {
     override fun isMainPage(): Boolean = true
 
     override fun isShowFloatButton(): Boolean = true
-
 }
