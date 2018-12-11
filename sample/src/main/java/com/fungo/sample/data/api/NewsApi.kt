@@ -12,7 +12,7 @@ import com.fungo.sample.ui.news.NewsContentResponse
  */
 object NewsApi : BaseApi {
 
-    private const val BASE_URL = "http://route.showapi.com/"
+    private const val BASE_URL = "https://route.showapi.com/"
 
     override fun getBaseUrl(): String {
         return BASE_URL
@@ -29,13 +29,14 @@ object NewsApi : BaseApi {
         val params = HttpParams()
         params.put("channelId", channelId)
         params.put("maxResult", PAGE_SIZE)
+        params.put("needAllList", 1)
         params.put("showapi_appid", APP_ID)
         params.put("showapi_timestamp", System.currentTimeMillis())
         val signUrl = sign(params)
         params.put("showapi_sign", signUrl)
         generateService()
-                .post<NewsContentResponse>("109-35")
-                .upJson(params.getUrlParams())
+                .get<NewsContentResponse>("109-35")
+                .params(params)
                 .subscribe(subscriber)
     }
 
@@ -47,18 +48,17 @@ object NewsApi : BaseApi {
      *
      * 获取新闻频道
      */
-    fun getNewsChannel(page: Int, subscriber: NewsSubscriber<NewsChannelResponse>) {
+    fun getNewsChannel(subscriber: NewsSubscriber<NewsChannelResponse>) {
         val params = HttpParams()
 
-        params.put("page", page)
         params.put("showapi_appid", APP_ID)
         params.put("showapi_timestamp", System.currentTimeMillis())
         val signUrl = sign(params)
         params.put("showapi_sign", signUrl)
 
         generateService()
-                .post<NewsChannelResponse>("109-34")
-                .upJson(params.getUrlParams())
+                .get<NewsChannelResponse>("109-34")
+                .params(params)
                 .subscribe(subscriber)
     }
 

@@ -1,22 +1,17 @@
 package com.fungo.sample.ui.gank
 
-import androidx.core.content.ContextCompat
 import com.fungo.baseuilib.fragment.BaseFragment
-import com.fungo.baseuilib.fragment.BaseNavTabFragment
-import com.fungo.baseuilib.theme.UiUtils
-import com.fungo.baseuilib.utils.ViewUtils
 import com.fungo.sample.R
-import com.fungo.sample.data.WebUrlProvider
 import com.fungo.sample.data.api.GankApi
-import com.fungo.sample.utils.LaunchUtils
+import com.fungo.sample.ui.fragment.BaseMainTabFragment
 
 /**
  * @author Pinger
  * @since 18-12-7 上午10:59
  */
-class GankMainFragment : BaseNavTabFragment() {
+class GankMainFragment : BaseMainTabFragment() {
 
-    override fun getPageTitle(): String? = getString(R.string.app_name)
+    override fun getPageTitle(): String? = getString(R.string.title_gank_camp)
 
     override fun getFragments(): ArrayList<BaseFragment> {
         val fragments = arrayListOf<BaseFragment>()
@@ -43,19 +38,8 @@ class GankMainFragment : BaseNavTabFragment() {
     }
 
 
-    override fun initContentView() {
-        ViewUtils.setVisible(getFloatActionButton())
-        UiUtils.setIconFont(getFloatActionButton(), ContextCompat.getDrawable(context!!, R.drawable.ic_github), color = R.attr.colorWhite)
-    }
-
-
-    override fun initEvent() {
-        getFloatActionButton()?.setOnClickListener {
-            LaunchUtils.startWebPage(context, WebUrlProvider.getGithubUrl())
-        }
-    }
-
     override fun isMainPage(): Boolean = true
 
+    override fun isShowFloatButton(): Boolean = true
 
 }

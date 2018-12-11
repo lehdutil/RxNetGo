@@ -2,6 +2,7 @@ package com.fungo.netgo.exception
 
 
 import com.google.gson.JsonParseException
+import com.google.gson.JsonSyntaxException
 import org.json.JSONException
 import retrofit2.HttpException
 import java.net.ConnectException
@@ -59,6 +60,7 @@ object NetErrorEngine {
             ApiException(e, UNKNOW_HOST_ERROR_CODE, UNKNOW_HOST_ERROR_MSG)
         } else if (e is JsonParseException
                 || e is JSONException
+                || e is JsonSyntaxException
                 || e is ParseException) {
             // 解析错误
             ApiException(e, PARSE_ERROR_CODE, PARSE_ERROR_MSG)

@@ -39,21 +39,6 @@ class GankDataHolder : MultiTypeViewHolder<GankDataBean, GankDataHolder.ViewHold
 
         override fun onItemClick(data: GankDataBean) {
             AppUtils.startWebActivity(getContext(), data.url)
-
-
-//                val imageEntity = ImageEntity()
-//                imageEntity.bigImageUrl = data.url
-//                imageEntity.imageWidth = gankImage.width
-//                imageEntity.imageHeight = gankImage.height
-//                val points = IntArray(2)
-//                gankImage.getLocationOnScreen(points)
-//                // 图片位置
-//                imageEntity.imageViewX = points[0]
-//                imageEntity.imageViewY = points[1]
-//                val rect = Rect()
-//                gankImage.getGlobalVisibleRect(rect)
-//                LaunchUtils.startImagePreviewPage(getContext(), imageEntity, rect)
-
         }
     }
 

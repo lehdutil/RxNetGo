@@ -175,6 +175,7 @@ abstract class BaseViewHolder<T> : androidx.recyclerview.widget.RecyclerView.Vie
 
     override fun setText(textView: TextView?, text: CharSequence?) {
         if (textView != null && !TextUtils.isEmpty(text)) {
+            setVisible(textView)
             textView.text = text
         }
     }

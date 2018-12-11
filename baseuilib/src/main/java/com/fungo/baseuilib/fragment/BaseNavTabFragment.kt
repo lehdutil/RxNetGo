@@ -15,13 +15,12 @@ import kotlinx.android.synthetic.main.base_nav_tab.*
  * @author Pinger
  * @since 18-12-10 下午6:01
  */
-abstract class BaseNavTabFragment : BaseFragment() {
-
-    override fun getLayoutResID(): Int = R.layout.base_nav_tab
+open class BaseNavTabFragment : BaseFragment() {
 
     // 导航栏标题
     private var mPageTitle: String? = null
 
+    override fun getLayoutResID(): Int = R.layout.base_nav_tab
     final override fun initView() {
         // 设置状态栏高度
         if (isSetStatusBar()) {
@@ -64,12 +63,7 @@ abstract class BaseNavTabFragment : BaseFragment() {
             }
         }
 
-        val fragments = getFragments()
-        val adapter = BaseFragmentPageAdapter(childFragmentManager, fragments, getTitles())
-        baseNavViewPager.adapter = adapter
-        baseNavViewPager.offscreenPageLimit = fragments.size
-        baseNavTabLayout.tabMode = TabLayout.MODE_SCROLLABLE
-        baseNavTabLayout.setupWithViewPager(baseNavViewPager)
+        setTabAdapter(getFragments(), getTitles())
 
 
         // 初始化容器View
@@ -78,14 +72,30 @@ abstract class BaseNavTabFragment : BaseFragment() {
 
 
     /**
+     * 设置ViewPager和TabLayout，提供给子类调用
+     * 防止加载数据后采取设置TabLayout的情况
+     */
+    fun setTabAdapter(fragments: ArrayList<BaseFragment>, titles: ArrayList<String>) {
+        if (fragments.isNotEmpty()) {
+            val adapter = BaseFragmentPageAdapter(childFragmentManager, fragments, titles)
+            baseNavViewPager.adapter = adapter
+            // 之缓存5条数据，数据多了会造成卡顿
+            val limit = if (fragments.size > 5) 5 else fragments.size
+            baseNavViewPager.offscreenPageLimit = limit
+            baseNavTabLayout.tabMode = TabLayout.MODE_SCROLLABLE
+            baseNavTabLayout.setupWithViewPager(baseNavViewPager)
+        }
+    }
+
+    /**
      * 获取填充的Fragment页面
      */
-    abstract fun getFragments(): ArrayList<BaseFragment>
+    protected open fun getFragments(): ArrayList<BaseFragment> = arrayListOf()
 
     /**
      * 获取Tab的标题
      */
-    abstract fun getTitles(): ArrayList<String>
+    protected open fun getTitles(): ArrayList<String> = arrayListOf()
 
     /**
      * 给子类初始化View使用
@@ -104,14 +114,12 @@ abstract class BaseNavTabFragment : BaseFragment() {
      */
     protected open fun onMenuItemSelected(itemId: Int): Boolean = true
 
-
     /**
      * 获取标题栏对象，让子类主动去设置样式
      */
     fun getToolBar(): Toolbar {
         return baseNavToolbar
     }
-
 
     /**
      * 获取页面标题，进入页面后会调用该方法获取标题，设置给ToolBar
@@ -150,7 +158,6 @@ abstract class BaseNavTabFragment : BaseFragment() {
      */
     protected open fun isShowBackIcon(): Boolean = false
 
-
     /**
      * 是不是Main页面
      * 如果是的话，ToolBar设置粗体的样式
@@ -161,7 +168,6 @@ abstract class BaseNavTabFragment : BaseFragment() {
      * 是否填充状态栏，默认填充
      */
     protected open fun isSetStatusBar() = true
-
 
     /**
      * 执行返回操作

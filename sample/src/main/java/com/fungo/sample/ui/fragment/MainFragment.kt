@@ -25,9 +25,9 @@ class MainFragment : BaseContentFragment() {
 
     override fun initContentView() {
         mFragments.add(GankMainFragment())
+        mFragments.add(ExploreFragment())
+        mFragments.add(ExploreFragment())
         mFragments.add(NewsMainFragment())
-        mFragments.add(ExploreFragment())
-        mFragments.add(ExploreFragment())
         mFragments.add(ExploreFragment())
 
         loadMultipleRootFragment(R.id.mainContainer, 0,
