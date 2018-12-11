@@ -19,5 +19,8 @@
     <string name="app_refresh">刷新</string>
     <string name="app_copy_link">复制链接</string>
     <string name="app_open_in_browser">在浏览器打开</string>
+    <string name="app_copy_success">复制成功</string>
+    <string name="app_copy_failed">复制失败</string>
+    <string name="app_network_disconnection">当前网络已断开，请检查您的网络。</string>
 
 </resources>

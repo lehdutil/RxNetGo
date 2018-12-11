@@ -12,6 +12,7 @@ import android.view.View
 import android.webkit.*
 import android.widget.ProgressBar
 import com.fungo.baselib.R
+import com.fungo.baselib.utils.NetStateUtils
 import com.fungo.baselib.web.sonic.SonicRuntimeImpl
 import com.fungo.baselib.web.sonic.SonicSessionClientImpl
 import com.fungo.baseuilib.fragment.BaseFragment
@@ -254,6 +255,13 @@ open class BaseWebFragment : BaseFragment() {
      * 加载Url
      */
     open fun loadUrl(url: String?) {
+
+        // 加载之前判断一下网络是否已经连接
+        if (!NetStateUtils.isConnected(context!!)) {
+            showPageError(getString(R.string.app_network_disconnection))
+            return
+        }
+
         // webview is ready now, just tell session client to bind
         if (mSonicSessionClient != null && !isCanBack()) {
             mSonicSessionClient!!.bindWebView(getWebView()!!, isCanBack())
@@ -289,6 +297,12 @@ open class BaseWebFragment : BaseFragment() {
      * 重新加载
      */
     protected open fun onReload() {
+        // 加载之前判断一下网络是否已经连接
+        if (!NetStateUtils.isConnected(context!!)) {
+            showPageError(getString(R.string.app_network_disconnection))
+            return
+        }
+
         if (isProgressBarLoading()) {
             setVisible(getProgressBar())
         }
@@ -315,9 +329,7 @@ open class BaseWebFragment : BaseFragment() {
      * @param url
      */
     protected open fun onPageFinished(view: WebView?, url: String?) {
-        if (!isProgressBarLoading()) {
-            placeholder?.showContent()
-        }
+        placeholder?.showContent()
     }
 
     /**
@@ -473,7 +485,7 @@ open class BaseWebFragment : BaseFragment() {
 
     private fun showPageError(msg: String?) {
         placeholder?.setPageErrorText(msg)
-        placeholder?.setPageErrorRetryListener(View.OnClickListener { getWebView()?.reload() })
+        placeholder?.setPageErrorRetryListener(View.OnClickListener { loadUrl(getWebUrl()) })
         placeholder?.showError()
     }
 
