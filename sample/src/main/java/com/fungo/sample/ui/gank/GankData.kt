@@ -22,6 +22,5 @@ data class GankDataBean(
         val url: String,
         val used: Boolean,
         val who: String,
-        val images: List<String>?,
-        var height: Int = 0 // 图片的高度，仅福利类型才有
+        val images: List<String>?
 )

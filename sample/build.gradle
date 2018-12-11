@@ -36,6 +36,7 @@ dependencies {
 
     implementation rootProject.ext.dependencies.imagego_glide
     implementation rootProject.ext.dependencies.image_preview
+    implementation rootProject.ext.dependencies.bannerview
     implementation rootProject.ext.dependencies.rxnetgo
 
     implementation project(":baselib")

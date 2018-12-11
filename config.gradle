@@ -34,5 +34,6 @@ ext {
             rxnetgo            : 'com.github.PingerOne:RxNetGo:1.0.5',
             baselib            : 'com.github.PingerOne.Fungo:baselib:1.1.8',
             baseuilib          : 'com.github.PingerOne.Fungo:baseuilib:1.1.8',
+            bannerview         : "com.github.PingerOne:BannerView:1.0.8",
     ]
 }

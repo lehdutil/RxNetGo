@@ -3,17 +3,27 @@
 
     <item
         android:id="@+id/bottom_gank"
-        android:icon="@drawable/ic_whatshot_white_24dp"
-        android:title="@string/gank_title" />
+        android:icon="@drawable/ic_gank"
+        android:title="@string/title_gank" />
 
     <item
-        android:id="@+id/bottom_news"
-        android:icon="@drawable/ic_toys_white_24dp"
-        android:title="@string/news_title" />
+        android:id="@+id/bottom_read"
+        android:icon="@drawable/ic_read"
+        android:title="@string/title_read" />
 
     <item
         android:id="@+id/bottom_explore"
-        android:icon="@drawable/ic_explore_white_24dp"
-        android:title="@string/explore_title" />
+        android:icon="@drawable/ic_explore"
+        android:title="@string/title_explore" />
+
+    <item
+        android:id="@+id/bottom_news"
+        android:icon="@drawable/ic_news"
+        android:title="@string/title_news" />
+
+    <item
+        android:id="@+id/bottom_android"
+        android:icon="@drawable/ic_android"
+        android:title="@string/title_android" />
 
 </menu>

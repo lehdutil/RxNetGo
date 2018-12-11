@@ -1,7 +1,9 @@
 <resources>
-    <string name="app_name">RxNetGo网络框架</string>
+    <string name="app_name">干货集中营</string>
 
-    <string name="gank_title">干货</string>
-    <string name="news_title">新闻</string>
-    <string name="explore_title">发现</string>
+    <string name="title_gank">干货</string>
+    <string name="title_read">闲读</string>
+    <string name="title_explore">发现</string>
+    <string name="title_news">新闻</string>
+    <string name="title_android">玩Android</string>
 </resources>

@@ -4,6 +4,7 @@ import androidx.appcompat.widget.Toolbar
 import com.fungo.baseuilib.R
 import com.fungo.baseuilib.adapter.BaseFragmentPageAdapter
 import com.fungo.baseuilib.theme.UiUtils
+import com.fungo.baseuilib.utils.StatusBarUtils
 import com.fungo.baseuilib.utils.ViewUtils
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
@@ -22,8 +23,14 @@ abstract class BaseNavTabFragment : BaseFragment() {
     private var mPageTitle: String? = null
 
     final override fun initView() {
+        // 设置状态栏高度
+        if (isSetStatusBar()) {
+            StatusBarUtils.setStatusBarHeight(baseNavStatusView)
+        }
+
         // 设置是否展示标题栏
         setVisibility(baseNavAppBar, isShowToolBar())
+
 
         // 设置导航栏文字等
         if (isShowToolBar()) {
@@ -68,6 +75,7 @@ abstract class BaseNavTabFragment : BaseFragment() {
         // 初始化容器View
         initContentView()
     }
+
 
     /**
      * 获取填充的Fragment页面
@@ -148,6 +156,12 @@ abstract class BaseNavTabFragment : BaseFragment() {
      * 如果是的话，ToolBar设置粗体的样式
      */
     protected open fun isMainPage(): Boolean = false
+
+    /**
+     * 是否填充状态栏，默认填充
+     */
+    protected open fun isSetStatusBar() = true
+
 
     /**
      * 执行返回操作

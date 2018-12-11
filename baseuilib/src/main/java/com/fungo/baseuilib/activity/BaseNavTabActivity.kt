@@ -5,6 +5,7 @@ import com.fungo.baseuilib.R
 import com.fungo.baseuilib.adapter.BaseFragmentPageAdapter
 import com.fungo.baseuilib.fragment.BaseFragment
 import com.fungo.baseuilib.theme.UiUtils
+import com.fungo.baseuilib.utils.StatusBarUtils
 import com.fungo.baseuilib.utils.ViewUtils
 import com.google.android.material.tabs.TabLayout
 import com.mikepenz.google_material_typeface_library.GoogleMaterial
@@ -24,6 +25,11 @@ abstract class BaseNavTabActivity(override val layoutResID: Int = R.layout.base_
 
 
     final override fun initView() {
+        // 设置状态栏高度
+        if (isSetStatusBar()) {
+            StatusBarUtils.setStatusBarHeight(baseNavStatusView)
+        }
+
         // 设置是否展示标题栏
         setVisibility(baseNavAppBar, isShowToolBar())
 
@@ -146,6 +152,13 @@ abstract class BaseNavTabActivity(override val layoutResID: Int = R.layout.base_
      * 如果是的话，ToolBar设置粗体的样式
      */
     protected open fun isMainPage(): Boolean = false
+
+
+    /**
+     * 是否填充状态栏，默认填充
+     */
+    protected open fun isSetStatusBar() = true
+
 
     /**
      * 执行返回操作
