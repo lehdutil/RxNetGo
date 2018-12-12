@@ -7,10 +7,10 @@ import me.yokeyword.fragmentation.anim.FragmentAnimator
 /**
  * @author Pinger
  * @since 18-7-26 上午11:58
- * Fragment滑动动画
+ * Fragment默认的横向滑动动画
  */
 
-class DefaultActivityHorizontalAnimator : FragmentAnimator(), Parcelable {
+class FragmentHorizontalAnimator : FragmentAnimator(), Parcelable {
 
     init {
         enter = R.anim.anim_slide_in_right

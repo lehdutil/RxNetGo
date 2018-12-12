@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.MotionEvent
 import androidx.annotation.DrawableRes
 import androidx.appcompat.app.AppCompatActivity
-import com.fungo.baseuilib.animator.DefaultActivityHorizontalAnimator
+import com.fungo.baseuilib.animator.FragmentHorizontalAnimator
 import me.yokeyword.fragmentation.*
 import me.yokeyword.fragmentation.anim.FragmentAnimator
 import me.yokeyword.fragmentation_swipeback.core.ISwipeBackActivity
@@ -105,7 +105,7 @@ open class SupportActivity : AppCompatActivity(), ISupportActivity, ISwipeBackAc
      * @return FragmentAnimator对象
      */
     override fun onCreateFragmentAnimator(): FragmentAnimator {
-        return DefaultActivityHorizontalAnimator()
+        return FragmentHorizontalAnimator()
     }
 
     /**

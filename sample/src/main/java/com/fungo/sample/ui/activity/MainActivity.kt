@@ -5,6 +5,7 @@ import com.fungo.baseuilib.fragment.BaseFragment
 import com.fungo.baseuilib.theme.AppTheme
 import com.fungo.baseuilib.theme.UiUtils
 import com.fungo.sample.ui.fragment.MainFragment
+import com.fungo.sample.ui.fragment.SplashFragment
 
 
 class MainActivity : BasePageActivity() {
@@ -16,4 +17,12 @@ class MainActivity : BasePageActivity() {
      * 随机主题
      */
     override fun getAppTheme(): AppTheme = UiUtils.getRandomTheme()
+
+
+    /**
+     * 跳转到Splash页面
+     */
+    override fun initData() {
+        start(SplashFragment())
+    }
 }
