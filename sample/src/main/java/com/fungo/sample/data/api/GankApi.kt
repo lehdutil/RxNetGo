@@ -32,6 +32,26 @@ object GankApi : BaseApi {
     }
 
     /**
+     * 获取开屏图片,只需要一条数据
+     * 永远获取第1页的第一条
+     */
+    fun getSplashData(subscriber: JsonSubscriber<GankResponse>) {
+        generateService()
+                .get<GankResponse>("data/$GANK_TYPE_WELFARE/1/1")
+                .subscribe(subscriber)
+    }
+
+    /**
+     * 获取Gank的福利图片
+     */
+    fun getWelfareData(page: Int, subscriber: JsonSubscriber<GankResponse>) {
+        generateService()
+                .get<GankResponse>("data/$GANK_TYPE_WELFARE/$PAGE_SIZE/$page")
+                .subscribe(subscriber)
+    }
+
+
+    /**
      * 获取Gank列表数据
      */
     fun getGankData(gankType: String, page: Int, subscriber: JsonSubscriber<GankResponse>) {

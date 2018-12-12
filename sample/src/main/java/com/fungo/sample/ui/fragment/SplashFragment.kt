@@ -5,7 +5,12 @@ import android.graphics.BitmapFactory
 import com.fungo.baselib.utils.AppUtils
 import com.fungo.baseuilib.animator.FragmentFadeAnimator
 import com.fungo.baseuilib.fragment.BaseFragment
+import com.fungo.imagego.strategy.loadImage
+import com.fungo.netgo.exception.ApiException
+import com.fungo.netgo.subscribe.JsonSubscriber
 import com.fungo.sample.R
+import com.fungo.sample.data.api.GankApi
+import com.fungo.sample.ui.gank.GankResponse
 import kotlinx.android.synthetic.main.fragment_splash.*
 import me.yokeyword.fragmentation.anim.FragmentAnimator
 import java.util.*
@@ -23,9 +28,19 @@ class SplashFragment : BaseFragment() {
     override fun getLayoutResID(): Int = R.layout.fragment_splash
 
     override fun initView() {
-        splashView.setImageBitmap(getBitmapByName())
+        // 第一次进入肯定是没有缓存的，但是正常情况下第一次进入是引导页，并不会进入开屏页
+        GankApi.getSplashData(object : JsonSubscriber<GankResponse>() {
+            override fun onSuccess(data: GankResponse) {
+                loadImage(data.results[0].url, splashView)
+            }
+
+            override fun onError(exception: ApiException) {
+                pop()
+            }
+        })
+
         if (splashView != null) {
-            splashView.animate().scaleX(1.12f).scaleY(1.12f).setDuration(DELAY_TIME).start()
+            splashView.animate().scaleX(1.12f).scaleY(1.12f).setStartDelay(100L).setDuration(DELAY_TIME).start()
         }
     }
 
