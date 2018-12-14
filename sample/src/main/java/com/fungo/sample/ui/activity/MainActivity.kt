@@ -2,6 +2,7 @@ package com.fungo.sample.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.core.content.ContextCompat
 import com.fungo.baseuilib.activity.BasePageActivity
 import com.fungo.baseuilib.fragment.BaseFragment
 import com.fungo.baseuilib.theme.AppTheme

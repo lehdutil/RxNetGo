@@ -6,6 +6,7 @@ import com.fungo.sample.R
 import com.fungo.sample.ui.explore.ExploreFragment
 import com.fungo.sample.ui.gank.GankMainFragment
 import com.fungo.sample.ui.news.NewsMainFragment
+import com.fungo.sample.ui.read.ReadMainFragment
 import kotlinx.android.synthetic.main.fragment_main.*
 
 /**
@@ -20,7 +21,7 @@ class MainFragment : BaseContentFragment() {
 
     override fun initContentView() {
         mFragments.add(GankMainFragment())
-        mFragments.add(ExploreFragment())
+        mFragments.add(ReadMainFragment())
         mFragments.add(ExploreFragment())
         mFragments.add(NewsMainFragment())
         mFragments.add(ExploreFragment())

@@ -2,6 +2,7 @@ package com.fungo.sample.ui.service
 
 import android.app.IntentService
 import android.content.Intent
+import com.fungo.sample.data.api.GankApi
 
 /**
  * @author Pinger
@@ -11,5 +12,10 @@ class InitDataService : IntentService("InitDataService") {
 
     // 子线程运行，执行完Service会自动关闭
     override fun onHandleIntent(intent: Intent?) {
+
+        // 缓存数据
+        GankApi.cacheSplashData()
+
+
     }
 }

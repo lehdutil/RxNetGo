@@ -29,7 +29,7 @@ class SplashFragment : BaseFragment() {
 
     override fun initView() {
         // 第一次进入肯定是没有缓存的，但是正常情况下第一次进入是引导页，并不会进入开屏页
-        GankApi.getSplashData(object : JsonSubscriber<GankResponse>() {
+        GankApi.getSplashCache(object : JsonSubscriber<GankResponse>() {
             override fun onSuccess(data: GankResponse) {
                 loadImage(data.results[0].url, splashView)
             }

@@ -1,6 +1,7 @@
 package com.fungo.sample.data.api
 
 import com.fungo.netgo.subscribe.JsonSubscriber
+import com.fungo.netgo.subscribe.StringSubscriber
 import com.fungo.sample.ui.gank.GankResponse
 
 /**
@@ -8,7 +9,8 @@ import com.fungo.sample.ui.gank.GankResponse
  * @since 18-10-23 上午9:27
  *
  * Gank集中营的数据API
- * 数据提供者
+ *
+ * 包括闲读的数据
  */
 object GankApi : BaseApi {
 
@@ -32,14 +34,20 @@ object GankApi : BaseApi {
     }
 
     /**
-     * 获取开屏图片,只需要一条数据
+     * 获取开屏图片的缓存
      * 永远获取第1页的第一条
      */
-    fun getSplashData(subscriber: JsonSubscriber<GankResponse>) {
-        generateService()
-                .get<GankResponse>("data/$GANK_TYPE_WELFARE/1/1")
-                .subscribe(subscriber)
+    fun getSplashCache(subscriber: JsonSubscriber<GankResponse>) {
+        getRxNetGo().loadCache(GANK_TYPE_WELFARE + 1, subscriber)
     }
+
+    fun cacheSplashData() {
+//        generateService()
+//                .get<GankResponse>("data/$GANK_TYPE_WELFARE/1/1")
+//                .cacheKey(GANK_TYPE_WELFARE + 1)
+//                .subscribe(StringSubscriber())
+    }
+
 
     /**
      * 获取Gank的福利图片
@@ -47,6 +55,7 @@ object GankApi : BaseApi {
     fun getWelfareData(page: Int, subscriber: JsonSubscriber<GankResponse>) {
         generateService()
                 .get<GankResponse>("data/$GANK_TYPE_WELFARE/$PAGE_SIZE/$page")
+                .cacheKey(GANK_TYPE_WELFARE + page)
                 .subscribe(subscriber)
     }
 
@@ -60,5 +69,35 @@ object GankApi : BaseApi {
                 .subscribe(subscriber)
     }
 
+
+    /**
+     * 获取闲读的主分类
+     */
+    fun getReadCategories(subscriber: JsonSubscriber<GankResponse>) {
+        generateService()
+                .get<GankResponse>("xiandu/categories")
+                .subscribe(subscriber)
+    }
+
+
+    /**
+     * 获取闲读分类子列表
+     */
+    fun getReadCategory(category: String, subscriber: JsonSubscriber<GankResponse>) {
+        generateService()
+                .get<GankResponse>("xiandu/category/$category")
+                .subscribe(subscriber)
+    }
+
+
+    /**
+     * 获取闲读数据
+     */
+    fun getReadData(id: String, page: Int, subscriber: JsonSubscriber<GankResponse>) {
+        generateService()
+                .get<GankResponse>("xiandu/data/id/$id/count/$PAGE_SIZE/page/$page")
+                .subscribe(subscriber)
+
+    }
 
 }
