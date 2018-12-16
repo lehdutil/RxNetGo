@@ -1,6 +1,7 @@
 package com.fungo.sample.ui.news
 
 import com.fungo.baseuilib.fragment.BaseFragment
+import com.fungo.netgo.exception.ApiException
 import com.fungo.sample.R
 import com.fungo.sample.data.api.NewsApi
 import com.fungo.sample.data.subscribe.NewsSubscriber
@@ -20,6 +21,7 @@ class NewsMainFragment : BaseMainTabFragment() {
     override fun getPageTitle(): String? = getString(R.string.title_news)
 
     override fun initData() {
+        showLoading()
         NewsApi.getNewsChannel(object : NewsSubscriber<NewsChannelResponse>() {
             override fun onSuccess(data: NewsChannelResponse) {
                 if (data.channelList != null && data.channelList.isNotEmpty()) {
@@ -35,8 +37,15 @@ class NewsMainFragment : BaseMainTabFragment() {
                         }
                     }
 
+                    showContent()
                     setTabAdapter(fragments, titles)
+                } else {
+                    showEmpty()
                 }
+            }
+
+            override fun onError(exception: ApiException) {
+                showError()
             }
         })
     }

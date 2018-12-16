@@ -42,22 +42,30 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/baseNavViewPager"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+            app:layout_behavior="@string/bottom_view_scroll_hide_behavior">
 
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/baseNavViewPager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/baseNavFloatButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            android:layout_margin="@dimen/dp_12"
-            android:visibility="gone"
-            android:fitsSystemWindows="true"
-            app:layout_behavior="@string/bottom_view_scroll_hide_behavior" />
+            <com.fungo.baseuilib.widget.placeholder.PlaceholderView
+                android:id="@+id/baseNavPlaceholder"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/baseNavFloatButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:layout_margin="@dimen/dp_12"
+                android:visibility="gone" />
+
+        </FrameLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

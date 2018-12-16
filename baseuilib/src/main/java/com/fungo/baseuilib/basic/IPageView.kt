@@ -11,7 +11,6 @@ interface IPageView {
     fun showPageLoadingDialog(msg: String? = null)
     fun hidePageLoadingDialog()
 
-    fun showPageLoading(msg: String? = null)
     fun hidePageLoading()
 
     fun showPageEmpty(msg: String? = null)

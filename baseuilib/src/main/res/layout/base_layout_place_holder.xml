@@ -14,8 +14,7 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:orientation="vertical"
-        android:visibility="gone"
-        tools:visibility="visible">
+        android:visibility="gone">
 
 
         <TextView
@@ -72,25 +71,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <androidx.core.widget.ContentLoadingProgressBar
             style="@style/Widget.AppCompat.ProgressBar"
-            android:layout_width="@dimen/dp_36"
-            android:layout_height="@dimen/dp_36" />
-
-        <TextView
-            android:id="@+id/tvLoading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/dp_8"
-            android:text="@string/app_loading"
-            android:textColor="@color/text_grey_dark"
-            android:textSize="@dimen/sp_14" />
-
+            android:layout_width="@dimen/dp_42"
+            android:layout_height="@dimen/dp_42" />
 
     </LinearLayout>
 

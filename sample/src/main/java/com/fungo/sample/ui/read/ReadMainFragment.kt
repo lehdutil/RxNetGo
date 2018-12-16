@@ -4,13 +4,14 @@ import com.fungo.baseuilib.fragment.BaseFragment
 import com.fungo.baseuilib.fragment.BaseNavTabFragment
 import com.fungo.netgo.subscribe.JsonSubscriber
 import com.fungo.sample.data.api.GankApi
+import com.fungo.sample.ui.fragment.BaseMainTabFragment
 import com.fungo.sample.ui.gank.GankResponse
 
 /**
  * @author Pinger
  * @since 2018/12/14 18:39
  */
-class ReadMainFragment : BaseNavTabFragment() {
+class ReadMainFragment : BaseMainTabFragment() {
 
 
     override fun initData() {
@@ -27,5 +28,6 @@ class ReadMainFragment : BaseNavTabFragment() {
             }
         })
     }
+
 
 }

@@ -204,9 +204,8 @@ abstract class BaseNavFragment : BaseFragment() {
     /**
      * 展示加载中的占位图
      */
-    open fun showPageLoading(msg: String? = null) {
+    open fun showPageLoading() {
         basePlaceholder?.showLoading()
-        basePlaceholder?.setPageLoadingText(msg)
     }
 
     open fun hidePageLoading() {

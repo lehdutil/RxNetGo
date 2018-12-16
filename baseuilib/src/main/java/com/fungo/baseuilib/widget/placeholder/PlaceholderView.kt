@@ -102,16 +102,6 @@ class PlaceholderView : FrameLayout {
     }
 
     /**
-     * 设置页面加载中的提示信息
-     */
-    fun setPageLoadingText(loadingMsg: String?) {
-        if (!TextUtils.isEmpty(loadingMsg)) {
-            tvLoading?.text = loadingMsg
-        }
-    }
-
-
-    /**
      * 是否正在加载中
      */
     fun isLoading(): Boolean {

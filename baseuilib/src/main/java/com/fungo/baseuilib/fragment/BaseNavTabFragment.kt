@@ -182,4 +182,21 @@ open class BaseNavTabFragment : BaseFragment() {
      * 获取悬浮按钮
      */
     protected open fun getFloatActionButton(): FloatingActionButton? = baseNavFloatButton
+
+
+    protected open fun showLoading() {
+        baseNavPlaceholder?.showLoading()
+    }
+
+    protected open fun showError() {
+        baseNavPlaceholder?.showError()
+    }
+
+    protected open fun showEmpty() {
+        baseNavPlaceholder?.showEmpty()
+    }
+
+    protected open fun showContent() {
+        baseNavPlaceholder?.showContent()
+    }
 }
