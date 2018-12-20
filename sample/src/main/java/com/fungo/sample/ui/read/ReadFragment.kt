@@ -20,16 +20,18 @@ class ReadFragment : BaseRecyclerFragment() {
     companion object {
         private const val CATEGORY_ID = "CATEGORY_ID"
         private const val READ_DATA_TYPE = "READ_DATA_TYPE"
+        private const val READ_TITLE = "READ_TITLE"
 
         const val READ_TYPE_CATEGORY = 1
         const val READ_TYPE_CONTENT = 2
 
         @JvmStatic
-        fun newInstance(readType: Int, id: String): ReadFragment {
+        fun newInstance(readType: Int, id: String, title: String? = null): ReadFragment {
             val fragment = ReadFragment()
             val bundle = Bundle()
             bundle.putInt(READ_DATA_TYPE, readType)
             bundle.putString(CATEGORY_ID, id)
+            bundle.putString(READ_TITLE, title)
             fragment.arguments = bundle
             return fragment
         }
@@ -44,6 +46,9 @@ class ReadFragment : BaseRecyclerFragment() {
     override fun getPresenter(): BaseRecyclerContract.Presenter = ReadPresenter(this, mReadType, mCategoryId)
 
     override fun initPageView() {
+        if (isContentType()) {
+            setPageTitle(arguments?.getString(READ_TITLE))
+        }
         register(GankDataBean::class.java, ReadDataHolder(mReadType))
     }
 

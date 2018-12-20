@@ -112,7 +112,7 @@ abstract class BaseNavFragment : BaseFragment() {
         if (mPageTitle != title) {
             mPageTitle = title
         }
-        baseNavToolbar.title = title
+        baseNavToolbar?.title = title
     }
 
     /**

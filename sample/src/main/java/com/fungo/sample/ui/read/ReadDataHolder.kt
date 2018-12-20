@@ -31,13 +31,15 @@ class ReadDataHolder(private val readType: Int) : MultiTypeViewHolder<GankDataBe
             if (isCategory()) {
                 loadImage(data.icon, findView(R.id.itemAvatar))
                 setText(R.id.itemTitle, data.title)
+            } else {
+                loadImage(data.cover, findView(R.id.itemBackGround))
+                setText(R.id.itemTitle, data.title)
             }
-
         }
 
         override fun onItemClick(data: GankDataBean) {
             if (isCategory()) {
-                startFragment(ReadFragment.newInstance(ReadFragment.READ_TYPE_CONTENT, data.id))
+                startFragment(ReadFragment.newInstance(ReadFragment.READ_TYPE_CONTENT, data.id, data.title))
             } else {
                 LaunchUtils.startWebPage(getContext(), data.url)
             }

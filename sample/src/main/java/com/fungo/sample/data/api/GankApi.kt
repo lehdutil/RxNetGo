@@ -34,22 +34,6 @@ object GankApi : BaseApi {
     }
 
     /**
-     * 获取开屏图片的缓存
-     * 永远获取第1页的第一条
-     */
-    fun getSplashCache(subscriber: JsonSubscriber<GankResponse>) {
-        getRxNetGo().loadCache(GANK_TYPE_WELFARE + 1, subscriber)
-    }
-
-    fun cacheSplashData() {
-//        generateService()
-//                .get<GankResponse>("data/$GANK_TYPE_WELFARE/1/1")
-//                .cacheKey(GANK_TYPE_WELFARE + 1)
-//                .subscribe(StringSubscriber())
-    }
-
-
-    /**
      * 获取Gank的福利图片
      */
     fun getWelfareData(page: Int, subscriber: JsonSubscriber<GankResponse>) {

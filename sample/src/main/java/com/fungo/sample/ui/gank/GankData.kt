@@ -33,7 +33,7 @@ data class GankDataBean(
         val uid: String,
         val title: String,
         val content: String,
-        val cnver: String,
+        val cover: String,
         val crawled: String,
         val deleted: Boolean,
         val site: GankSiteBean
