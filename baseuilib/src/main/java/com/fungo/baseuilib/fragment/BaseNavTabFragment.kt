@@ -1,5 +1,6 @@
 package com.fungo.baseuilib.fragment
 
+import android.view.View
 import androidx.appcompat.widget.Toolbar
 import com.fungo.baseuilib.R
 import com.fungo.baseuilib.adapter.BaseFragmentPageAdapter
@@ -21,6 +22,7 @@ open class BaseNavTabFragment : BaseFragment() {
     private var mPageTitle: String? = null
 
     override fun getLayoutResID(): Int = R.layout.base_nav_tab
+
     final override fun initView() {
         // 设置状态栏高度
         if (isSetStatusBar()) {
@@ -29,7 +31,6 @@ open class BaseNavTabFragment : BaseFragment() {
 
         // 设置是否展示标题栏
         setVisibility(baseNavAppBar, isShowToolBar())
-
 
         // 设置导航栏文字等
         if (isShowToolBar()) {
@@ -63,11 +64,16 @@ open class BaseNavTabFragment : BaseFragment() {
             }
         }
 
-        setTabAdapter(getFragments(), getTitles())
-
+        // 错误试图重试
+        baseNavPlaceholder?.setPageErrorRetryListener(View.OnClickListener {
+            initData()
+        })
 
         // 初始化容器View
         initContentView()
+
+        // 如果有默认的数据的话就设置数据，没有的话需要手动调用
+        setTabAdapter(getFragments(), getTitles())
     }
 
 
@@ -79,9 +85,7 @@ open class BaseNavTabFragment : BaseFragment() {
         if (fragments.isNotEmpty()) {
             val adapter = BaseFragmentPageAdapter(childFragmentManager, fragments, titles)
             baseNavViewPager.adapter = adapter
-            // 之缓存5条数据，数据多了会造成卡顿
-            val limit = if (fragments.size > 5) 5 else fragments.size
-            baseNavViewPager.offscreenPageLimit = limit
+            baseNavViewPager.offscreenPageLimit = fragments.size
             baseNavTabLayout.tabMode = TabLayout.MODE_SCROLLABLE
             baseNavTabLayout.setupWithViewPager(baseNavViewPager)
         }

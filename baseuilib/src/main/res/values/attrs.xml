@@ -4,6 +4,10 @@
     <!--自定义主题属性-->
     <attr name="colorWhite" format="color" />
     <attr name="colorBlack" format="color" />
+    <attr name="titleTextColor" format="color" />
+    <attr name="itemTextColor" format="color" />
+    <attr name="itemBackgroundColor" format="color" />
+
 
     <!--谷歌下拉头属性-->
     <declare-styleable name="GoogleMaterialHeader">

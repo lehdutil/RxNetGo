@@ -37,8 +37,5 @@ class GankMainFragment : BaseMainTabFragment() {
         return titles
     }
 
-
-    override fun isMainPage(): Boolean = true
-
     override fun isShowFloatButton(): Boolean = true
 }

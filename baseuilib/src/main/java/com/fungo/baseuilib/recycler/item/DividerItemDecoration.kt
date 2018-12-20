@@ -16,9 +16,9 @@ import java.util.*
  */
 class DividerItemDecoration(
         color: Int = Color.DKGRAY,
-        var height: Int = 3,
-        val paddingLeft: Int = 0,
-        val paddingRight: Int = 0,
+        var height: Int = 2,
+        private val paddingLeft: Int = 0,
+        private val paddingRight: Int = 0,
         backgroundColor: Int = Color.TRANSPARENT
 ) : RecyclerView.ItemDecoration() {
 

@@ -25,4 +25,6 @@ open class BaseMainTabFragment : BaseNavTabFragment() {
     }
 
     protected open fun isShowFloatButton() = false
+
+    override fun isMainPage(): Boolean = true
 }
