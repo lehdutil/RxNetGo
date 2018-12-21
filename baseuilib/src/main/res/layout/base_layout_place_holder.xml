@@ -60,7 +60,6 @@
             android:text="@string/app_recycler_empty"
             android:textColor="@color/text_black" />
 
-
     </FrameLayout>
 
 
