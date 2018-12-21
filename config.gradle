@@ -29,7 +29,7 @@ ext {
             rxcache            : 'com.zchu:rxcache:2.3.3',
 
             // sample用到的框架
-            imagego_glide      : 'com.github.PingerOne.ImageGo:imagego_glide:2.0.6',
+            imagego_glide      : 'com.github.PingerOne.ImageGo:imagego_glide:2.0.7',
             image_preview      : 'com.github.PingerOne:ImagePreview:1.0.1',
             rxnetgo            : 'com.github.PingerOne:RxNetGo:1.0.5',
             baselib            : 'com.github.PingerOne.Fungo:baselib:1.1.8',

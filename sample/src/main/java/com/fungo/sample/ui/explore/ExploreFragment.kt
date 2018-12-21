@@ -72,7 +72,7 @@ class ExploreFragment : BaseContentFragment() {
 
     private fun loadBlur(url: String) {
         // 不需要加载图片得占位图
-        loadBlur(url, ivBlurView, blurRadius = 8, blurSampling = 6)
+        loadBlur(url, ivBlurView, blurRadius = 8, blurSampling = 6, placeHolder = 0)
     }
 
     inner class BannerHolder : BaseBannerHolder<GankDataBean> {

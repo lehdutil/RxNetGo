@@ -47,7 +47,7 @@ class AppApplication : BaseApplication() {
     private fun initImagePreview() {
         ImagePreview.imageLoader = object : ImagePreviewLoader {
             override fun onLoadPreviewImage(any: Any?, imageView: ImageView?, listener: ImagePreviewLoadListener?) {
-                loadImage(any, imageView, object : OnImageListener {
+                loadImage(any, imageView, placeHolder = 0, listener = object : OnImageListener {
                     override fun onFail(msg: String?) {
                         listener?.onLoadFail(msg)
                     }
