@@ -3,6 +3,7 @@ package com.fungo.sample.utils
 import android.content.Context
 import android.content.Intent
 import android.graphics.Rect
+import android.view.View
 import com.fungo.baselib.utils.AppUtils
 import com.fungo.baseuilib.activity.BaseActivity
 import com.fungo.baseuilib.fragment.BaseFragment
@@ -41,8 +42,30 @@ object LaunchUtils {
 
     /**
      * 图片浏览页面，只提供给单张图片使用，多张图片使用[ImagePreview]
+     * 自己组装[ImageEntity]和[Rect]
      */
     fun startImagePreviewPage(context: Context?, imageEntity: ImageEntity, rect: Rect? = null) {
         ImagePreviewPageActivity.start(context, imageEntity, rect)
+    }
+
+
+    /**
+     * 封装组装步骤
+     */
+    fun startImagePreviewPage(itemView: View, url: String) {
+        val rect = Rect()
+        itemView.getGlobalVisibleRect(rect)
+
+        val entity = ImageEntity()
+        entity.bigImageUrl = url
+        entity.imageHeight = itemView.height
+        entity.imageWidth = itemView.width
+
+        val points = IntArray(2)
+        itemView.getLocationOnScreen(points)
+        entity.imageViewX = points[0]
+        entity.imageViewY = points[1]
+
+        startImagePreviewPage(itemView.context, entity, rect)
     }
 }

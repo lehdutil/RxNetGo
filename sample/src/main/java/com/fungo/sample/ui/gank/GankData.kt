@@ -26,6 +26,8 @@ data class GankDataBean(
 
         // 闲读分类新增的数据类型
         val en_name: String,
+        val published_at: String,
+        val created_at: String,
         val name: String,
         val rank: Int,
         val icon: String,

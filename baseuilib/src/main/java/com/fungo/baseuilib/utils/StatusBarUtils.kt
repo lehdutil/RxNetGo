@@ -49,16 +49,18 @@ object StatusBarUtils {
     /**
      * 设置状态栏字体颜色
      */
-    fun setStatusBarForegroundColor(activity: Activity, isBlack: Boolean) {
-        // 优先处理6.0以上的系统
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            setStatusBarLightMode(activity, ANDROID_M, isBlack)
-            return
+    fun setStatusBarForegroundColor(activity: Activity?, isBlack: Boolean) {
+        if (activity != null) {
+            // 优先处理6.0以上的系统
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                setStatusBarLightMode(activity, ANDROID_M, isBlack)
+                return
+            }
+            // 小米系统
+            if (setMIUIStatusBarLightMode(activity, isBlack)) return
+            // 魅族系统
+            if (setFlymeStatusBarLightMode(activity.window, isBlack)) return
         }
-        // 小米系统
-        if (setMIUIStatusBarLightMode(activity, isBlack)) return
-        // 魅族系统
-        if (setFlymeStatusBarLightMode(activity.window, isBlack)) return
     }
 
     /**

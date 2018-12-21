@@ -56,14 +56,6 @@ class ReadFragment : BaseRecyclerFragment() {
         return isContentType()
     }
 
-    override fun generateItemDivider(): RecyclerView.ItemDecoration? {
-        return if (isContentType()) {
-            VerticalItemSpaceDecoration(ViewUtils.dp2px(context, 12))
-        } else {
-            super.generateItemDivider()
-        }
-    }
-
     override fun isVerticalScrollBarEnabled(): Boolean {
         return isContentType()
     }

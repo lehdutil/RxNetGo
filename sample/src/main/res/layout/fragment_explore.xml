@@ -1,18 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/transparent_05"
     android:orientation="vertical">
 
     <!--高斯模糊的背景-->
     <ImageView
         android:id="@+id/ivBlurView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop" />
 
     <com.fungo.banner.BannerView
         android:id="@+id/bannerView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/dp_60"
+        android:layout_marginBottom="@dimen/dp_50"
+        app:bannerAutoLoop="false"
+        app:bannerFarMargin="@dimen/dp_24"
+        app:bannerPageMode="far"
+        app:bannerSlideAnim="false"
+        app:indicatorVisible="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

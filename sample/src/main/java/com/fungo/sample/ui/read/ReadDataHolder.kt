@@ -1,11 +1,14 @@
 package com.fungo.sample.ui.read
 
+import android.text.TextUtils
 import android.view.ViewGroup
+import android.widget.ImageView
 import com.fungo.baseuilib.recycler.BaseViewHolder
 import com.fungo.baseuilib.recycler.multitype.MultiTypeViewHolder
 import com.fungo.imagego.strategy.loadImage
 import com.fungo.sample.R
 import com.fungo.sample.ui.gank.GankDataBean
+import com.fungo.sample.utils.DateUtils
 import com.fungo.sample.utils.LaunchUtils
 
 /**
@@ -30,11 +33,21 @@ class ReadDataHolder(private val readType: Int) : MultiTypeViewHolder<GankDataBe
         override fun onBindData(data: GankDataBean) {
             if (isCategory()) {
                 loadImage(data.icon, findView(R.id.itemAvatar))
-                setText(R.id.itemTitle, data.title)
             } else {
-                loadImage(data.cover, findView(R.id.itemBackGround))
-                setText(R.id.itemTitle, data.title)
+                val image = findView<ImageView>(R.id.itemImage)
+                if (TextUtils.isEmpty(data.cover) || data.cover == "none") {
+                    setGone(image)
+                } else {
+                    setVisible(image)
+                    loadImage(data.cover, image)
+                }
+                if (data.published_at.isEmpty()) {
+                    setGone(R.id.itemPublish)
+                } else {
+                    setText(R.id.itemPublish, DateUtils.parseDate(data.published_at))
+                }
             }
+            setText(R.id.itemTitle, data.title)
         }
 
         override fun onItemClick(data: GankDataBean) {
