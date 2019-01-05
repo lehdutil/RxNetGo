@@ -11,8 +11,8 @@ import com.fungo.imagego.listener.OnImageListener
 import com.fungo.imagego.strategy.loadImage
 import com.fungo.netgo.RxNetGo
 import com.fungo.preview.ImagePreview
-import com.fungo.preview.loader.ImagePreviewLoadListener
-import com.fungo.preview.loader.ImagePreviewLoader
+import com.fungo.preview.listenner.ImagePreviewLoadListener
+import com.fungo.preview.listenner.ImagePreviewLoader
 
 /**
  * @author Pinger
