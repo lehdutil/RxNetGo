@@ -22,8 +22,8 @@
         android:title="@string/title_news" />
 
     <item
-        android:id="@+id/bottom_android"
+        android:id="@+id/bottom_user"
         android:icon="@mipmap/ic_android"
-        android:title="@string/title_android" />
+        android:title="@string/title_user" />
 
 </menu>

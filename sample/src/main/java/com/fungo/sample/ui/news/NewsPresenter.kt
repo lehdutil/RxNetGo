@@ -1,13 +1,13 @@
 package com.fungo.sample.ui.news
 
 import android.text.TextUtils
-import com.fungo.baseuilib.recycler.BaseRecyclerContract
+import com.fungo.business.recycler.BaseRecyclerContract
 import com.fungo.netgo.exception.ApiException
 import com.fungo.sample.data.api.NewsApi
 import com.fungo.sample.data.subscribe.NewsSubscriber
 
 /**
- * @author Pinger
+ * @author sPinger
  * @since 18-12-11 下午3:09
  */
 class NewsPresenter(private val newsView: BaseRecyclerContract.View, private val channelId: String?) : BaseRecyclerContract.Presenter {

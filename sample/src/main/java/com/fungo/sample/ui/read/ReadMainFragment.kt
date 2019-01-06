@@ -1,6 +1,6 @@
 package com.fungo.sample.ui.read
 
-import com.fungo.baseuilib.fragment.BaseFragment
+import com.fungo.baselib.base.fragment.BaseFragment
 import com.fungo.netgo.exception.ApiException
 import com.fungo.netgo.subscribe.JsonSubscriber
 import com.fungo.sample.R

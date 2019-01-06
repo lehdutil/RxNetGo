@@ -2,9 +2,9 @@ package com.fungo.sample.ui.fragment
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import com.fungo.baselib.base.animator.FragmentFadeAnimator
+import com.fungo.baselib.base.fragment.BaseFragment
 import com.fungo.baselib.utils.AppUtils
-import com.fungo.baseuilib.animator.FragmentFadeAnimator
-import com.fungo.baseuilib.fragment.BaseFragment
 import com.fungo.sample.R
 import kotlinx.android.synthetic.main.fragment_splash.*
 import me.yokeyword.fragmentation.anim.FragmentAnimator

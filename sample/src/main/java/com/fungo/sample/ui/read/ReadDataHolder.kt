@@ -3,8 +3,8 @@ package com.fungo.sample.ui.read
 import android.text.TextUtils
 import android.view.ViewGroup
 import android.widget.ImageView
-import com.fungo.baseuilib.recycler.BaseViewHolder
-import com.fungo.baseuilib.recycler.multitype.MultiTypeViewHolder
+import com.fungo.business.recycler.BaseViewHolder
+import com.fungo.business.recycler.multitype.MultiTypeViewHolder
 import com.fungo.imagego.strategy.loadImage
 import com.fungo.sample.R
 import com.fungo.sample.ui.gank.GankDataBean

@@ -6,11 +6,22 @@ android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
 
     defaultConfig {
+        applicationId 'com.pinger.sample'
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion
         versionCode rootProject.ext.android.versionCode
         versionName rootProject.ext.android.versionName
         multiDexEnabled true
+
+        manifestPlaceholders = [
+                CHANNEL_VALUE: "release",
+                JPUSH_PKGNAME: applicationId,
+                JPUSH_APPKEY : "xxxxxxxxxxx",
+                JPUSH_CHANNEL: "developer-default",
+                MTA_APPKEY   : "xxxx",
+                MTA_CHANNEL  : "xxxx",
+                qq_id        : "xxxx"
+        ]
     }
 
 
@@ -25,20 +36,28 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation rootProject.ext.dependencies.appcompat
-    implementation rootProject.ext.dependencies.material
-    implementation rootProject.ext.dependencies.recyclerview
-    implementation rootProject.ext.dependencies.constraintlayout
-    implementation rootProject.ext.dependencies.kotlin
+    implementation 'com.github.PingerOne.Fungo:baselib:1.2.0'
+    implementation 'com.github.PingerOne.Fungo:business:1.2.0'
 
     compileOnly rootProject.ext.dependencies.retrofit2
     compileOnly rootProject.ext.dependencies.rxjava2
 
-    implementation rootProject.ext.dependencies.imagego_glide
-    implementation rootProject.ext.dependencies.image_preview
-    implementation rootProject.ext.dependencies.bannerview
-    implementation rootProject.ext.dependencies.rxnetgo
+    implementation kotlin
+    implementation fragmentation_core
+    implementation fragmentation_swipeback
 
-    implementation project(":baselib")
-    implementation project(":baseuilib")
+    // 官方api
+    compileOnly appcompat
+    compileOnly material
+    compileOnly constraintlayout
+
+    compileOnly rxnetgo
+    compileOnly bannerview
+    compileOnly imagego_glide
+    compileOnly image_preview
+    compileOnly funplayer
+
+    compileOnly jiguang_jpush
+
+    compileOnly socialgo
 }

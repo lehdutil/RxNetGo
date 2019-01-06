@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="app_copy_success">复制成功</string>
-    <string name="app_copy_failed">复制失败</string>
-    <string name="app_network_disconnection">当前网络已断开，请检查您的网络。</string>
-</resources>

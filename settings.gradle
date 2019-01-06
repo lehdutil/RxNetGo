@@ -1,1 +1,1 @@
-include ':sample', ':rxnetgo', ':baseuilib', ':baselib'
+include ':sample', ':rxnetgo'

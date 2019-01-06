@@ -5,8 +5,8 @@ import androidx.viewpager.widget.ViewPager
 import com.fungo.banner.BannerView
 import com.fungo.banner.holder.BannerHolderCreator
 import com.fungo.banner.holder.BaseBannerHolder
-import com.fungo.baseuilib.fragment.BaseContentFragment
-import com.fungo.baseuilib.utils.StatusBarUtils
+import com.fungo.baselib.base.fragment.BaseContentFragment
+import com.fungo.baselib.utils.StatusBarUtils
 import com.fungo.imagego.strategy.loadBlur
 import com.fungo.imagego.strategy.loadImage
 import com.fungo.netgo.exception.ApiException

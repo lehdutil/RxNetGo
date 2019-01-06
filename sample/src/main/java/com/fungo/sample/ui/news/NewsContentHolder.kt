@@ -1,8 +1,8 @@
 package com.fungo.sample.ui.news
 
 import android.view.ViewGroup
-import com.fungo.baseuilib.recycler.BaseViewHolder
-import com.fungo.baseuilib.recycler.multitype.MultiTypeViewHolder
+import com.fungo.business.recycler.BaseViewHolder
+import com.fungo.business.recycler.multitype.MultiTypeViewHolder
 import com.fungo.preview.ImagePreview
 import com.fungo.preview.wrapper.ImageEntity
 import com.fungo.preview.wrapper.ImagePreviewAdapter

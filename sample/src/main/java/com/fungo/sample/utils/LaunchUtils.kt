@@ -4,9 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Rect
 import android.view.View
-import com.fungo.baselib.utils.AppUtils
-import com.fungo.baseuilib.activity.BaseActivity
-import com.fungo.baseuilib.fragment.BaseFragment
+import com.fungo.baselib.base.activity.BaseActivity
+import com.fungo.baselib.base.fragment.BaseFragment
+import com.fungo.business.web.WebActivity
 import com.fungo.preview.page.ImagePreviewPageActivity
 import com.fungo.preview.wrapper.ImageEntity
 
@@ -36,7 +36,7 @@ object LaunchUtils {
      * 跳转公共Web页面
      */
     fun startWebPage(context: Context?, url: String, title: String? = null) {
-        AppUtils.startWebActivity(context, url, title)
+        WebActivity.start(context, url, title)
     }
 
 

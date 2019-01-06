@@ -1,6 +1,6 @@
 package com.fungo.sample.ui.gank
 
-import com.fungo.baseuilib.fragment.BaseFragment
+import com.fungo.baselib.base.fragment.BaseFragment
 import com.fungo.sample.R
 import com.fungo.sample.data.api.GankApi
 import com.fungo.sample.ui.fragment.BaseMainTabFragment

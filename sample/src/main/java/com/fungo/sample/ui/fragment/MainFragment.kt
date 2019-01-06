@@ -1,7 +1,8 @@
 package com.fungo.sample.ui.fragment
 
-import com.fungo.baseuilib.fragment.BaseContentFragment
-import com.fungo.baseuilib.fragment.BaseFragment
+import com.fungo.baselib.base.fragment.BaseContentFragment
+import com.fungo.baselib.base.fragment.BaseFragment
+import com.fungo.baselib.base.fragment.PlaceholderFragment
 import com.fungo.sample.R
 import com.fungo.sample.ui.explore.ExploreFragment
 import com.fungo.sample.ui.gank.GankMainFragment
@@ -24,7 +25,7 @@ class MainFragment : BaseContentFragment() {
         mFragments.add(ReadMainFragment())
         mFragments.add(ExploreFragment())
         mFragments.add(NewsMainFragment())
-        mFragments.add(ExploreFragment())
+        mFragments.add(PlaceholderFragment.newInstance(title = getString(R.string.title_user)))
 
         loadMultipleRootFragment(R.id.mainContainer, 0,
                 mFragments[0], mFragments[1], mFragments[2], mFragments[3], mFragments[4])
@@ -37,7 +38,7 @@ class MainFragment : BaseContentFragment() {
                 R.id.bottom_read -> showHideFragment(mFragments[1])
                 R.id.bottom_explore -> showHideFragment(mFragments[2])
                 R.id.bottom_news -> showHideFragment(mFragments[3])
-                R.id.bottom_android -> showHideFragment(mFragments[4])
+                R.id.bottom_user -> showHideFragment(mFragments[4])
             }
             return@setOnNavigationItemSelectedListener true
         }

@@ -1,6 +1,6 @@
 package com.fungo.sample.ui.read
 
-import com.fungo.baseuilib.recycler.BaseRecyclerContract
+import com.fungo.business.recycler.BaseRecyclerContract
 import com.fungo.netgo.exception.ApiException
 import com.fungo.netgo.subscribe.JsonSubscriber
 import com.fungo.sample.data.api.GankApi

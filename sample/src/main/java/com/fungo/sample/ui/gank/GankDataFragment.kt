@@ -3,10 +3,10 @@ package com.fungo.sample.ui.gank
 import android.os.Bundle
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.fungo.baseuilib.R
-import com.fungo.baseuilib.recycler.BaseRecyclerContract
-import com.fungo.baseuilib.recycler.BaseRecyclerFragment
-import com.fungo.baseuilib.recycler.item.DividerItemDecoration
+import com.fungo.business.recycler.BaseRecyclerContract
+import com.fungo.business.recycler.BaseRecyclerFragment
+import com.fungo.business.recycler.item.DividerItemDecoration
+import com.fungo.sample.R
 import com.fungo.sample.data.api.GankApi
 
 
@@ -40,7 +40,7 @@ class GankDataFragment : BaseRecyclerFragment() {
         super.onCreate(savedInstanceState)
     }
 
-    override fun getPresenter(): BaseRecyclerContract.Presenter = GankDataPresenter(this, mGankType)
+    override fun attachPresenter(): BaseRecyclerContract.Presenter = GankDataPresenter(this, mGankType)
 
     override fun initPageView() {
         register(GankDataBean::class.java, GankDataHolder())

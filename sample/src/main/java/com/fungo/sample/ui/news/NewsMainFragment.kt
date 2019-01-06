@@ -1,6 +1,6 @@
 package com.fungo.sample.ui.news
 
-import com.fungo.baseuilib.fragment.BaseFragment
+import com.fungo.baselib.base.fragment.BaseFragment
 import com.fungo.netgo.exception.ApiException
 import com.fungo.sample.R
 import com.fungo.sample.data.api.NewsApi
