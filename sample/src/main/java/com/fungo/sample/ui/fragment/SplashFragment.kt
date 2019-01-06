@@ -8,7 +8,6 @@ import com.fungo.baselib.utils.AppUtils
 import com.fungo.sample.R
 import kotlinx.android.synthetic.main.fragment_splash.*
 import me.yokeyword.fragmentation.anim.FragmentAnimator
-import java.util.*
 
 /**
  * @author Pinger
@@ -24,6 +23,7 @@ class SplashFragment : BaseFragment() {
 
     override fun initView() {
         if (splashView != null) {
+            splashView.setImageBitmap(getBitmap())
             splashView.animate().scaleX(1.12f).scaleY(1.12f).setStartDelay(100L).setDuration(DELAY_TIME).start()
         }
     }
@@ -36,10 +36,7 @@ class SplashFragment : BaseFragment() {
         return FragmentFadeAnimator()
     }
 
-
-    private fun getBitmapByName(): Bitmap {
-        val index = Random().nextInt(5) + 1
-        val resID: Int = resources.getIdentifier("bg_splash_0$index", "mipmap", context?.packageName)
-        return BitmapFactory.decodeResource(resources, resID)
+    private fun getBitmap(): Bitmap {
+        return BitmapFactory.decodeResource(resources, resources.getIdentifier("ic_bg_splash", "mipmap", context?.packageName))
     }
 }
