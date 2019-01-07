@@ -1,0 +1,54 @@
+package com.pingerx.sample.ui.news
+
+import com.fungo.baselib.base.fragment.BaseFragment
+import com.fungo.sample.R
+import com.pingerx.rxnetgo.exception.ApiException
+import com.pingerx.sample.data.api.NewsApi
+import com.pingerx.sample.data.subscribe.NewsSubscriber
+import com.pingerx.sample.ui.fragment.BaseMainTabFragment
+
+/**
+ * @author Pinger
+ * @since 18-12-7 上午11:03
+ */
+class NewsMainFragment : BaseMainTabFragment() {
+
+    companion object {
+        private const val FILTER_CHANNEL = "焦点"
+    }
+
+
+    override fun getPageTitle(): String? = getString(R.string.title_news)
+
+    override fun initData() {
+        showLoading()
+        NewsApi.getNewsChannel(object : NewsSubscriber<NewsChannelResponse>() {
+            override fun onSuccess(data: NewsChannelResponse) {
+                if (data.channelList != null && data.channelList.isNotEmpty()) {
+                    val fragments = arrayListOf<BaseFragment>()
+                    val titles = arrayListOf<String>()
+                    data.channelList.forEach {
+                        // 是焦点新闻
+                        if (it.name.contains(FILTER_CHANNEL)) {
+                            val length = it.name.length
+                            val channel = it.name.substring(0, length - 2)
+                            titles.add(channel)
+                            fragments.add(NewsFragment.newInstance(it.channelId))
+                        }
+                    }
+
+                    showContent()
+                    setTabAdapter(fragments, titles)
+                } else {
+                    showEmpty()
+                }
+            }
+
+            override fun onError(exception: ApiException) {
+                showError()
+            }
+        })
+    }
+
+
+}

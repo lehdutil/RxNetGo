@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="BaseAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="background">@color/grey_f7</item>
+        <item name="colorWhite">@color/white</item>
+        <item name="colorBlack">@color/black</item>
+    </style>
+
+    <style name="BaseAppThemeWithActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+
+    <!--滑动返回的Activity样式-->
+    <style name="SwipeBackStyle" parent="BaseAppTheme">
+        <item name="android:windowBackground">@color/grey_f7</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@style/RightEnterAnimationStyle</item>
+    </style>
+
+
+    <!--全屏的主题-->
+    <style name="FullScreenStyle" parent="BaseAppTheme">
+        <item name="android:windowBackground">@color/grey_f7</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@style/RightEnterAnimationStyle</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+
+    <!-- 右侧弹出和返回的样式-->
+    <style name="RightEnterAnimationStyle" mce_bogus="1" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/anim_slide_in_right</item>
+        <item name="android:activityCloseExitAnimation">@anim/anim_slide_out_right</item>
+        <item name="android:activityOpenExitAnimation">@anim/anim_no</item>
+        <item name="android:activityCloseEnterAnimation">@anim/anim_no</item>
+    </style>
+
+    <!-- 渐变弹窗的样式-->
+    <style name="AlphaEnterAnimationStyle" mce_bogus="1" parent="@android:style/Animation.Translucent">
+        <item name="android:windowEnterAnimation">@anim/anim_fade_in</item>
+        <item name="android:windowExitAnimation">@anim/anim_fade_out</item>
+    </style>
+
+    <!--Transparent-->
+    <style name="TransparentStyle" parent="BaseAppTheme">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@style/RightEnterAnimationStyle</item>
+    </style>
+
+
+    <!--仿Dialog弹出的透明样式-->
+    <style name="TransparentDialogStyle" parent="BaseAppTheme">
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@style/AlphaEnterAnimationStyle</item>
+    </style>
+
+    <!--MaterialDialog主题-->
+    <style name="AlertDialog_Material" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowMinWidthMinor">360dp</item>
+    </style>
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+
+    <!--toolbar的主题-->
+    <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="android:textColorPrimary">?attr/colorWhite</item>
+        <item name="android:actionMenuTextAppearance">@style/ToolbarMenuTextAppearance</item>
+    </style>
+
+    <!--menu上弹出的样式-->
+    <style name="ToolbarMenuPopTheme" parent="AppTheme.PopupOverlay">
+        <item name="android:textColor">@color/text_black</item>
+        <item name="android:textSize">@dimen/sp_16</item>
+    </style>
+
+    <!--toolbar标题的样式-->
+    <style name="ToolbarTextAppearance" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">@dimen/sp_18</item>
+        <item name="android:textColor">?attr/colorWhite</item>
+    </style>
+
+    <!--TabLayout的样式-->
+    <style name="TabLayoutTextAppearance" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">@dimen/sp_15</item>
+    </style>
+
+    <!--toolbar主页的样式-->
+    <style name="ToolbarMainTextAppearance" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">@dimen/sp_20</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?attr/colorWhite</item>
+    </style>
+
+    <!--toolbar上的菜单文字样式，不是弹出menu的样式，是在toolbar上的menu的样式-->
+    <style name="ToolbarMenuTextAppearance" parent="TextAppearance.AppCompat.Menu">
+        <item name="android:textSize">@dimen/sp_14</item>
+        <item name="android:textColor">?attr/colorWhite</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!--系统的主题-->
+    <!--系统的主题-->
+    <!--系统的主题-->
+
+    <!--blueTheme-->
+    <style name="BlueTheme" parent="BaseAppTheme">
+        <item name="colorPrimary">@color/colorBluePrimary</item>
+        <item name="colorPrimaryDark">@color/colorBluePrimaryDark</item>
+        <item name="colorAccent">@color/colorBluePrimaryDark</item>
+        <item name="background">@color/grey_f7</item>
+        <item name="colorWhite">@color/white</item>
+        <item name="colorBlack">@color/black</item>
+    </style>
+
+
+    <!--blueGrey-->
+    <style name="BlueGreyTheme" parent="BaseAppTheme">
+        <item name="colorPrimary">@color/colorBlueGreyPrimary</item>
+        <item name="colorPrimaryDark">@color/colorBlueGreyPrimaryDark</item>
+        <item name="colorAccent">@color/colorBlueGreyPrimaryDark</item>
+        <item name="background">@color/grey_f7</item>
+        <item name="colorWhite">@color/white</item>
+        <item name="colorBlack">@color/black</item>
+    </style>
+
+    <!--pinkTheme-->
+    <style name="PinkTheme" parent="BaseAppTheme">
+        <item name="colorPrimary">@color/colorPinkPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPinkPrimaryDark</item>
+        <item name="colorAccent">@color/colorPinkPrimaryDark</item>
+        <item name="background">@color/grey_f7</item>
+        <item name="colorWhite">@color/white</item>
+        <item name="colorBlack">@color/black</item>
+    </style>
+
+    <!--brownTheme-->
+    <style name="BrownTheme" parent="BaseAppTheme">
+        <item name="colorPrimary">@color/colorBrownPrimary</item>
+        <item name="colorPrimaryDark">@color/colorBrownPrimaryDark</item>
+        <item name="colorAccent">@color/colorBrownPrimaryDark</item>
+        <item name="background">@color/grey_f7</item>
+        <item name="colorWhite">@color/white</item>
+        <item name="colorBlack">@color/black</item>
+    </style>
+
+
+    <!--purpleTheme-->
+    <style name="PurpleTheme" parent="BaseAppTheme">
+        <item name="colorPrimary">@color/colorPurplePrimary</item>
+        <item name="colorPrimaryDark">@color/colorPurplePrimaryDark</item>
+        <item name="colorAccent">@color/colorPurplePrimaryDark</item>
+        <item name="background">@color/grey_f7</item>
+        <item name="colorWhite">@color/white</item>
+        <item name="colorBlack">@color/black</item>
+    </style>
+
+    <!--tealTheme-->
+    <style name="TealTheme" parent="BaseAppTheme">
+        <item name="colorPrimary">@color/colorTealPrimary</item>
+        <item name="colorPrimaryDark">@color/colorTealPrimaryDark</item>
+        <item name="colorAccent">@color/colorTealPrimaryDark</item>
+        <item name="background">@color/grey_f7</item>
+        <item name="colorWhite">@color/white</item>
+        <item name="colorBlack">@color/black</item>
+    </style>
+
+
+    <!--deepPurpleTheme-->
+    <style name="DeepPurpleTheme" parent="BaseAppTheme">
+        <item name="colorPrimary">@color/colorDeepPurplePrimary</item>
+        <item name="colorPrimaryDark">@color/colorDeepPurplePrimaryDark</item>
+        <item name="colorAccent">@color/colorDeepPurplePrimaryDark</item>
+        <item name="background">@color/grey_f7</item>
+        <item name="colorWhite">@color/white</item>
+        <item name="colorBlack">@color/black</item>
+    </style>
+
+
+    <!--indigo-->
+    <style name="IndigoTheme" parent="BaseAppTheme">
+        <item name="colorPrimary">@color/colorIndigoPrimary</item>
+        <item name="colorPrimaryDark">@color/colorIndigoPrimaryDark</item>
+        <item name="colorAccent">@color/colorIndigoPrimaryDark</item>
+        <item name="background">@color/grey_f7</item>
+        <item name="colorWhite">@color/white</item>
+        <item name="colorBlack">@color/black</item>
+    </style>
+
+
+    <!--redTheme-->
+    <style name="RedTheme" parent="BaseAppTheme">
+        <item name="colorPrimary">@color/colorRedPrimary</item>
+        <item name="colorPrimaryDark">@color/colorRedPrimaryDark</item>
+        <item name="colorAccent">@color/colorRedPrimaryDark</item>
+        <item name="background">@color/grey_f7</item>
+        <item name="colorWhite">@color/white</item>
+        <item name="colorBlack">@color/black</item>
+    </style>
+
+    <style name="BlackTheme" parent="BaseAppTheme">
+        <item name="colorPrimary">@color/colorBlackPrimary</item>
+        <item name="colorPrimaryDark">@color/colorBlackPrimaryDark</item>
+        <item name="colorAccent">@color/colorBlackPrimaryDark</item>
+        <item name="background">@color/colorBlackPrimary</item>
+        <item name="colorWhite">@color/white</item>
+        <item name="colorBlack">@color/black</item>
+    </style>
+
+
+    <!--orange-->
+    <style name="OrangeTheme" parent="BaseAppTheme">
+        <item name="colorPrimary">@color/colorOrangePrimary</item>
+        <item name="colorPrimaryDark">@color/colorOrangePrimaryDark</item>
+        <item name="colorAccent">@color/colorOrangePrimaryDark</item>
+        <item name="background">@color/grey_f7</item>
+        <item name="colorWhite">@color/white</item>
+        <item name="colorBlack">@color/black</item>
+    </style>
+
+    <!--greenTheme-->
+    <style name="GreenTheme" parent="BaseAppTheme">
+        <item name="colorPrimary">@color/colorGreenPrimary</item>
+        <item name="colorPrimaryDark">@color/colorGreenPrimaryDark</item>
+        <item name="colorAccent">@color/colorGreenPrimaryDark</item>
+        <item name="background">@color/grey_f7</item>
+        <item name="colorWhite">@color/white</item>
+        <item name="colorBlack">@color/black</item>
+    </style>
+
+
+    <!--cyan-->
+    <style name="CyanTheme" parent="BaseAppTheme">
+        <item name="colorPrimary">@color/colorCyanPrimary</item>
+        <item name="colorPrimaryDark">@color/colorCyanPrimaryDark</item>
+        <item name="colorAccent">@color/colorCyanPrimaryDark</item>
+        <item name="background">@color/grey_f7</item>
+        <item name="colorWhite">@color/white</item>
+        <item name="colorBlack">@color/black</item>
+    </style>
+
+
+    <!--lightGreen-->
+    <style name="LightGreenTheme" parent="BaseAppTheme">
+        <item name="colorPrimary">@color/colorLightGreenPrimary</item>
+        <item name="colorPrimaryDark">@color/colorLightGreenPrimaryDark</item>
+        <item name="colorAccent">@color/colorLightGreenPrimaryDark</item>
+        <item name="background">@color/grey_f7</item>
+        <item name="colorWhite">@color/white</item>
+        <item name="colorBlack">@color/black</item>
+    </style>
+
+
+    <!--lime-->
+    <style name="LimeTheme" parent="BaseAppTheme">
+        <item name="colorPrimary">@color/colorLimePrimary</item>
+        <item name="colorPrimaryDark">@color/colorLimePrimaryDark</item>
+        <item name="colorAccent">@color/colorLimePrimaryDark</item>
+        <item name="background">@color/grey_f7</item>
+        <item name="colorWhite">@color/white</item>
+        <item name="colorBlack">@color/black</item>
+    </style>
+
+    <!--deepOrange-->
+    <style name="DeepOrangeTheme" parent="BaseAppTheme">
+        <item name="colorPrimary">@color/colorDeepOrangePrimary</item>
+        <item name="colorPrimaryDark">@color/colorDeepOrangePrimaryDark</item>
+        <item name="colorAccent">@color/colorDeepOrangePrimaryDark</item>
+        <item name="background">@color/grey_f7</item>
+        <item name="colorWhite">@color/white</item>
+        <item name="colorBlack">@color/black</item>
+    </style>
+
+
+</resources>

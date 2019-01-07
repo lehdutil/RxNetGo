@@ -26,9 +26,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'com.github.PingerOne.Fungo:baselib:1.2.1'
-    implementation 'com.github.PingerOne.Fungo:business:1.2.1'
-
+    implementation project(':baselib')
     implementation project(':rxnetgo')
 
     compileOnly rootProject.ext.dependencies.retrofit2
@@ -46,4 +44,9 @@ dependencies {
     implementation bannerview
     implementation imagego_glide
     implementation image_preview
+    implementation autoSize
+
+    implementation 'com.google.code.gson:gson:2.8.5'
+
+    implementation rxpermissions
 }
