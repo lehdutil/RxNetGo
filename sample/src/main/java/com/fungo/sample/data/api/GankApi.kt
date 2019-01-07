@@ -1,7 +1,6 @@
 package com.fungo.sample.data.api
 
 import com.fungo.netgo.subscribe.JsonSubscriber
-import com.fungo.netgo.subscribe.StringSubscriber
 import com.fungo.sample.ui.gank.GankResponse
 
 /**

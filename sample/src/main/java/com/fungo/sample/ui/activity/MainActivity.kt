@@ -17,7 +17,6 @@ class MainActivity : BasePageActivity() {
      */
     override fun getAppTheme(): AppTheme = UiUtils.getRandomTheme()
 
-
     /**
      * 跳转到Splash页面
      */

@@ -14,18 +14,36 @@ class GankDataPresenter(private val gankType: String) : BaseRecyclerPresenter<Ga
 
     override fun loadData(page: Int) {
         GankApi.getGankData(gankType, page, object : JsonSubscriber<GankResponse>() {
+
+            override fun onStart() {
+                println("---------> onStart---------")
+
+            }
             override fun onSuccess(data: GankResponse) {
+
+                println("---------> onSuccess---------")
+
                 if (!data.error) {
                     mView.showContent(data.results)
                 } else {
                     mView.showPageEmpty()
                 }
             }
-
             override fun onError(exception: ApiException) {
                 mView.showPageError(exception.getMsg())
+
+                println("---------> onError---------")
+
             }
+
+
+            override fun onCompleted() {
+                println("---------> onCompleted---------")
+
+            }
+
         })
+
     }
 
 }

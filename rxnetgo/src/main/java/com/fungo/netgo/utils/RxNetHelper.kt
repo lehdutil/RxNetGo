@@ -56,7 +56,6 @@ object RxNetHelper {
         return if (request.apiService != null) {
             request.apiService
                     .getAsync(request.url, request.getHeaders().getHeaderParams(), request.getParams().getUrlParams())
-                    .compose()
                     .flatMap { response ->
                         val data = request.getConverter().convertResponse(response)
                         if (data != null) {
@@ -66,14 +65,12 @@ object RxNetHelper {
                         }
                     }
                     .cache(request.getCacheKey(), request.getSubscriber(), request.getCacheStrategy())
-
-
+                    .compose()
         } else {
             request.flowable
                     ?: Flowable.error(ApiException(msg = "Rxnetgo async request engine not be null. Please retry!"))
         }
     }
-
 
     /**
      * Rx异步的Post请求
@@ -82,7 +79,6 @@ object RxNetHelper {
         return if (request.apiService != null) {
             request.apiService
                     .postAsync(request.url, request.getHeaders().getHeaderParams(), request.getParams().getUrlParams(), request.generateRequestBody())
-                    .compose()
                     .flatMap { response ->
                         val data = request.getConverter().convertResponse(response)
                         if (data != null) {
@@ -91,6 +87,7 @@ object RxNetHelper {
                             Flowable.error(ApiException(msg = "Rxnetgo converter data is null!"))
                         }
                     }.cache(request.getCacheKey(), request.getSubscriber(), request.getCacheStrategy())
+                    .compose()
         } else {
             request.flowable
                     ?: Flowable.error(ApiException(msg = "Rxnetgo async request engine not be null. Please retry!"))
@@ -178,6 +175,5 @@ object RxNetHelper {
         return rxCache(cacheKey, subscriber.getType(), strategy)
                 .map(CacheResult.MapFunc<T>())
     }
-
 
 }

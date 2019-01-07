@@ -45,9 +45,9 @@ abstract class BaseSubscriber<T> : ResourceSubscriber<T>(), ISubscriber<T> {
 
     /**
      * 转发请求成功结果
+     * 可能会有多次请求返回，所以不要直接取消
      */
     final override fun onNext(data: T) {
-        this.dispose()
         onSuccess(data)
     }
 
@@ -67,7 +67,6 @@ abstract class BaseSubscriber<T> : ResourceSubscriber<T>(), ISubscriber<T> {
 
     /**
      * 请求完成
-     * 请求完成了自动取消订阅，所有的请求都处理
      */
     final override fun onComplete() {
         this.dispose()

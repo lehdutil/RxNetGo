@@ -1,13 +1,16 @@
 package com.fungo.sample.ui.fragment
 
+import android.Manifest
 import com.fungo.baselib.base.fragment.BaseContentFragment
 import com.fungo.baselib.base.fragment.BaseFragment
 import com.fungo.baselib.base.fragment.PlaceholderFragment
+import com.fungo.baselib.utils.AppUtils
 import com.fungo.sample.R
 import com.fungo.sample.ui.explore.ExploreFragment
 import com.fungo.sample.ui.gank.GankMainFragment
 import com.fungo.sample.ui.news.NewsMainFragment
 import com.fungo.sample.ui.read.ReadMainFragment
+import com.tbruyelle.rxpermissions2.RxPermissions
 import kotlinx.android.synthetic.main.fragment_main.*
 
 /**
@@ -42,5 +45,11 @@ class MainFragment : BaseContentFragment() {
             }
             return@setOnNavigationItemSelectedListener true
         }
+    }
+
+    override fun initData() {
+        AppUtils.postDelayed(Runnable {
+            RxPermissions(this).request(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE).subscribe()
+        }, 2000)
     }
 }

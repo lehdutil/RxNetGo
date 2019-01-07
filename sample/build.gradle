@@ -46,4 +46,6 @@ dependencies {
     implementation bannerview
     implementation imagego_glide
     implementation image_preview
+
+    implementation rxpermissions
 }

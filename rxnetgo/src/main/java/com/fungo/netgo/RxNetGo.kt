@@ -106,7 +106,7 @@ class RxNetGo {
         mRetryCount = 3
         mCacheTime = CACHE_NEVER_EXPIRE
         // 默认不使用缓存
-        mCacheMode = CacheMode.FIRST_REQUEST_THEN_CACHE
+        mCacheMode = CacheMode.FIRST_CACHE_AND_REQUEST
         // 缓存版本如果不修改，则缓存永远进行覆盖
         mCacheVersion = 1
 
