@@ -35,8 +35,7 @@ enum class CacheMode {
 
 
     /**
-     * TODO
-     * 先读取缓存，然后请求网络覆盖缓存
+     * 先读取缓存，然后请求网络覆盖缓存，如果有缓存会覆盖两次
      */
     FIRST_CACHE_AND_REQUEST
 

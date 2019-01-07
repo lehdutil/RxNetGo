@@ -3,7 +3,6 @@ package com.fungo.sample.ui.gank
 import android.os.Bundle
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.fungo.business.recycler.BaseRecyclerContract
 import com.fungo.business.recycler.BaseRecyclerFragment
 import com.fungo.business.recycler.item.DividerItemDecoration
 import com.fungo.sample.R
@@ -17,7 +16,14 @@ import com.fungo.sample.data.api.GankApi
  * 干货集中营列表展示页面
  * https://gank.io/api
  */
-class GankDataFragment : BaseRecyclerFragment() {
+class GankDataFragment : BaseRecyclerFragment<GankDataPresenter>() {
+
+
+    override fun attachPresenter(): GankDataPresenter = GankDataPresenter(mGankType)
+
+    override fun attachView() {
+        mPresenter.attachView(this)
+    }
 
     override fun isShowToolBar(): Boolean = false
 
@@ -40,7 +46,6 @@ class GankDataFragment : BaseRecyclerFragment() {
         super.onCreate(savedInstanceState)
     }
 
-    override fun attachPresenter(): BaseRecyclerContract.Presenter = GankDataPresenter(this, mGankType)
 
     override fun initPageView() {
         register(GankDataBean::class.java, GankDataHolder())

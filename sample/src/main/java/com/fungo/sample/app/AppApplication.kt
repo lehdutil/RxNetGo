@@ -19,6 +19,8 @@ import com.fungo.preview.listenner.ImagePreviewLoader
  * @since 18-12-6 下午5:47
  */
 class AppApplication : BaseApplication() {
+
+
     override fun getCurrentEnvModel(): Int {
         return EnvModel.BETA.ordinal
     }
@@ -42,7 +44,6 @@ class AppApplication : BaseApplication() {
     private fun initImageLoader() {
         ImageGo.setStrategy(GlideImageStrategy()).setDebug(DebugUtils.isDebugModel())
     }
-
 
     private fun initImagePreview() {
         ImagePreview.imageLoader = object : ImagePreviewLoader {

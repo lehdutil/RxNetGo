@@ -12,16 +12,6 @@ android {
         versionCode rootProject.ext.android.versionCode
         versionName rootProject.ext.android.versionName
         multiDexEnabled true
-
-        manifestPlaceholders = [
-                CHANNEL_VALUE: "release",
-                JPUSH_PKGNAME: applicationId,
-                JPUSH_APPKEY : "xxxxxxxxxxx",
-                JPUSH_CHANNEL: "developer-default",
-                MTA_APPKEY   : "xxxx",
-                MTA_CHANNEL  : "xxxx",
-                qq_id        : "xxxx"
-        ]
     }
 
 
@@ -36,8 +26,10 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'com.github.PingerOne.Fungo:baselib:1.2.0'
-    implementation 'com.github.PingerOne.Fungo:business:1.2.0'
+    implementation 'com.github.PingerOne.Fungo:baselib:1.2.1'
+    implementation 'com.github.PingerOne.Fungo:business:1.2.1'
+
+    implementation project(':rxnetgo')
 
     compileOnly rootProject.ext.dependencies.retrofit2
     compileOnly rootProject.ext.dependencies.rxjava2
@@ -51,13 +43,7 @@ dependencies {
     compileOnly material
     compileOnly constraintlayout
 
-    compileOnly rxnetgo
-    compileOnly bannerview
-    compileOnly imagego_glide
-    compileOnly image_preview
-    compileOnly funplayer
-
-    compileOnly jiguang_jpush
-
-    compileOnly socialgo
+    implementation bannerview
+    implementation imagego_glide
+    implementation image_preview
 }

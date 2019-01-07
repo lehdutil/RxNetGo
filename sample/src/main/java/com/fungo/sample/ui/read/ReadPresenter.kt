@@ -1,6 +1,6 @@
 package com.fungo.sample.ui.read
 
-import com.fungo.business.recycler.BaseRecyclerContract
+import com.fungo.business.recycler.BaseRecyclerPresenter
 import com.fungo.netgo.exception.ApiException
 import com.fungo.netgo.subscribe.JsonSubscriber
 import com.fungo.sample.data.api.GankApi
@@ -10,7 +10,7 @@ import com.fungo.sample.ui.gank.GankResponse
  * @author Pinger
  * @since 2018/12/14 18:45
  */
-class ReadPresenter(private val mView: BaseRecyclerContract.View, private val readType: Int, private val categoryId: String?) : BaseRecyclerContract.Presenter {
+class ReadPresenter(private val readType: Int, private val categoryId: String?) : BaseRecyclerPresenter<ReadFragment>() {
 
     override fun loadData(page: Int) {
         if (categoryId != null) {

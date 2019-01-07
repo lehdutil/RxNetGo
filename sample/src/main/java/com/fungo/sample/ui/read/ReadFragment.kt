@@ -1,7 +1,6 @@
 package com.fungo.sample.ui.read
 
 import android.os.Bundle
-import com.fungo.business.recycler.BaseRecyclerContract
 import com.fungo.business.recycler.BaseRecyclerFragment
 import com.fungo.sample.ui.gank.GankDataBean
 
@@ -9,7 +8,11 @@ import com.fungo.sample.ui.gank.GankDataBean
  * @author Pinger
  * @since 2018/12/14 18:43
  */
-class ReadFragment : BaseRecyclerFragment() {
+class ReadFragment : BaseRecyclerFragment<ReadPresenter>() {
+
+    override fun attachView() {
+        mPresenter.attachView(this)
+    }
 
     private var mCategoryId: String? = null
     private var mReadType: Int = READ_TYPE_CATEGORY
@@ -40,7 +43,7 @@ class ReadFragment : BaseRecyclerFragment() {
         super.onCreate(savedInstanceState)
     }
 
-    override fun attachPresenter(): BaseRecyclerContract.Presenter = ReadPresenter(this, mReadType, mCategoryId)
+    override fun attachPresenter() = ReadPresenter(mReadType, mCategoryId)
 
     override fun initPageView() {
         if (isContentType()) {

@@ -110,6 +110,7 @@ abstract class Request<T>(
         return when (mCacheMode) {
             CacheMode.FIRST_CACHE_THEN_REQUEST -> CacheStrategy.firstCache()
             CacheMode.FIRST_REQUEST_THEN_CACHE -> CacheStrategy.firstRemote()
+            CacheMode.FIRST_CACHE_AND_REQUEST -> CacheStrategy.cacheAndRemote()
             CacheMode.ONLY_CACHE -> CacheStrategy.onlyCache()
             else -> CacheStrategy.onlyRemote()
         }
