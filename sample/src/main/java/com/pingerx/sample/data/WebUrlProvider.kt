@@ -10,7 +10,7 @@ object WebUrlProvider {
 
 
     fun getGithubUrl(): String {
-        return "https://github.com/PingerOne/RxNetGo"
+        return "https://github.com/pingerx/RxNetgo"
     }
 
 

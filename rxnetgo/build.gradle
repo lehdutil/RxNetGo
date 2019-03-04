@@ -37,3 +37,5 @@ dependencies {
 
     implementation rootProject.ext.dependencies.disklrucache
 }
+
+apply from: '../publish.gradle'

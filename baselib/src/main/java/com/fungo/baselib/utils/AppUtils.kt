@@ -170,7 +170,7 @@ object AppUtils {
                 if ("9774d56d682e549c" != androidId) {
                     uuid = UUID.nameUUIDFromBytes(androidId.toByteArray(Charset.defaultCharset())).toString()
                 } else {
-                    if (getContext().checkCallingOrSelfPermission(android.Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
+                    if (getContext().checkCallingOrSelfPermission(android.Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         val deviceId = ((getContext().getSystemService(Context.TELEPHONY_SERVICE)) as TelephonyManager).imei
                         if (deviceId != null) {
                             uuid = UUID.nameUUIDFromBytes(deviceId.toByteArray(Charset.defaultCharset())).toString()
