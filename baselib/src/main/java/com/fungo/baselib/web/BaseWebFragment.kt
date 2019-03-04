@@ -16,6 +16,7 @@ import com.fungo.baselib.R
 import com.fungo.baselib.base.fragment.BaseNavFragment
 import com.fungo.baselib.utils.NetWorkUtils
 import com.fungo.baselib.utils.ViewUtils
+import com.fungo.baselib.web.sonic.SonicInstaller
 import com.fungo.baselib.web.sonic.SonicSessionClientImpl
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.tencent.sonic.sdk.SonicEngine
@@ -70,6 +71,7 @@ abstract class BaseWebFragment : BaseNavFragment() {
     private fun initSonic() {
         // if it's sonic mode , startup sonic session at first time
         if (isUseSonic()) { // sonic mode
+            SonicInstaller.initSonic(context!!)
             val sessionConfigBuilder = SonicSessionConfig.Builder()
             sessionConfigBuilder.setSupportLocalServer(true)
 
