@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:foreground="?attr/selectableItemBackgroundBorderless"
+    android:background="?attr/selectableItemBackground"
     android:padding="@dimen/dp_12">
 
 
@@ -22,7 +22,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp_12"
-        android:layout_marginLeft="@dimen/dp_12"
         android:lines="1"
         android:ellipsize="end"
         android:textColor="@color/text_black"

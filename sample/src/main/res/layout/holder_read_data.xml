@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:foreground="?attr/selectableItemBackgroundBorderless">
+    android:background="?attr/selectableItemBackground">
 
 
     <ImageView
@@ -35,7 +35,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp_12"
-        android:layout_marginLeft="@dimen/dp_12"
         android:layout_marginBottom="@dimen/dp_12"
         android:textColor="@color/text_grey"
         android:textSize="@dimen/sp_14"
