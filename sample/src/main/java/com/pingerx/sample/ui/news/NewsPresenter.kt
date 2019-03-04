@@ -2,9 +2,7 @@ package com.pingerx.sample.ui.news
 
 import android.text.TextUtils
 import com.fungo.baselib.base.recycler.BaseRecyclerPresenter
-import com.pingerx.rxnetgo.exception.ApiException
 import com.pingerx.sample.data.api.NewsApi
-import com.pingerx.sample.data.subscribe.NewsSubscriber
 
 /**
  * @author sPinger
@@ -18,14 +16,9 @@ class NewsPresenter(private val channelId: String?) : BaseRecyclerPresenter<News
             return
         }
 
-        NewsApi.getNewsContent(page, channelId!!, object : NewsSubscriber<NewsContentResponse>() {
-            override fun onSuccess(data: NewsContentResponse) {
-                mView.showContent(data.pagebean.contentlist)
-            }
-
-            override fun onError(exception: ApiException) {
-                mView.showPageError(exception.getMsg())
-            }
-        })
+        NewsApi.getNewsContent(page, channelId!!) {
+            onSuccess { mView.showContent(it.pagebean.contentlist) }
+            onFailed { mView.showPageError(it.getMsg()) }
+        }
     }
 }

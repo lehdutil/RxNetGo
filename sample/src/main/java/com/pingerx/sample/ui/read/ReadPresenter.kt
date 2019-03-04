@@ -2,7 +2,6 @@ package com.pingerx.sample.ui.read
 
 import com.fungo.baselib.base.recycler.BaseRecyclerPresenter
 import com.pingerx.sample.data.api.GankApi
-import com.pingerx.sample.ui.gank.GankResponse
 
 /**
  * @author Pinger
@@ -13,23 +12,18 @@ class ReadPresenter(private val readType: Int, private val categoryId: String?) 
     override fun loadData(page: Int) {
         if (categoryId != null) {
             if (readType == ReadFragment.READ_TYPE_CATEGORY) {
-                GankApi.getReadCategory(categoryId, ReadSubscriber())
+                GankApi.getReadCategory(categoryId) {
+                    onSuccess { mView.showContent(it.results) }
+                    onFailed { mView.showPageError(it.getMsg()) }
+                }
             } else {
-                GankApi.getReadData(categoryId, page, ReadSubscriber())
+                GankApi.getReadData(categoryId, page) {
+                    onSuccess { mView.showContent(it.results) }
+                    onFailed { mView.showPageError(it.getMsg()) }
+                }
             }
         } else {
             mView.showPageError()
-        }
-    }
-
-
-    private inner class ReadSubscriber : JsonSubscriber<GankResponse>() {
-        override fun onSuccess(data: GankResponse) {
-            mView.showContent(data.results)
-        }
-
-        override fun onError(exception: ApiException) {
-            mView.showPageError(exception.getMsg())
         }
     }
 }

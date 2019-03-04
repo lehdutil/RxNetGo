@@ -6,6 +6,7 @@ import android.graphics.Rect
 import android.view.View
 import com.fungo.baselib.base.activity.BaseActivity
 import com.fungo.baselib.base.fragment.BaseFragment
+import com.fungo.baselib.web.WebActivity
 import com.fungo.preview.page.ImagePreviewPageActivity
 import com.fungo.preview.wrapper.ImageEntity
 

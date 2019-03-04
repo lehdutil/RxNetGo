@@ -3,7 +3,7 @@ package com.pingerx.sample.ui.gank
 import android.os.Bundle
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.fungo.baselib.base.recycler.BaseRecyclerFragment
+import com.fungo.baselib.base.recycler.BaseMultiRecyclerFragment
 import com.fungo.baselib.base.recycler.decorate.DividerItemDecoration
 import com.fungo.sample.R
 import com.pingerx.sample.data.api.GankApi
@@ -16,11 +16,9 @@ import com.pingerx.sample.data.api.GankApi
  * 干货集中营列表展示页面
  * https://gank.io/api
  */
-class GankDataFragment : BaseRecyclerFragment<GankDataPresenter>() {
-
+class GankDataFragment : BaseMultiRecyclerFragment<GankDataPresenter>() {
 
     override fun attachPresenter(): GankDataPresenter = GankDataPresenter(mGankType)
-
 
     override fun attachView() {
         mPresenter.attachView(this)
@@ -43,7 +41,7 @@ class GankDataFragment : BaseRecyclerFragment<GankDataPresenter>() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        mGankType = arguments.getString(GANK_TYPE) ?: GankApi.GANK_TYPE_ALL
+        mGankType = arguments?.getString(GANK_TYPE) ?: GankApi.GANK_TYPE_ALL
         super.onCreate(savedInstanceState)
     }
 
@@ -52,10 +50,7 @@ class GankDataFragment : BaseRecyclerFragment<GankDataPresenter>() {
         register(GankDataBean::class.java, GankDataHolder())
     }
 
-    override fun generateItemDivider(): RecyclerView.ItemDecoration? {
+    override fun getItemDivider(): RecyclerView.ItemDecoration? {
         return DividerItemDecoration(ContextCompat.getColor(context!!, R.color.grey_f2), height = 18)
     }
-
-
-    override fun getStartPage(): Int = 1
 }

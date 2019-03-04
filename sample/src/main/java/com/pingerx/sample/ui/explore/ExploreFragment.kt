@@ -12,8 +12,8 @@ import com.fungo.imagego.strategy.loadImage
 import com.fungo.sample.R
 import com.pingerx.sample.data.api.GankApi
 import com.pingerx.sample.ui.gank.GankDataBean
-import com.pingerx.sample.ui.gank.GankResponse
 import com.pingerx.sample.utils.LaunchUtils
+import kotlinx.android.synthetic.main.fragment_explore.*
 
 /**
  * @author Pinger
@@ -50,21 +50,20 @@ class ExploreFragment : BaseContentFragment() {
     override fun initData() {
         StatusBarUtils.setStatusBarForegroundColor(getPageActivity(), true)
         showPageLoading()
-        GankApi.getGankData(GankApi.GANK_TYPE_WELFARE, 0, object : JsonSubscriber<GankResponse>() {
-            override fun onSuccess(data: GankResponse) {
+        GankApi.getGankData(GankApi.GANK_TYPE_WELFARE, 0) {
+
+            onSuccess {
                 showPageContent()
                 StatusBarUtils.setStatusBarForegroundColor(getPageActivity(), false)
-                mData = data.results
+                mData = it.results
                 loadBlur(mData[0].url)
                 mBannerView.setPages(mData, object : BannerHolderCreator<GankDataBean, BannerHolder> {
                     override fun onCreateBannerHolder() = BannerHolder()
                 })
             }
 
-            override fun onError(exception: ApiException) {
-                showPageError(exception.getMsg())
-            }
-        })
+            onFailed { showPageError(it.getMsg()) }
+        }
     }
 
     private fun loadBlur(url: String) {

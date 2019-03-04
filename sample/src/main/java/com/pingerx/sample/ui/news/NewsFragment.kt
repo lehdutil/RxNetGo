@@ -2,13 +2,14 @@ package com.pingerx.sample.ui.news
 
 import android.os.Bundle
 import androidx.recyclerview.widget.RecyclerView
-import com.fungo.baselib.base.recycler.BaseRecyclerFragment
+import com.fungo.baselib.base.recycler.BaseMultiRecyclerFragment
+import com.fungo.baselib.base.recycler.decorate.VerticalItemSpaceDecoration
 
 /**
  * @author Pinger
  * @since 18-12-11 下午3:08
  */
-class NewsFragment : BaseRecyclerFragment<NewsPresenter>() {
+class NewsFragment : BaseMultiRecyclerFragment<NewsPresenter>() {
 
     override fun attachView() {
         mPresenter.attachView(this)
@@ -35,10 +36,9 @@ class NewsFragment : BaseRecyclerFragment<NewsPresenter>() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        mChannelId = arguments.getString(CHANNEL_ID)
+        mChannelId = arguments?.getString(CHANNEL_ID)
         super.onCreate(savedInstanceState)
     }
-
 
     override fun attachPresenter() = NewsPresenter(mChannelId)
 
@@ -46,12 +46,7 @@ class NewsFragment : BaseRecyclerFragment<NewsPresenter>() {
         register(NewsContentBean::class.java, NewsContentHolder())
     }
 
-
-    override fun generateItemDivider(): RecyclerView.ItemDecoration? {
+    override fun getItemDivider(): RecyclerView.ItemDecoration? {
         return VerticalItemSpaceDecoration(36)
     }
-
-    override fun getStartPage(): Int = 1
-
-
 }

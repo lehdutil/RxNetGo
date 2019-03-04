@@ -3,6 +3,7 @@ package com.fungo.baselib.base.fragment
 import android.os.Build
 import androidx.appcompat.widget.Toolbar
 import com.fungo.baselib.R
+import com.fungo.baselib.base.adapter.BaseFragmentPageAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.base_nav_tab.*
 
@@ -42,6 +43,19 @@ open class BaseNavTabFragment : BaseFragment() {
     override fun initData() {
         setTabAdapter(viewPager, tabLayout, getTabFragments(), getTabTitles())
         showPageContent()
+    }
+
+
+    /**
+     * 给之类设置数据
+     */
+    protected fun setTabAdapter(fragments: List<BaseFragment>, titles: List<String>) {
+        if (fragments.isNotEmpty()) {
+            val adapter = BaseFragmentPageAdapter(childFragmentManager, fragments, titles)
+            viewPager?.adapter = adapter
+            viewPager?.offscreenPageLimit = fragments.size
+            tabLayout?.setupWithViewPager(viewPager)
+        }
     }
 
     /**

@@ -12,20 +12,17 @@ class GankDataPresenter(private val gankType: String) : BaseRecyclerPresenter<Ga
 
     override fun loadData(page: Int) {
         GankApi.getGankData(gankType, page) {
-            //            onSuccess {
-//
-//                if (!data.error) {
-//                    mView.showContent(data.results)
-//                } else {
-//                    mView.showPageEmpty()
-//                }
-//            }
-//
-//            onFailed {
-//                mView.showPageError(exception.getMsg())
-//
-//                println("---------> onError---------")
-//            }
+            onSuccess {
+                if (!it.error) {
+                    mView.showContent(it.results)
+                } else {
+                    mView.showPageEmpty()
+                }
+            }
+
+            onFailed {
+                mView.showPageError(it.getMsg())
+            }
         }
 
 

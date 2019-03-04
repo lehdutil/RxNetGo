@@ -4,7 +4,6 @@ import com.fungo.baselib.base.fragment.BaseFragment
 import com.fungo.sample.R
 import com.pingerx.sample.data.api.GankApi
 import com.pingerx.sample.ui.fragment.BaseMainTabFragment
-import com.pingerx.sample.ui.gank.GankResponse
 
 /**
  * @author Pinger
@@ -15,24 +14,19 @@ class ReadMainFragment : BaseMainTabFragment() {
     override fun getPageTitle(): String? = getString(R.string.title_read)
 
     override fun initData() {
-        showLoading()
-        GankApi.getReadCategories(object : JsonSubscriber<GankResponse>() {
-            override fun onSuccess(data: GankResponse) {
+        GankApi.getReadCategories {
+            onSuccess {
                 val fragments = arrayListOf<BaseFragment>()
                 val titles = arrayListOf<String>()
 
-                data.results.forEach {
-                    fragments.add(ReadFragment.newInstance(ReadFragment.READ_TYPE_CATEGORY, it.en_name))
-                    titles.add(it.name)
+                it.results.forEach { data ->
+                    fragments.add(ReadFragment.newInstance(ReadFragment.READ_TYPE_CATEGORY, data.en_name))
+                    titles.add(data.name)
                 }
                 setTabAdapter(fragments, titles)
-                showContent()
+                showPageContent()
             }
-
-            override fun onError(exception: ApiException) {
-                showError()
-            }
-        })
+        }
     }
 
 

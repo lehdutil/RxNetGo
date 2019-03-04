@@ -1,14 +1,14 @@
 package com.pingerx.sample.ui.read
 
 import android.os.Bundle
-import com.fungo.baselib.base.recycler.BaseRecyclerFragment
+import com.fungo.baselib.base.recycler.BaseMultiRecyclerFragment
 import com.pingerx.sample.ui.gank.GankDataBean
 
 /**
  * @author Pinger
  * @since 2018/12/14 18:43
  */
-class ReadFragment : BaseRecyclerFragment<ReadPresenter>() {
+class ReadFragment : BaseMultiRecyclerFragment<ReadPresenter>() {
 
     override fun attachView() {
         mPresenter.attachView(this)
@@ -38,8 +38,8 @@ class ReadFragment : BaseRecyclerFragment<ReadPresenter>() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        mCategoryId = arguments.getString(CATEGORY_ID)
-        mReadType = arguments.getInt(READ_DATA_TYPE) ?: READ_TYPE_CATEGORY
+        mCategoryId = arguments?.getString(CATEGORY_ID)
+        mReadType = arguments?.getInt(READ_DATA_TYPE) ?: READ_TYPE_CATEGORY
         super.onCreate(savedInstanceState)
     }
 
@@ -47,12 +47,12 @@ class ReadFragment : BaseRecyclerFragment<ReadPresenter>() {
 
     override fun initPageView() {
         if (isContentType()) {
-            setPageTitle(arguments.getString(READ_TITLE))
+            setPageTitle(arguments?.getString(READ_TITLE))
         }
         register(GankDataBean::class.java, ReadDataHolder(mReadType))
     }
 
-    override fun isEnableLoadmore(): Boolean {
+    override fun isEnableLoadMore(): Boolean {
         return isContentType()
     }
 

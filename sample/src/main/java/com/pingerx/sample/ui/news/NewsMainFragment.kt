@@ -2,9 +2,7 @@ package com.pingerx.sample.ui.news
 
 import com.fungo.baselib.base.fragment.BaseFragment
 import com.fungo.sample.R
-import com.pingerx.rxnetgo.exception.ApiException
 import com.pingerx.sample.data.api.NewsApi
-import com.pingerx.sample.data.subscribe.NewsSubscriber
 import com.pingerx.sample.ui.fragment.BaseMainTabFragment
 
 /**
@@ -21,33 +19,28 @@ class NewsMainFragment : BaseMainTabFragment() {
     override fun getPageTitle(): String? = getString(R.string.title_news)
 
     override fun initData() {
-        showLoading()
-        NewsApi.getNewsChannel(object : NewsSubscriber<NewsChannelResponse>() {
-            override fun onSuccess(data: NewsChannelResponse) {
-                if (data.channelList != null && data.channelList.isNotEmpty()) {
+        NewsApi.getNewsChannel {
+            onSuccess {
+                if (it.channelList != null && it.channelList.isNotEmpty()) {
                     val fragments = arrayListOf<BaseFragment>()
                     val titles = arrayListOf<String>()
-                    data.channelList.forEach {
+                    it.channelList.forEach { data ->
                         // 是焦点新闻
-                        if (it.name.contains(FILTER_CHANNEL)) {
-                            val length = it.name.length
-                            val channel = it.name.substring(0, length - 2)
+                        if (data.name.contains(FILTER_CHANNEL)) {
+                            val length = data.name.length
+                            val channel = data.name.substring(0, length - 2)
                             titles.add(channel)
-                            fragments.add(NewsFragment.newInstance(it.channelId))
+                            fragments.add(NewsFragment.newInstance(data.channelId))
                         }
                     }
-
-                    showContent()
                     setTabAdapter(fragments, titles)
+                    showPageContent()
                 } else {
-                    showEmpty()
+                    showPageEmpty()
                 }
             }
-
-            override fun onError(exception: ApiException) {
-                showError()
-            }
-        })
+            onFailed { showPageError() }
+        }
     }
 
 
