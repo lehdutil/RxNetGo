@@ -5,6 +5,7 @@ import com.fungo.baselib.base.fragment.BaseContentFragment
 import com.fungo.baselib.base.fragment.BaseFragment
 import com.fungo.baselib.base.fragment.PlaceholderFragment
 import com.fungo.baselib.utils.AppUtils
+import com.fungo.baselib.utils.StatusBarUtils
 import com.fungo.sample.R
 import com.pingerx.sample.ui.explore.ExploreFragment
 import com.pingerx.sample.ui.gank.GankMainFragment
@@ -28,7 +29,7 @@ class MainFragment : BaseContentFragment() {
         mFragments.add(ReadMainFragment())
         mFragments.add(ExploreFragment())
         mFragments.add(NewsMainFragment())
-        mFragments.add(PlaceholderFragment.newInstance(title = getString(R.string.title_user)))
+        mFragments.add(PlaceholderFragment.newInstance(title = getString(R.string.title_user), isMainPage = true))
 
         loadMultipleRootFragment(R.id.mainContainer, 0,
                 mFragments[0], mFragments[1], mFragments[2], mFragments[3], mFragments[4])
@@ -51,5 +52,10 @@ class MainFragment : BaseContentFragment() {
         AppUtils.postDelayed(Runnable {
             RxPermissions(this).request(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE).subscribe()
         }, 2000)
+    }
+
+    override fun onSupportVisible() {
+        super.onSupportVisible()
+        StatusBarUtils.setStatusBarForegroundColor(getPageActivity(), false)
     }
 }

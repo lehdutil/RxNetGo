@@ -57,7 +57,7 @@ class RxCache private constructor(private val cacheCore: CacheCore) {
         return FlowableTransformer { flowable -> strategy.execute(this@RxCache, key, flowable, type) }
     }
 
-    fun <T> save(key: String, value: T, target: CacheTarget = CacheTarget.MemoryAndDisk): Flowable<Boolean> {
+    fun <T> save(key: String, value: T, target: CacheTarget = CacheTarget.Disk): Flowable<Boolean> {
         return save(key, value, target, BackpressureStrategy.LATEST)
     }
 

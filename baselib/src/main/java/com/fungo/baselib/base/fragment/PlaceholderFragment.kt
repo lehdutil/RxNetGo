@@ -2,7 +2,6 @@ package com.fungo.baselib.base.fragment
 
 import android.os.Bundle
 import com.fungo.baselib.R
-import kotlinx.android.synthetic.main.base_fragment_placeholder.*
 
 
 /**
@@ -18,30 +17,19 @@ open class PlaceholderFragment : BaseNavFragment() {
         private const val INTENT_DESC: String = "INTENT_DESC"
         private const val INTENT_TOOL_BAR: String = "INTENT_TOOL_BAR"
         private const val INTENT_MAIN_PAGE: String = "INTENT_MAIN_PAGE"
-        private const val PLACEHOLDER: String = "PLACEHOLDER"
 
         @JvmStatic
         fun newInstance(
                 title: String = "暂无数据",
                 description: String = "暂无数据",
                 isShowToolbar: Boolean = true,
-                isMainPage: Boolean = false,
-                placeholder: Int = 0
+                isMainPage: Boolean = false
         ): BaseFragment {
             val bundle = Bundle()
             bundle.putString(INTENT_TITLE, title)
             bundle.putString(INTENT_DESC, description)
             bundle.putBoolean(INTENT_TOOL_BAR, isShowToolbar)
             bundle.putBoolean(INTENT_MAIN_PAGE, isMainPage)
-            bundle.putInt(PLACEHOLDER, placeholder)
-            val fragment = PlaceholderFragment()
-            fragment.arguments = bundle
-            return fragment
-        }
-
-        fun newInstance(placeholder: Int): BaseFragment {
-            val bundle = Bundle()
-            bundle.putInt(PLACEHOLDER, placeholder)
             val fragment = PlaceholderFragment()
             fragment.arguments = bundle
             return fragment
@@ -61,9 +49,6 @@ open class PlaceholderFragment : BaseNavFragment() {
     override fun isMainPage(): Boolean = arguments?.getBoolean(INTENT_MAIN_PAGE) ?: false
 
     override fun initContentView() {
-        val placeholder = arguments?.getInt(PLACEHOLDER)
-        if (placeholder != null && placeholder != 0) {
-            ivPlaceholder.setImageResource(placeholder)
-        }
+
     }
 }

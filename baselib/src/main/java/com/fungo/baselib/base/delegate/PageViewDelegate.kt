@@ -310,7 +310,7 @@ class PageViewDelegate(private val view: View?) {
 
     fun setBackIcon(toolbar: Toolbar?, mainPage: Boolean, backIcon: Boolean, backClick: () -> Unit) {
         if (backIcon && !mainPage) {
-            toolbar?.navigationIcon = ViewUtils.getDrawable(R.mipmap.ic_arrow_back)
+            toolbar?.navigationIcon = ViewUtils.getDrawable(R.drawable.ic_arrow_back)
             toolbar?.setNavigationOnClickListener {
                 backClick.invoke()
             }

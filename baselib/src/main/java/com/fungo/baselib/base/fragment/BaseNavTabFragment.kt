@@ -5,6 +5,7 @@ import androidx.appcompat.widget.Toolbar
 import com.fungo.baselib.R
 import com.fungo.baselib.base.adapter.BaseFragmentPageAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.base_nav_tab.*
 
 /**
@@ -56,6 +57,13 @@ open class BaseNavTabFragment : BaseFragment() {
             viewPager?.offscreenPageLimit = fragments.size
             tabLayout?.setupWithViewPager(viewPager)
         }
+    }
+
+    /**
+     * 设置Tab样式
+     */
+    protected fun setTabMode(@TabLayout.Mode mode: Int) {
+        tabLayout?.tabMode = mode
     }
 
     /**

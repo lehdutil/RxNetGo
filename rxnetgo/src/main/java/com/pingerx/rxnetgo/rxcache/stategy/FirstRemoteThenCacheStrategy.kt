@@ -19,7 +19,7 @@ class FirstRemoteThenCacheStrategy : ICacheStrategy {
 
     override fun <T> execute(rxCache: RxCache, key: String, source: Flowable<T>, type: Type): Publisher<CacheResult<T>> {
         val cache = RxCacheHelper.loadCacheFlowable<T>(rxCache, key, type, true)
-        val remote = RxCacheHelper.loadRemoteFlowable(rxCache, key, source, CacheTarget.MemoryAndDisk, false)
+        val remote = RxCacheHelper.loadRemoteFlowable(rxCache, key, source, CacheTarget.Disk, false)
         return Flowable
                 .concatDelayError(Arrays.asList(remote, cache))
                 .take(1)

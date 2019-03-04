@@ -11,7 +11,7 @@ import java.util.*
 /**
  * @author Pinger
  * @since 18-8-3 上午11:29
- * 系统UI处理工具类，包括主题，图标等等⑽⑼⑹㈤
+ * 系统UI处理工具类，包括主题，图标等等
  */
 
 object UiUtils {
