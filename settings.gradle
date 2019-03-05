@@ -1,1 +1,1 @@
-include ':sample', ':rxnetgo', ':baselib'
+include ':app', ':rxnetgo', ':baselib'

@@ -186,7 +186,7 @@ class LogInterceptor(tag: String) : Interceptor {
         }
 
         /**
-         * Returns true if the body in question probably contains human readable text. Uses a small sample
+         * Returns true if the body in question probably contains human readable text. Uses a small gankit
          * of code points to detect unicode control characters commonly used in binary file signatures.
          */
         private fun isPlaintext(mediaType: MediaType?): Boolean {

@@ -122,7 +122,7 @@ abstract class BaseActivity : SupportActivity(), IView {
     /**
      * 是否设置App的主题,如果不需要设置主题,则重写本方法过滤
      */
-    protected open fun isSetAppTheme(): Boolean = false
+    protected open fun isSetAppTheme(): Boolean = true
 
     /**
      * 获取App的主题，子类可以重写
