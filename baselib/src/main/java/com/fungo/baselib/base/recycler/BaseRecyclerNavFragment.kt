@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fungo.baselib.R
 import com.fungo.baselib.base.fragment.BaseNavFragment
-import com.fungo.baselib.base.recycler.header.RecyclerClassicsFooter
+import com.fungo.baselib.base.recycler.header.RecyclerProgressFooter
 import com.fungo.baselib.base.recycler.header.material.MaterialHeader
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshFooter
@@ -102,7 +102,7 @@ abstract class BaseRecyclerNavFragment<P : BaseRecyclerPresenter<*>, T> : BaseNa
      * 获取刷新底部
      */
     protected open fun getRefreshFooter(): RefreshFooter {
-        return RecyclerClassicsFooter(context!!)
+        return RecyclerProgressFooter(context!!)
     }
 
     @Deprecated("请使用[showDatas]")

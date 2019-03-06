@@ -4,8 +4,8 @@ import com.fungo.baselib.base.activity.BasePageActivity
 import com.fungo.baselib.base.fragment.BaseFragment
 import com.fungo.baselib.theme.AppTheme
 import com.fungo.baselib.theme.UiUtils
+import com.fungo.baselib.utils.AppUtils
 import com.pingerx.gankit.ui.fragment.MainFragment
-import com.pingerx.gankit.ui.fragment.SplashFragment
 
 
 class MainActivity : BasePageActivity() {
@@ -18,9 +18,14 @@ class MainActivity : BasePageActivity() {
     override fun getAppTheme(): AppTheme = UiUtils.getRandomTheme()
 
     /**
-     * 跳转到Splash页面
+     * 返回键
      */
-    override fun initData() {
-        start(SplashFragment())
+    override fun onBackPressedSupport() {
+        if (supportFragmentManager.backStackEntryCount > 1) {
+            super.onBackPressedSupport()
+        } else {
+            AppUtils.moveTaskToBack(this)
+        }
     }
+
 }

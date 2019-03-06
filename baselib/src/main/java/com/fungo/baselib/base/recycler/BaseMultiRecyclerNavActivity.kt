@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.fungo.baselib.R
 import com.fungo.baselib.base.activity.BaseNavActivity
 import com.fungo.baselib.base.recycler.header.RecyclerClassicsFooter
+import com.fungo.baselib.base.recycler.header.RecyclerProgressFooter
 import com.fungo.baselib.base.recycler.header.material.MaterialHeader
 import com.fungo.baselib.base.recycler.multitype.MultiTypeAdapter
 import com.fungo.baselib.base.recycler.multitype.MultiTypeViewHolder
@@ -111,7 +112,7 @@ abstract class BaseMultiRecyclerNavActivity<P : BaseRecyclerPresenter<*>> : Base
      * 获取刷新底部
      */
     protected open fun getRefreshFooter(): RefreshFooter {
-        return RecyclerClassicsFooter(this)
+        return RecyclerProgressFooter(this)
     }
 
     /**
@@ -177,7 +178,6 @@ abstract class BaseMultiRecyclerNavActivity<P : BaseRecyclerPresenter<*>> : Base
             mAdapter.add(data)
         }
     }
-
 
     /**
      * 更新某一条数据

@@ -41,7 +41,7 @@ class ExploreFragment : BaseContentFragment() {
             }
 
             override fun onPageSelected(position: Int) {
-                loadBlur(mData[position].url)
+                //loadBlur(mData[position].url)
             }
         })
     }
@@ -56,7 +56,7 @@ class ExploreFragment : BaseContentFragment() {
                 showPageContent()
                 StatusBarUtils.setStatusBarForegroundColor(getPageActivity(), false)
                 mData = it.results
-                loadBlur(mData[0].url)
+                //loadBlur(mData[0].url)
                 mBannerView.setPages(mData, object : BannerHolderCreator<GankDataBean, BannerHolder> {
                     override fun onCreateBannerHolder() = BannerHolder()
                 })

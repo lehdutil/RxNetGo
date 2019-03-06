@@ -75,7 +75,6 @@ class RxCache private constructor(private val cacheCore: CacheCore) {
         return cacheCore.containsKey(getMD5MessageDigest(key))
     }
 
-
     fun remove(key: String): Boolean {
         return cacheCore.remove(getMD5MessageDigest(key))
     }

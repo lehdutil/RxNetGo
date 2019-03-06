@@ -1,5 +1,5 @@
 # RxJava2 + Retrofit2网络框架
-[![](https://jitpack.io/v/PingerOne/RxNetGo.svg)](https://jitpack.io/#PingerOne/RxNetGo)
+[ ![Download](https://api.bintray.com/packages/fungo/maven/rxnetgo/images/download.svg) ](https://bintray.com/fungo/maven/rxnetgo/_latestVersion)
 
 支持常用的GET和POST请求，支持同步和异步，使用简单方便快捷。
 
@@ -23,18 +23,10 @@
 
 
 ## 添加依赖
-1. 在项目根目录的build.gradle文件中添加jitpack仓库路径。
-
-        allprojects {
-            repositories {
-                maven { url 'https://jitpack.io' }
-            }
-        }
-
-2. 在app的build.gradle文件中引入仓库依赖。
+* 在app的build.gradle文件中引入仓库依赖。
 
 
-       implementation 'com.github.PingerOne:RxNetGo:1.0.5'
+       implementation 'com.pingerx:rxnetgo:1.0.0'
 
 
 
