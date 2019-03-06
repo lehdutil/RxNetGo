@@ -1,11 +1,11 @@
 package com.pingerx.gankit.ui.fragment
 
 import android.Manifest
-import com.fungo.baselib.base.fragment.BaseContentFragment
-import com.fungo.baselib.base.fragment.BaseFragment
-import com.fungo.baselib.base.fragment.PlaceholderFragment
-import com.fungo.baselib.utils.AppUtils
-import com.fungo.baselib.utils.StatusBarUtils
+import com.pingerx.baselib.base.fragment.BaseContentFragment
+import com.pingerx.baselib.base.fragment.BaseFragment
+import com.pingerx.baselib.base.fragment.PlaceholderFragment
+import com.pingerx.baselib.utils.AppUtils
+import com.pingerx.baselib.utils.StatusBarUtils
 import com.pingerx.gankit.R
 import com.pingerx.gankit.ui.explore.ExploreFragment
 import com.pingerx.gankit.ui.gank.GankMainFragment

@@ -4,9 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Rect
 import android.view.View
-import com.fungo.baselib.base.activity.BaseActivity
-import com.fungo.baselib.base.fragment.BaseFragment
-import com.fungo.baselib.web.WebActivity
+import com.pingerx.baselib.base.activity.BaseActivity
+import com.pingerx.baselib.base.fragment.BaseFragment
+import com.pingerx.baselib.web.WebActivity
 import com.fungo.preview.page.ImagePreviewPageActivity
 import com.fungo.preview.wrapper.ImageEntity
 

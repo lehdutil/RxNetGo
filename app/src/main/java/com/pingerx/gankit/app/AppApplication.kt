@@ -2,9 +2,9 @@ package com.pingerx.gankit.app
 
 import android.graphics.Bitmap
 import android.widget.ImageView
-import com.fungo.baselib.app.BaseApplication
-import com.fungo.baselib.app.EnvModel
-import com.fungo.baselib.utils.DebugUtils
+import com.pingerx.baselib.app.BaseApplication
+import com.pingerx.baselib.app.EnvModel
+import com.pingerx.baselib.utils.DebugUtils
 import com.fungo.imagego.ImageGo
 import com.fungo.imagego.glide.GlideImageStrategy
 import com.fungo.imagego.listener.OnImageListener

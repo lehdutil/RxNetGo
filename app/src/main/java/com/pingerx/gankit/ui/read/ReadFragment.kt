@@ -1,7 +1,7 @@
 package com.pingerx.gankit.ui.read
 
 import android.os.Bundle
-import com.fungo.baselib.base.recycler.BaseMultiRecyclerFragment
+import com.pingerx.baselib.base.recycler.BaseMultiRecyclerFragment
 import com.pingerx.gankit.ui.gank.GankDataBean
 
 /**

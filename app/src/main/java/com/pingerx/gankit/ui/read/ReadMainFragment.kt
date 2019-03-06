@@ -1,6 +1,6 @@
 package com.pingerx.gankit.ui.read
 
-import com.fungo.baselib.base.fragment.BaseFragment
+import com.pingerx.baselib.base.fragment.BaseFragment
 import com.pingerx.gankit.R
 import com.pingerx.gankit.data.api.GankApi
 import com.pingerx.gankit.ui.fragment.BaseMainTabFragment

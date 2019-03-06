@@ -3,8 +3,8 @@ package com.pingerx.gankit.ui.read
 import android.text.TextUtils
 import android.view.ViewGroup
 import android.widget.ImageView
-import com.fungo.baselib.base.recycler.BaseViewHolder
-import com.fungo.baselib.base.recycler.multitype.MultiTypeViewHolder
+import com.pingerx.baselib.base.recycler.BaseViewHolder
+import com.pingerx.baselib.base.recycler.multitype.MultiTypeViewHolder
 import com.fungo.imagego.strategy.loadImage
 import com.pingerx.gankit.R
 import com.pingerx.gankit.ui.gank.GankDataBean

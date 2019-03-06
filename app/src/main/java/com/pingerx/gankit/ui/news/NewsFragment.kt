@@ -2,8 +2,8 @@ package com.pingerx.gankit.ui.news
 
 import android.os.Bundle
 import androidx.recyclerview.widget.RecyclerView
-import com.fungo.baselib.base.recycler.BaseMultiRecyclerFragment
-import com.fungo.baselib.base.recycler.decorate.VerticalItemSpaceDecoration
+import com.pingerx.baselib.base.recycler.BaseMultiRecyclerFragment
+import com.pingerx.baselib.base.recycler.decorate.VerticalItemSpaceDecoration
 
 /**
  * @author Pinger

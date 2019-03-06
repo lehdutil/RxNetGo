@@ -1,8 +1,8 @@
 package com.pingerx.gankit.ui.news
 
 import android.view.ViewGroup
-import com.fungo.baselib.base.recycler.BaseViewHolder
-import com.fungo.baselib.base.recycler.multitype.MultiTypeViewHolder
+import com.pingerx.baselib.base.recycler.BaseViewHolder
+import com.pingerx.baselib.base.recycler.multitype.MultiTypeViewHolder
 import com.fungo.preview.ImagePreview
 import com.fungo.preview.wrapper.ImageEntity
 import com.fungo.preview.wrapper.ImagePreviewAdapter

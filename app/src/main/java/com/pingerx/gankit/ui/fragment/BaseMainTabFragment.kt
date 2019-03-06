@@ -1,8 +1,8 @@
 package com.pingerx.gankit.ui.fragment
 
 import androidx.core.content.ContextCompat
-import com.fungo.baselib.base.fragment.BaseNavTabFragment
-import com.fungo.baselib.utils.ViewUtils
+import com.pingerx.baselib.base.fragment.BaseNavTabFragment
+import com.pingerx.baselib.utils.ViewUtils
 import com.pingerx.gankit.R
 import com.pingerx.gankit.data.WebUrlProvider
 import com.pingerx.gankit.utils.LaunchUtils

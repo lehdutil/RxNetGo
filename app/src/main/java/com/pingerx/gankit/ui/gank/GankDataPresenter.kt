@@ -1,6 +1,6 @@
 package com.pingerx.gankit.ui.gank
 
-import com.fungo.baselib.base.recycler.BaseRecyclerPresenter
+import com.pingerx.baselib.base.recycler.BaseRecyclerPresenter
 import com.pingerx.gankit.data.api.GankApi
 import com.pingerx.rxnetgo.rxcache.CacheMode
 

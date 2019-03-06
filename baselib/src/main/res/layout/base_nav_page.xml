@@ -43,7 +43,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/appBarLayout" />
 
-    <com.fungo.baselib.widget.placeholder.PlaceholderView
+    <com.pingerx.baselib.widget.placeholder.PlaceholderView
         android:id="@+id/placeholder"
         android:layout_width="0dp"
         android:layout_height="0dp"

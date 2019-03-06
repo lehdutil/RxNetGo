@@ -1,10 +1,10 @@
 package com.pingerx.gankit.ui.activity
 
-import com.fungo.baselib.base.activity.BasePageActivity
-import com.fungo.baselib.base.fragment.BaseFragment
-import com.fungo.baselib.theme.AppTheme
-import com.fungo.baselib.theme.UiUtils
-import com.fungo.baselib.utils.AppUtils
+import com.pingerx.baselib.base.activity.BasePageActivity
+import com.pingerx.baselib.base.fragment.BaseFragment
+import com.pingerx.baselib.theme.AppTheme
+import com.pingerx.baselib.theme.UiUtils
+import com.pingerx.baselib.utils.AppUtils
 import com.pingerx.gankit.ui.fragment.MainFragment
 
 

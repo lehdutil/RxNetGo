@@ -1,6 +1,6 @@
 package com.pingerx.gankit.data.api
 
-import com.fungo.baselib.utils.EncryptUtils
+import com.pingerx.baselib.utils.EncryptUtils
 import com.pingerx.rxnetgo.model.HttpParams
 import com.pingerx.gankit.data.subscribe.NewsSubscriber
 import com.pingerx.gankit.ui.news.NewsChannelResponse

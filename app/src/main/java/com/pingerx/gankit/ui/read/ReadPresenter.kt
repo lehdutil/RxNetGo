@@ -1,6 +1,6 @@
 package com.pingerx.gankit.ui.read
 
-import com.fungo.baselib.base.recycler.BaseRecyclerPresenter
+import com.pingerx.baselib.base.recycler.BaseRecyclerPresenter
 import com.pingerx.gankit.data.api.GankApi
 
 /**

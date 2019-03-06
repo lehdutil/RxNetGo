@@ -1,7 +1,7 @@
 package com.pingerx.gankit.ui.news
 
 import android.text.TextUtils
-import com.fungo.baselib.base.recycler.BaseRecyclerPresenter
+import com.pingerx.baselib.base.recycler.BaseRecyclerPresenter
 import com.pingerx.gankit.data.api.NewsApi
 
 /**

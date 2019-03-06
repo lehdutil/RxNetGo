@@ -3,8 +3,8 @@ package com.pingerx.gankit.ui.gank
 import android.os.Bundle
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.fungo.baselib.base.recycler.BaseMultiRecyclerFragment
-import com.fungo.baselib.base.recycler.decorate.DividerItemDecoration
+import com.pingerx.baselib.base.recycler.BaseMultiRecyclerFragment
+import com.pingerx.baselib.base.recycler.decorate.DividerItemDecoration
 import com.pingerx.gankit.R
 import com.pingerx.gankit.data.api.GankApi
 

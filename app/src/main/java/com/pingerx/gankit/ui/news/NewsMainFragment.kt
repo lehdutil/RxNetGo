@@ -1,6 +1,6 @@
 package com.pingerx.gankit.ui.news
 
-import com.fungo.baselib.base.fragment.BaseFragment
+import com.pingerx.baselib.base.fragment.BaseFragment
 import com.pingerx.gankit.R
 import com.pingerx.gankit.data.api.NewsApi
 import com.pingerx.gankit.ui.fragment.BaseMainTabFragment

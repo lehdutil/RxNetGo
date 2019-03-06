@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.fungo.baselib">
+    package="com.pingerx.baselib">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
