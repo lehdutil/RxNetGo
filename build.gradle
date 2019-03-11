@@ -36,7 +36,7 @@ task clean(type: Delete) {
 
 ext {
     name = "rxnetgo"
-    version = "1.0.0"
+    version = "1.0.2"
     groupId = "com.pingerx"
     artifactId = "rxnetgo"
     siteUrl = "https://github.com/pingerx/RxNetgo"

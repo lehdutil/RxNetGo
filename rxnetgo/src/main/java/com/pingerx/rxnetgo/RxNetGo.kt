@@ -24,6 +24,7 @@ import com.pingerx.rxnetgo.subscribe.base.RxSubscriber
 import com.pingerx.rxnetgo.utils.HttpUtils
 import com.pingerx.rxnetgo.utils.NetLogger
 import io.reactivex.Flowable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Function
@@ -48,7 +49,7 @@ import java.util.logging.Level
  *  ２．缓存模式默认：先请求后缓存，网络异常时读取缓存
  *  ３．默认支持Https
  *  ４．Cookie默认长久保存在SP中
- *
+ *loadCache
  * 发起网络请求：
  * [get] get请求
  * [post] post请求
@@ -406,8 +407,8 @@ class RxNetGo {
                 .load<T>(key, subscriber.getType())
                 .map(CacheResult.MapFunc())
                 .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .onErrorResumeNext(Function { Flowable.error(NetErrorEngine.handleException(it)) })
-                .subscribeOn(Schedulers.io())
                 .subscribe(callback)
     }
 

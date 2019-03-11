@@ -17,6 +17,6 @@ import java.lang.reflect.Type
 class OnlyRemoteStrategy : ICacheStrategy {
 
     override fun <T> execute(rxCache: RxCache, key: String, source: Flowable<T>, type: Type): Publisher<CacheResult<T>> {
-        return RxCacheHelper.loadRemoteFlowable(rxCache, key, source, CacheTarget.Disk, false)
+        return RxCacheHelper.loadRemoteFlowable(rxCache, key, source, CacheTarget.Disk, true)
     }
 }

@@ -4,6 +4,7 @@ import com.pingerx.rxnetgo.rxcache.data.CacheFrom
 import com.pingerx.rxnetgo.rxcache.data.CacheResult
 import com.pingerx.rxnetgo.utils.NetLogger
 import io.reactivex.Flowable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.Function
 import io.reactivex.schedulers.Schedulers
 import java.lang.reflect.Type
@@ -19,7 +20,9 @@ object RxCacheHelper {
 
 
     fun <T> loadCacheFlowable(rxCache: RxCache, key: String, type: Type, needEmpty: Boolean): Flowable<CacheResult<T>> {
-        var flowable = rxCache.load<T>(key, type).subscribeOn(Schedulers.io())
+        var flowable = rxCache.load<T>(key, type)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
         if (needEmpty) {
             flowable = flowable.onErrorResumeNext(Function { Flowable.empty() })
         }
@@ -32,6 +35,7 @@ object RxCacheHelper {
                     NetLogger.e("loadRemote result=$t")
                     rxCache.save(key, t, target)
                             .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(
                                     { status -> NetLogger.e("save status => " + status!!) },
                                     { throwable ->

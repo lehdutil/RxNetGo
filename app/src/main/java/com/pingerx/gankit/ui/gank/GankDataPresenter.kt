@@ -28,7 +28,7 @@ class GankDataPresenter(private val gankType: String) : BaseRecyclerPresenter<Ga
     }
 
     fun loadCache() {
-        GankApi.getGankData(gankType, mView.getStartPage(), CacheMode.FIRST_CACHE_NONE_REMOTE) {
+        GankApi.getGankData(gankType, mView.getStartPage(), CacheMode.ONLY_CACHE) {
             onSuccess {
                 if (!it.error) {
                     mView.showContent(it.results)
@@ -36,5 +36,4 @@ class GankDataPresenter(private val gankType: String) : BaseRecyclerPresenter<Ga
             }
         }
     }
-
 }

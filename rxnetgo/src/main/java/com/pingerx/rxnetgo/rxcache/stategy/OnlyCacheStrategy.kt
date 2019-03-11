@@ -16,6 +16,6 @@ import java.lang.reflect.Type
 class OnlyCacheStrategy : ICacheStrategy {
 
     override fun <T> execute(rxCache: RxCache, key: String, source: Flowable<T>, type: Type): Publisher<CacheResult<T>> {
-        return RxCacheHelper.loadCacheFlowable(rxCache, key, type, false)
+        return RxCacheHelper.loadCacheFlowable(rxCache, key, type, true)
     }
 }
